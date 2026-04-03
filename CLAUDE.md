@@ -283,16 +283,16 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ### Phase 2 — Shared Utilities & Widgets
 
-- [ ] Create `lib/utils/tdee.dart` — implement Mifflin-St Jeor formula; export `TdeeResult calculateTdee(ProfileData profile)` returning `{ calories, proteinG, carbsG, fatG }`
-- [ ] Create `lib/utils/units.dart` — export `kgToLbs`, `lbsToKg`, `cmToFtIn`, `ftInToCm`, `mlToOz`, `ozToMl`
-- [ ] Create `lib/utils/streaks.dart` — export `int calculateStreak(List<String> dates)` counting consecutive days ending today
-- [ ] Write unit tests for all three utils (`test/utils/`); run `flutter test test/utils/` and confirm all pass
-- [ ] Create `lib/widgets/onboarding_layout.dart` — `StatelessWidget` wrapping children with: back `IconButton` (leading), `LinearProgressIndicator` (driven by `step` / `total` props), safe-area padding, white/dark-mode background
-- [ ] Create `lib/widgets/ruler_picker.dart` — `ScrollController`-based horizontal `ListView` of evenly spaced tick marks (`CustomPainter`); center-pinned selected value displayed large above the ruler; accepts `value`, `min`, `max`, `step`, `unit`, `onChanged` callbacks
-- [ ] Create `lib/widgets/calorie_ring.dart` — `CustomPainter` donut ring accepting `consumed`, `goal`, `size`; flame `Icon` centered; animated arc fill on mount via `AnimationController` + `CurvedAnimation`
-- [ ] Create `lib/widgets/macro_pill.dart` — `Container` with remaining grams + label + colored icon; accepts `type` (`protein` | `carbs` | `fat`), `remaining`, `goal`
-- [ ] Create `lib/widgets/food_entry_card.dart` — `Dismissible` card with optional `CachedNetworkImage` thumbnail (left), food name (bold), kcal + P/C/F row (right); `onDismissed` calls a delete callback
-- [ ] Create `lib/widgets/week_strip.dart` — `Row` of 7 `GestureDetector` day tiles; active day wrapped in a black `DecoratedBox` (pill shape); tapping a past day calls `onDaySelected(String date)`
+- [x] Create `lib/utils/tdee.dart` — implement Mifflin-St Jeor formula; export `TdeeResult calculateTdee(ProfileData profile)` returning `{ calories, proteinG, carbsG, fatG }`
+- [x] Create `lib/utils/units.dart` — export `kgToLbs`, `lbsToKg`, `cmToFtIn`, `ftInToCm`, `mlToOz`, `ozToMl`
+- [x] Create `lib/utils/streaks.dart` — export `int calculateStreak(List<String> dates)` counting consecutive days ending today
+- [x] Write unit tests for all three utils (`test/utils/`); run `flutter test test/utils/` and confirm all pass
+- [x] Create `lib/widgets/onboarding_layout.dart` — `StatelessWidget` wrapping children with: back `IconButton` (leading), `LinearProgressIndicator` (driven by `step` / `total` props), safe-area padding, white/dark-mode background
+- [x] Create `lib/widgets/ruler_picker.dart` — `ScrollController`-based horizontal `ListView` of evenly spaced tick marks (`CustomPainter`); center-pinned selected value displayed large above the ruler; accepts `value`, `min`, `max`, `step`, `unit`, `onChanged` callbacks
+- [x] Create `lib/widgets/calorie_ring.dart` — `CustomPainter` donut ring accepting `consumed`, `goal`, `size`; flame `Icon` centered; animated arc fill on mount via `AnimationController` + `CurvedAnimation`
+- [x] Create `lib/widgets/macro_pill.dart` — `Container` with remaining grams + label + colored icon; accepts `type` (`protein` | `carbs` | `fat`), `remaining`, `goal`
+- [x] Create `lib/widgets/food_entry_card.dart` — `Dismissible` card with optional `CachedNetworkImage` thumbnail (left), food name (bold), kcal + P/C/F row (right); `onDismissed` calls a delete callback
+- [x] Create `lib/widgets/week_strip.dart` — `Row` of 7 `GestureDetector` day tiles; active day wrapped in a black `DecoratedBox` (pill shape); tapping a past day calls `onDaySelected(String date)`
 
 ---
 
