@@ -362,14 +362,14 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ### Phase 8 — Food Text Search (USDA FoodData Central)
 
-- [ ] Create `lib/services/usda_service.dart` — `Future<List<FoodSearchResult>> searchFoods(String query)` that GETs `https://api.nal.usda.gov/fdc/v1/foods/search?query=<query>&api_key=<key>` with the key read from `flutter_secure_storage`; maps response `foods[]` to typed `FoodSearchResult { fdcId, name, calories, proteinG, carbsG, fatG, servingSize, servingUnit }`
-- [ ] Create `lib/features/log/search_screen.dart`:
-  - [ ] `TextField` auto-focused on mount via `FocusNode.requestFocus()` in `initState`
-  - [ ] Debounced calls to `searchFoods` as user types (300ms via `Timer`)
-  - [ ] `ListView` of result `ListTile`s — food name, kcal, serving size, `CachedNetworkImage` thumbnail
-  - [ ] Tapping a result pushes a confirm bottom sheet showing full macro breakdown
-  - [ ] "Add" `FilledButton` — calls `dailyNotifier.addFoodEntry(entry)` with `source: 'search'` → `context.go('/home')`
-  - [ ] Empty state when query is blank; error `SnackBar` when API key is missing
+- [x] Create `lib/services/usda_service.dart` — GETs USDA FoodData Central `/foods/search`; maps `foodNutrients[]` to `FoodSearchResult {fdcId, name, brandOwner, calories, proteinG, carbsG, fatG, servingSize}`; reads kcal from `Energy` nutrient entry
+- [x] Create `lib/features/log/search_screen.dart`:
+  - [x] `TextField` in AppBar auto-focused on mount; clear button when query non-empty
+  - [x] 300ms debounce via `Timer`; shows `SnackBar` when USDA key missing
+  - [x] `ListView` of `ListTile`s with food icon, name, kcal + serving size + brand
+  - [x] Tapping opens `_ConfirmSheet` (bottom sheet) with servings stepper + full macro badges
+  - [x] "Add to log" `FilledButton` — inserts `FoodEntriesCompanion(source: 'search')` → `dailyProvider.addFoodEntry` → `/home`
+  - [x] Empty/no-results/loading states
 
 ---
 
