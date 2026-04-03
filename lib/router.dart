@@ -3,6 +3,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'features/analytics/analytics_screen.dart';
 import 'features/home/home_screen.dart';
+import 'features/log/camera_screen.dart';
+import 'features/log/exercise_screen.dart';
+import 'features/log/search_screen.dart';
+import 'features/log/water_screen.dart';
 import 'features/onboarding/screens/activity_screen.dart';
 import 'features/onboarding/screens/birthday_screen.dart';
 import 'features/onboarding/screens/current_weight_screen.dart';
@@ -64,6 +68,23 @@ Future<GoRouter> buildRouter() async {
       GoRoute(
         path: '/onboarding/plan',
         builder: (context, state) => const PlanScreen(),
+      ),
+      // ── Log routes (pushed over shell) ───────────────────────────────────
+      GoRoute(
+        path: '/log/camera',
+        builder: (context, state) => const CameraScreen(),
+      ),
+      GoRoute(
+        path: '/log/search',
+        builder: (context, state) => const SearchScreen(),
+      ),
+      GoRoute(
+        path: '/log/exercise',
+        builder: (context, state) => const ExerciseScreen(),
+      ),
+      GoRoute(
+        path: '/log/water',
+        builder: (context, state) => const WaterScreen(),
       ),
       // ── App shell (tabs) ──────────────────────────────────────────────────
       ShellRoute(

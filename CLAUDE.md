@@ -336,15 +336,16 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ### Phase 6 — Home Dashboard Screen
 
-- [ ] Build `lib/features/home/home_screen.dart` fully:
-  - [ ] `WeekStrip` at top — tapping a past day calls `ref.read(dailyProvider(date).notifier).hydrateForDate(selectedDate)`
-  - [ ] Streak count + flame icon (top right, from `calculateStreak`)
-  - [ ] `CalorieRing` (large, center-top) showing `caloriesRemaining / dailyCalories`
-  - [ ] `Row` of three `MacroPill` widgets (Protein, Carbs, Fat)
-  - [ ] "Recently logged" section header (`Text` with `TextStyle`)
-  - [ ] `ListView` of `FoodEntryCard` items from `dailyState.entries`; empty state: centered text + icon
-  - [ ] FAB `FloatingActionButton` (black, bottom-right) — opens `showModalBottomSheet` with four `ListTile` options: Camera, Search, Exercise, Water
-  - [ ] Bottom sheet options navigate to: `context.push('/log/camera')`, `/log/search`, `/log/exercise`, `/log/water`
+- [x] Build `lib/features/home/home_screen.dart` fully:
+  - [x] `WeekStrip` at top — tapping a day calls `ref.read(selectedDateProvider.notifier).select(date)`
+  - [x] Streak badge (orange pill, top right) from `calculateStreak`
+  - [x] `_CalorieCard` with `CalorieRing` (large), calories remaining, eaten, burned stats
+  - [x] `Row` of three `MacroPill` widgets (Protein, Carbs, Fat) with remaining/goal
+  - [x] "Recently logged" section header
+  - [x] `SliverList` of `FoodEntryCard` items; swipe-to-delete calls `deleteFoodEntry`; empty state with icon
+  - [x] FAB (black) opens `showModalBottomSheet` with Camera / Search / Exercise / Water options
+  - [x] Log routes added to router (`/log/camera`, `/log/search`, `/log/exercise`, `/log/water`) with stub screens
+  - [x] Widget smoke test updated to override DB providers (avoids pending-timer failure)
 
 ---
 
