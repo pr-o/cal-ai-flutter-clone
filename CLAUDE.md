@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-A Flutter clone of **Cal AI** — an AI-powered calorie tracking app. Users complete a multi-step onboarding, then log meals via AI photo scanning (Gemini 2.0 Flash), food text search (Nutritionix), exercise, and water. All data is stored locally on-device (no backend, no auth).
+A Flutter clone of **Cal AI** — an AI-powered calorie tracking app. Users complete a multi-step onboarding, then log meals via AI photo scanning (Gemini 2.0 Flash), food text search (USDA FoodData Central), exercise, and water. All data is stored locally on-device (no backend, no auth).
 
 Reference design: `/home/sung/cal-ai-rn-clone/CLAUDE.md` (React Native version with full spec)  
 UI reference screenshots: `.claude/screenshots/` (local copy; see `.claude/screenshots/README.md` for descriptions)
@@ -20,10 +20,10 @@ UI reference screenshots: `.claude/screenshots/` (local copy; see `.claude/scree
 | State management | `riverpod` + `flutter_riverpod` ^3.x | `AsyncNotifier` / `Notifier` providers; Riverpod 3.0 is current standard |
 | Local DB | `drift` ^2.x (moor successor) | Type-safe SQLite ORM with codegen |
 | Settings store | `shared_preferences` ^2.x | Theme, units, `onboarding_complete` flag — non-sensitive only |
-| Secure store | `flutter_secure_storage` ^9.x | API keys (Gemini, Nutritionix) — uses Keychain / EncryptedSharedPreferences |
+| Secure store | `flutter_secure_storage` ^9.x | API keys (Gemini, USDA) — uses Keychain / EncryptedSharedPreferences |
 | Camera | `camera` ^0.11.x | Requires native build, not hot-reload |
 | AI food recognition | Google Gemini 2.0 Flash Vision API | REST via `http` or `dio` |
-| Food text search | Nutritionix API | REST |
+| Food text search | USDA FoodData Central API | REST, free with data.gov API key |
 | Charts | `fl_chart` ^0.69.x | Line + Bar charts for Analytics |
 | Push notifications | `flutter_local_notifications` ^19.x | Meal reminders |
 | SVG / graphics | `flutter_svg` + custom `CustomPainter` | Donut rings |
@@ -111,7 +111,7 @@ The Gemini API key is stored in `SharedPreferences` and entered once by the user
 
 ### Food Text Search Flow
 
-`SearchScreen` → `NutritionixService.searchFoods()` → Nutritionix `/v2/natural/nutrients` → results list → confirm → Drift `INSERT` → `dailyProvider` invalidate.
+`SearchScreen` → `UsdaService.searchFoods()` → USDA FoodData Central `/fdc/v1/foods/search` → results list → confirm → Drift `INSERT` → `dailyProvider` invalidate.
 
 ### Onboarding
 
@@ -157,7 +157,7 @@ lib/
 │       └── water_screen.dart
 ├── services/
 │   ├── gemini_service.dart      # Gemini 2.0 Flash Vision REST calls
-│   └── nutritionix_service.dart # Nutritionix natural language search
+│   └── usda_service.dart        # USDA FoodData Central food text search
 ├── utils/
 │   ├── tdee.dart                # Mifflin-St Jeor TDEE + macro calculation
 │   ├── streaks.dart             # Consecutive day streak logic
@@ -236,7 +236,7 @@ test/
 ## Key Conventions
 
 - **Drift schema changes** always require running `dart run build_runner build --delete-conflicting-outputs`. Never edit `.g.dart` files manually.
-- **API keys** are never hardcoded. `gemini_api_key`, `nutritionix_app_id`, `nutritionix_api_key` are stored in `flutter_secure_storage` (Keychain on iOS, EncryptedSharedPreferences on Android). Non-sensitive settings (`theme`, `weight_unit`, `onboarding_complete`) use `shared_preferences`.
+- **API keys** are never hardcoded. `gemini_api_key` and `usda_api_key` are stored in `flutter_secure_storage` (Keychain on iOS, EncryptedSharedPreferences on Android). Non-sensitive settings (`theme`, `weight_unit`, `onboarding_complete`) use `shared_preferences`.
 - **Units:** Internal storage is always metric (kg, cm, ml). `lib/utils/units.dart` handles display conversion when `weight_unit == 'lbs'`.
 - **Dates:** All dates stored as `'YYYY-MM-DD'` strings in SQLite. All timestamps as ISO 8601 strings. No `DateTime` objects in the DB layer.
 - **Camera** requires a physical device or properly configured emulator and does not work in hot-reload-only flows. Use `flutter run` on a real device for camera testing.
@@ -368,9 +368,9 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ---
 
-### Phase 8 — Food Text Search (Nutritionix)
+### Phase 8 — Food Text Search (USDA FoodData Central)
 
-- [ ] Create `lib/services/nutritionix_service.dart` — `Future<List<FoodSearchResult>> searchFoods(String query)` that POSTs to Nutritionix `/v2/natural/nutrients` with `x-app-id` + `x-app-key` headers read from `SharedPreferences`; returns typed list
+- [ ] Create `lib/services/usda_service.dart` — `Future<List<FoodSearchResult>> searchFoods(String query)` that GETs `https://api.nal.usda.gov/fdc/v1/foods/search?query=<query>&api_key=<key>` with the key read from `flutter_secure_storage`; maps response `foods[]` to typed `FoodSearchResult { fdcId, name, calories, proteinG, carbsG, fatG, servingSize, servingUnit }`
 - [ ] Create `lib/features/log/search_screen.dart`:
   - [ ] `TextField` auto-focused on mount via `FocusNode.requestFocus()` in `initState`
   - [ ] Debounced calls to `searchFoods` as user types (300ms via `Timer`)
@@ -412,7 +412,7 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 - [ ] Build `lib/features/settings/settings_screen.dart`:
   - [ ] **Theme** — `SegmentedButton` (Light / Dark / System); writes to `settingsNotifier.setTheme()`; `MaterialApp.themeMode` updates immediately
   - [ ] **Weight unit** — `Switch` tile (kg / lbs); writes to `settingsNotifier.setWeightUnit()`
-  - [ ] **API Keys** — three `TextField`s with obscured text for `gemini_api_key`, `nutritionix_app_id`, `nutritionix_api_key`; "Save" `FilledButton` writes to `SharedPreferences`; inline "Test" `TextButton` per key that makes a minimal API call and shows a `SnackBar`
+  - [ ] **API Keys** — two `TextField`s with obscured text for `gemini_api_key` and `usda_api_key`; "Save" `FilledButton` writes to `flutter_secure_storage`; inline "Test" `TextButton` per key that makes a minimal API call and shows a `SnackBar`
   - [ ] **Profile section** — display goal + daily calorie + macro targets; "Edit Goals" `TextButton` opens a `showModalBottomSheet` reusing `CalorieRing` donut widgets for post-onboarding target adjustment
   - [ ] **Reset onboarding** — red `TextButton` with `showDialog` confirmation; on confirm: clears `SharedPreferences.onboarding_complete` + deletes `Profiles` row → `context.go('/onboarding/goal')`
 
