@@ -298,19 +298,19 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ### Phase 3 — Onboarding Screens
 
-- [ ] Create `lib/features/onboarding/notifier.dart` — `OnboardingState` data class + `OnboardingNotifier extends Notifier<OnboardingState>` holding all fields (`goal`, `gender`, `birthday`, `currentWeightKg`, `heightCm`, `targetWeightKg`, `activityLevel`, `dietaryPreferences`); not persisted until final step
-- [ ] Add all 10 onboarding routes to `lib/router.dart` under a `/onboarding` prefix using `GoRoute` stack (no `ShellRoute`)
-- [ ] Build `lib/features/onboarding/screens/goal_screen.dart` — 3 option `GestureDetector` pills; tapping sets `onboardingNotifier.goal` and calls `context.go('/onboarding/gender')`
-- [ ] Build `gender_screen.dart` — 3 option pills (Male / Female / Other)
-- [ ] Build `birthday_screen.dart` — `showDatePicker` (platform-native); stores ISO date string to `OnboardingNotifier`
-- [ ] Build `current_weight_screen.dart` — `RulerPicker` (40–200 kg, step 0.1); unit label from `settingsProvider`
-- [ ] Build `height_screen.dart` — `RulerPicker` (100–250 cm); displays ft/in label when `weightUnit == 'lbs'`
-- [ ] Build `target_weight_screen.dart` — `RulerPicker` with goal label ("Lose weight") above the value
-- [ ] Build `activity_screen.dart` — 4 option pills (Sedentary / Lightly active / Active / Very active)
-- [ ] Build `diet_screen.dart` — multi-select pills (None / Vegetarian / Vegan / Keto / Gluten-free); `Set<String>` selection
-- [ ] Build `results_screen.dart` — static motivational screen; `fl_chart` `LineChart` comparing "Cal AI" vs "Traditional Diet" weight curves; "80% of users maintain weight loss 6 months later" stat; "Next" `FilledButton`
-- [ ] Build `plan_screen.dart` — call `calculateTdee(onboardingState)` on init; display 4 `CalorieRing` widgets in a 2×2 `GridView`; each ring has a pencil `IconButton` that opens an `AlertDialog` with a `TextField` for inline editing; "Let's get started!" `FilledButton` at bottom
-- [ ] Wire "Let's get started!" in `plan_screen.dart`: `INSERT INTO Profiles` via Drift DAO → `settingsProvider.setOnboardingComplete(true)` → `context.go('/home')`
+- [x] Create `lib/features/onboarding/notifier.dart` — `OnboardingState` data class + `OnboardingNotifier extends Notifier<OnboardingState>` holding all fields (`goal`, `gender`, `birthday`, `currentWeightKg`, `heightCm`, `targetWeightKg`, `activityLevel`, `dietaryPreferences`); not persisted until final step
+- [x] Add all 10 onboarding routes to `lib/router.dart` under a `/onboarding` prefix using `GoRoute` stack (no `ShellRoute`)
+- [x] Build `lib/features/onboarding/screens/goal_screen.dart` — 3 option `GestureDetector` pills; tapping sets `onboardingNotifier.goal` and calls `context.go('/onboarding/gender')`
+- [x] Build `gender_screen.dart` — 3 option pills (Male / Female / Other)
+- [x] Build `birthday_screen.dart` — `showDatePicker` (platform-native); stores ISO date string to `OnboardingNotifier`
+- [x] Build `current_weight_screen.dart` — `RulerPicker` (40–200 kg, step 0.1); unit label from `settingsProvider`
+- [x] Build `height_screen.dart` — `RulerPicker` (100–250 cm); displays ft/in label when `weightUnit == 'lbs'`
+- [x] Build `target_weight_screen.dart` — `RulerPicker` with goal label ("Lose weight") above the value
+- [x] Build `activity_screen.dart` — 4 option pills (Sedentary / Lightly active / Active / Very active)
+- [x] Build `diet_screen.dart` — multi-select pills (None / Vegetarian / Vegan / Keto / Gluten-free); `Set<String>` selection
+- [x] Build `results_screen.dart` — static motivational screen; `fl_chart` `LineChart` comparing "Cal AI" vs "Traditional Diet" weight curves; "80% of users maintain weight loss 6 months later" stat; "Next" `FilledButton`
+- [x] Build `plan_screen.dart` — call `calculateTdee(onboardingState)` on init; display 4 macro target cells in a 2×2 `GridView`; each cell has a pencil `IconButton` that opens an `AlertDialog` with a `TextField` for inline editing; "Let's get started!" `FilledButton` at bottom
+- [x] Wire "Let's get started!" in `plan_screen.dart`: `INSERT INTO Profiles` via Drift → `settingsProvider.setOnboardingComplete(true)` → `context.go('/home')`
 - [ ] Manually walk through all 10 onboarding steps on simulator and confirm `Profiles` row is inserted into DB
 
 ---
