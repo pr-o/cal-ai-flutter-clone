@@ -351,20 +351,11 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ### Phase 7 — AI Food Scan (Camera + Gemini)
 
-- [ ] Add camera permission entries to `ios/Runner/Info.plist` (`NSCameraUsageDescription`) and `android/app/src/main/AndroidManifest.xml`
-- [ ] Create `lib/features/log/camera_screen.dart` — initialize `CameraController` with `ResolutionPreset.high`; fullscreen `CameraPreview`; circular shutter `FloatingActionButton` at bottom; on tap, call `controller.takePicture()`, save to temp path, `context.push('/log/scan-result', extra: photoPath)`
-- [ ] Create `lib/services/gemini_service.dart` — `Future<FoodScanResult> analyzeFood(String base64Image, {String? correctionHint})` that POSTs to Gemini 2.0 Flash endpoint; parses and returns `FoodScanResult { name, calories, proteinG, carbsG, fatG, servingSize, healthScore }`; throws typed `GeminiParseException` if response cannot be parsed
-- [ ] Create `lib/features/log/scan_result_screen.dart`:
-  - [ ] Full-bleed food photo header (~45% screen height) using `Image.file`
-  - [ ] Back `IconButton` (left) and share `IconButton` (right) overlaid on photo
-  - [ ] Timestamp + food name editable `TextField`
-  - [ ] Servings stepper (`+` / `-` `IconButton`s); scales all macros proportionally in state
-  - [ ] Calories row with flame icon (large bold, scales with servings)
-  - [ ] Protein / Carbs / Fat `Row` (scales with servings)
-  - [ ] "Health Score X/10" with a `LinearProgressIndicator` (green)
-  - [ ] "Ingredients" `ExpansionTile` (collapsed by default)
-  - [ ] "Fix Results" `OutlinedButton` — `showDialog` prompting for a correction string, re-calls `geminiService.analyzeFood` with hint, updates local state via `setState` or `StateProvider`
-  - [ ] "Done" `FilledButton` — calls `dailyNotifier.addFoodEntry(entry)` → `context.go('/home')`
+- [x] Add camera permission entries to `ios/Runner/Info.plist` (`NSCameraUsageDescription`, `NSPhotoLibraryUsageDescription`) and `android/app/src/main/AndroidManifest.xml` (`CAMERA`)
+- [x] Create `lib/features/log/camera_screen.dart` — `CameraController(ResolutionPreset.high)`; fullscreen `CameraPreview`; circular shutter button; on tap → `takePicture()` → `context.push('/log/scan-result', extra: path)`; lifecycle-safe disposal
+- [x] Create `lib/services/gemini_service.dart` — POSTs base64 image to Gemini 2.0 Flash; parses JSON `{name, calories, protein_g, carbs_g, fat_g, serving_size, health_score, ingredients}`; strips markdown fences; throws `GeminiParseException` on failure; supports `correctionHint` for re-analysis
+- [x] Create `lib/features/log/scan_result_screen.dart`: full-bleed photo header, editable name TextField, servings stepper (scales macros), calories/macros rows, health score LinearProgressIndicator, Ingredients ExpansionTile, "✦ Fix Results" dialog → re-calls Gemini, "Done" → `dailyProvider.addFoodEntry` → `/home`
+- [x] Add `/log/scan-result` route with `state.extra as String` for photo path
 - [ ] Test full scan flow on device with a food photo
 
 ---

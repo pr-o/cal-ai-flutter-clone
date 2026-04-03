@@ -47,6 +47,10 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Cal AI needs camera access to scan your food and calculate nutrition.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Cal AI needs photo library access to attach food photos.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

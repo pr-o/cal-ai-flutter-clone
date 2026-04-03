@@ -5,6 +5,7 @@ import 'features/analytics/analytics_screen.dart';
 import 'features/home/home_screen.dart';
 import 'features/log/camera_screen.dart';
 import 'features/log/exercise_screen.dart';
+import 'features/log/scan_result_screen.dart';
 import 'features/log/search_screen.dart';
 import 'features/log/water_screen.dart';
 import 'features/onboarding/screens/activity_screen.dart';
@@ -73,6 +74,12 @@ Future<GoRouter> buildRouter() async {
       GoRoute(
         path: '/log/camera',
         builder: (context, state) => const CameraScreen(),
+      ),
+      GoRoute(
+        path: '/log/scan-result',
+        builder: (context, state) => ScanResultScreen(
+          photoPath: state.extra as String,
+        ),
       ),
       GoRoute(
         path: '/log/search',
