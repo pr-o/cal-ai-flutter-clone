@@ -375,16 +375,9 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ### Phase 9 — Exercise & Water Logging
 
-- [ ] Create `lib/features/log/exercise_screen.dart`:
-  - [ ] `Autocomplete<String>` for exercise name (suggestions: Running, Walking, Cycling, Strength Training, HIIT, Swimming, Yoga)
-  - [ ] Duration `TextField` (number keyboard)
-  - [ ] Calories burned `TextField` (number keyboard) — pre-filled via `MetCalculator` in `lib/utils/exercise.dart`
-  - [ ] "Log Exercise" `FilledButton` — calls `dailyNotifier.addExerciseEntry(entry)` → `context.pop()`
-- [ ] Create `lib/features/log/water_screen.dart`:
-  - [ ] Four `ElevatedButton`s: 250 ml, 500 ml, 750 ml, 1000 ml
-  - [ ] Custom amount `TextField` (number keyboard)
-  - [ ] Today's total water + `LinearProgressIndicator` toward 2500 ml default goal
-  - [ ] "Add" `FilledButton` — calls `dailyNotifier.updateWater(additionalMl)` → `context.pop()`
+- [x] Create `lib/utils/exercise.dart` — MET values for 15 exercises; `estimateCaloriesBurned(name, durationMinutes, weightKg)` using MET formula; `kExerciseSuggestions` list
+- [x] Create `lib/features/log/exercise_screen.dart`: `Autocomplete<String>` with 15 suggestions; duration TextField auto-recalculates calories via MET; calories TextField overrideable; "Log Exercise" writes `ExerciseEntriesCompanion` via `dailyProvider.addExerciseEntry` → `context.pop()`
+- [x] Create `lib/features/log/water_screen.dart`: progress card with `LinearProgressIndicator` toward 2500 ml goal; 2×2 grid of quick-add buttons (250/500/750/1000 ml); custom amount TextField + "Add" button; all amounts call `dailyProvider.updateWater` → `context.pop()`
 
 ---
 
