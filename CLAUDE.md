@@ -271,12 +271,12 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ### Phase 1 — Database & Storage Layer
 
-- [ ] Create `lib/db/database.dart` — define all five Drift tables: `Profiles`, `DailyLogs`, `FoodEntries`, `ExerciseEntries`, `WeightLogs` with exact columns (see RN spec for column names and types)
-- [ ] Run `dart run build_runner build --delete-conflicting-outputs` to generate `database.g.dart`
-- [ ] Create `lib/db/daos/food_dao.dart`, `exercise_dao.dart`, `weight_dao.dart` — each as a `DatabaseAccessor` with typed query methods
-- [ ] Create a `databaseProvider` (`Provider<AppDatabase>`) in `lib/db/database.dart` that exposes the singleton `AppDatabase` instance via Riverpod
-- [ ] Create `lib/features/settings/notifier.dart` — `SettingsNotifier extends Notifier<SettingsState>` backed by `SharedPreferences`; exposes `theme`, `weightUnit`, all API key getters/setters, `onboardingComplete` flag
-- [ ] Create a `settingsProvider` that reads from `SharedPreferences` in `build()` and exposes `SettingsNotifier`
+- [x] Create `lib/db/database.dart` — define all five Drift tables: `Profiles`, `DailyLogs`, `FoodEntries`, `ExerciseEntries`, `WeightLogs` with exact columns (see RN spec for column names and types)
+- [x] Run `dart run build_runner build --delete-conflicting-outputs` to generate `database.g.dart`
+- [x] Create `lib/db/daos/food_dao.dart`, `exercise_dao.dart`, `weight_dao.dart` — each as a `DatabaseAccessor` with typed query methods
+- [x] Create a `databaseProvider` (`Provider<AppDatabase>`) in `lib/db/database.dart` that exposes the singleton `AppDatabase` instance via Riverpod
+- [x] Create `lib/features/settings/notifier.dart` — `SettingsNotifier extends Notifier<SettingsState>` backed by `SharedPreferences`; exposes `theme`, `weightUnit`, all API key getters/setters, `onboardingComplete` flag
+- [x] Create a `settingsProvider` that reads from `SharedPreferences` in `build()` and exposes `SettingsNotifier`
 - [ ] Verify SharedPreferences reads/writes with a quick manual scratch test in `main.dart`, then revert
 
 ---
