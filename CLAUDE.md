@@ -328,9 +328,9 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ### Phase 5 — Riverpod Providers & Daily Data Layer
 
-- [ ] Create `lib/features/home/notifier.dart` — `DailyNotifier(String date) extends AsyncNotifier<DailyState>`; `build()` queries `DailyLogs` (upsert if missing), `FoodEntries`, `ExerciseEntries` for `date` via DAOs; derive and expose `caloriesConsumed`, `caloriesFromExercise`, `caloriesRemaining`, `macrosConsumed`, `entries`, `waterMl`; expose `addFoodEntry`, `addExerciseEntry`, `updateWater`, `deleteEntry` mutators that write to Drift then call `ref.invalidateSelf()`
-- [ ] Create `profileProvider` — `FutureProvider<ProfileData?>` that queries `SELECT * FROM Profiles LIMIT 1` on first access
-- [ ] Call `ref.read(profileProvider)` and `ref.read(dailyProvider(today))` eagerly in the root `ConsumerWidget` after DB init to pre-warm the cache
+- [x] Create `lib/features/home/notifier.dart` — `DailyNotifier extends AsyncNotifier<DailyState>`; watches `selectedDateProvider`; `build()` upserts `DailyLogs`, loads `FoodEntries`+`ExerciseEntries`, derives calorie/macro totals; exposes `addFoodEntry`, `deleteFoodEntry`, `addExerciseEntry`, `deleteExerciseEntry`, `updateWater` mutators; `selectedDateProvider` backed by `SelectedDateNotifier` (Riverpod 3.0 — `StateProvider` removed)
+- [x] Create `profileProvider` — `FutureProvider<Profile?>` querying `SELECT * FROM Profiles LIMIT 1`
+- [x] Pre-warm `profileProvider` and `dailyProvider` in `CalAiApp.initState()`
 
 ---
 
