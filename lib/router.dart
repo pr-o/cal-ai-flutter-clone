@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'features/analytics/analytics_screen.dart';
 import 'features/home/home_screen.dart';
 import 'features/onboarding/screens/activity_screen.dart';
 import 'features/onboarding/screens/birthday_screen.dart';
@@ -12,6 +13,8 @@ import 'features/onboarding/screens/height_screen.dart';
 import 'features/onboarding/screens/plan_screen.dart';
 import 'features/onboarding/screens/results_screen.dart';
 import 'features/onboarding/screens/target_weight_screen.dart';
+import 'features/settings/settings_screen.dart';
+import 'widgets/scaffold_with_nav_bar.dart';
 
 Future<GoRouter> buildRouter() async {
   final prefs = await SharedPreferences.getInstance();
@@ -19,10 +22,9 @@ Future<GoRouter> buildRouter() async {
       prefs.getBool('onboarding_complete') ?? false;
 
   return GoRouter(
-    initialLocation:
-        onboardingComplete ? '/home' : '/onboarding/goal',
+    initialLocation: onboardingComplete ? '/home' : '/onboarding/goal',
     routes: [
-      // ── Onboarding stack ────────────────────────────────────────────────────
+      // ── Onboarding stack ──────────────────────────────────────────────────
       GoRoute(
         path: '/onboarding/goal',
         builder: (context, state) => const GoalScreen(),
@@ -63,10 +65,24 @@ Future<GoRouter> buildRouter() async {
         path: '/onboarding/plan',
         builder: (context, state) => const PlanScreen(),
       ),
-      // ── App shell ────────────────────────────────────────────────────────────
-      GoRoute(
-        path: '/home',
-        builder: (context, state) => const HomeScreen(),
+      // ── App shell (tabs) ──────────────────────────────────────────────────
+      ShellRoute(
+        builder: (context, state, child) =>
+            ScaffoldWithNavBar(child: child),
+        routes: [
+          GoRoute(
+            path: '/home',
+            builder: (context, state) => const HomeScreen(),
+          ),
+          GoRoute(
+            path: '/analytics',
+            builder: (context, state) => const AnalyticsScreen(),
+          ),
+          GoRoute(
+            path: '/settings',
+            builder: (context, state) => const SettingsScreen(),
+          ),
+        ],
       ),
     ],
   );

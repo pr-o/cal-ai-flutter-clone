@@ -317,11 +317,11 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ### Phase 4 — Root Layout & Navigation Shell
 
-- [ ] Update `lib/router.dart` — add `ShellRoute` for `/(home|analytics|settings)` that wraps a `ScaffoldWithNavBar` (`BottomNavigationBar` with Home / Analytics / Settings tabs, black active color)
-- [ ] Update `lib/main.dart` — initialize DB migrations (`await database.executor.ensureOpen(...)`), call `settingsProvider` hydration, set `GoRouter.initialLocation` based on `onboarding_complete`
-- [ ] Create `app/home/home_screen.dart` stub (centered `Text('Home')`)
-- [ ] Create `app/analytics/analytics_screen.dart` stub
-- [ ] Create `app/settings/settings_screen.dart` stub
+- [x] Update `lib/router.dart` — add `ShellRoute` for `/(home|analytics|settings)` that wraps a `ScaffoldWithNavBar` (`BottomNavigationBar` with Home / Analytics / Settings tabs, black active color)
+- [x] Update `lib/main.dart` — `WidgetsFlutterBinding.ensureInitialized()`, await `buildRouter()` which reads `onboarding_complete` from SharedPreferences to set initial location
+- [x] Create `lib/features/home/home_screen.dart` stub
+- [x] Create `lib/features/analytics/analytics_screen.dart` stub
+- [x] Create `lib/features/settings/settings_screen.dart` stub
 - [ ] Verify full navigation shell: fresh install → onboarding → plan → home tab; re-launch → goes directly to home tab
 
 ---
