@@ -257,14 +257,14 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ### Phase 0 — Project Scaffolding
 
-- [ ] Run `flutter create cal_ai_flutter_clone --org com.example --platforms ios,android` in the project root
-- [ ] Add all dependencies to `pubspec.yaml`: `go_router`, `flutter_riverpod`, `riverpod_annotation`, `drift`, `drift_flutter`, `shared_preferences`, `camera`, `http`, `fl_chart`, `flutter_local_notifications`, `flutter_svg`, `cached_network_image`, `google_fonts`, `lottie`
-- [ ] Add dev dependencies: `build_runner`, `drift_dev`, `riverpod_generator`, `mocktail`, `flutter_test`
-- [ ] Run `flutter pub get` and confirm zero resolution errors
-- [ ] Create `lib/theme/app_theme.dart` with `ThemeData` for light and dark modes using the Cal AI color tokens above
-- [ ] Create minimal `lib/main.dart` with `ProviderScope`, `MaterialApp.router`, and `themeMode` wired to a placeholder `ValueNotifier`
-- [ ] Create `lib/router.dart` with a single `/` route rendering a placeholder `Scaffold`
-- [ ] Verify `flutter analyze` passes with zero errors on the empty scaffold
+- [x] Run `flutter create cal_ai_flutter_clone --org com.example --platforms ios,android` in the project root
+- [x] Add all dependencies to `pubspec.yaml`: `go_router`, `flutter_riverpod`, `riverpod_annotation`, `drift`, `drift_flutter`, `shared_preferences`, `camera`, `http`, `fl_chart`, `flutter_local_notifications`, `flutter_svg`, `cached_network_image`, `google_fonts`, `lottie`
+- [x] Add dev dependencies: `build_runner`, `drift_dev`, `riverpod_generator`, `mocktail`, `flutter_test`
+- [x] Run `flutter pub get` and confirm zero resolution errors
+- [x] Create `lib/theme/app_theme.dart` with `ThemeData` for light and dark modes using the Cal AI color tokens above
+- [x] Create minimal `lib/main.dart` with `ProviderScope`, `MaterialApp.router`, and `themeMode` wired to a placeholder `ValueNotifier`
+- [x] Create `lib/router.dart` with a single `/` route rendering a placeholder `Scaffold`
+- [x] Verify `flutter analyze` passes with zero errors on the empty scaffold
 - [ ] Verify `flutter run` boots without errors on a connected device/emulator
 
 ---
