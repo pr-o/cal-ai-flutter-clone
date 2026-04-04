@@ -53,9 +53,7 @@ class _WaterScreenState extends ConsumerState<WaterScreen> {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Theme.of(context)
-                    .colorScheme
-                    .surfaceContainerHighest,
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
@@ -63,8 +61,11 @@ class _WaterScreenState extends ConsumerState<WaterScreen> {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.water_drop_rounded,
-                          color: Color(0xFF4A9EFF), size: 24),
+                      const Icon(
+                        Icons.water_drop_rounded,
+                        color: Color(0xFF4A9EFF),
+                        size: 24,
+                      ),
                       const SizedBox(width: 8),
                       Text(
                         'Today\'s intake',
@@ -73,9 +74,7 @@ class _WaterScreenState extends ConsumerState<WaterScreen> {
                       const Spacer(),
                       Text(
                         '${_fmtMl(currentMl)} / ${_fmtMl(_goalMl)}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
+                        style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(fontWeight: FontWeight.w700),
                       ),
                     ],
@@ -86,21 +85,22 @@ class _WaterScreenState extends ConsumerState<WaterScreen> {
                     child: LinearProgressIndicator(
                       value: progress,
                       minHeight: 8,
-                      backgroundColor: const Color(0xFF4A9EFF)
-                          .withValues(alpha: 0.15),
+                      backgroundColor: const Color(
+                        0xFF4A9EFF,
+                      ).withValues(alpha: 0.15),
                       valueColor: const AlwaysStoppedAnimation<Color>(
-                          Color(0xFF4A9EFF)),
+                        Color(0xFF4A9EFF),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     '${_goalMl - currentMl > 0 ? _fmtMl(_goalMl - currentMl) : '0 ml'} remaining',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withValues(alpha: 0.5),
-                        ),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.5),
+                    ),
                   ),
                 ],
               ),
@@ -108,10 +108,9 @@ class _WaterScreenState extends ConsumerState<WaterScreen> {
             const SizedBox(height: 28),
             Text(
               'Quick add',
-              style: Theme.of(context)
-                  .textTheme
-                  .labelLarge
-                  ?.copyWith(fontWeight: FontWeight.w600),
+              style: Theme.of(
+                context,
+              ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 12),
             // Quick amount buttons
@@ -125,8 +124,11 @@ class _WaterScreenState extends ConsumerState<WaterScreen> {
               children: _quickAmounts.map((ml) {
                 return ElevatedButton.icon(
                   onPressed: _saving ? null : () => _add(ml),
-                  icon: const Icon(Icons.water_drop_rounded,
-                      size: 16, color: Color(0xFF4A9EFF)),
+                  icon: const Icon(
+                    Icons.water_drop_rounded,
+                    size: 16,
+                    color: Color(0xFF4A9EFF),
+                  ),
                   label: Text(
                     _fmtMl(ml),
                     style: const TextStyle(fontWeight: FontWeight.w600),
@@ -142,10 +144,9 @@ class _WaterScreenState extends ConsumerState<WaterScreen> {
             const SizedBox(height: 28),
             Text(
               'Custom amount',
-              style: Theme.of(context)
-                  .textTheme
-                  .labelLarge
-                  ?.copyWith(fontWeight: FontWeight.w600),
+              style: Theme.of(
+                context,
+              ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 8),
             Row(
@@ -154,9 +155,7 @@ class _WaterScreenState extends ConsumerState<WaterScreen> {
                   child: TextField(
                     controller: _customCtrl,
                     keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: InputDecoration(
                       hintText: '350',
                       suffixText: 'ml',
@@ -164,7 +163,9 @@ class _WaterScreenState extends ConsumerState<WaterScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 14),
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
                     ),
                   ),
                 ),
@@ -173,8 +174,7 @@ class _WaterScreenState extends ConsumerState<WaterScreen> {
                   onPressed: _saving
                       ? null
                       : () {
-                          final ml =
-                              int.tryParse(_customCtrl.text) ?? 0;
+                          final ml = int.tryParse(_customCtrl.text) ?? 0;
                           _add(ml);
                         },
                   style: FilledButton.styleFrom(

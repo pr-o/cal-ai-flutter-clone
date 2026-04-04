@@ -20,10 +20,7 @@ void main() {
     });
 
     test('copyWith preserves existing theme and weightUnit', () {
-      const state = SettingsState(
-        themeMode: ThemeMode.dark,
-        weightUnit: 'lbs',
-      );
+      const state = SettingsState(themeMode: ThemeMode.dark, weightUnit: 'lbs');
       final updated = state.copyWith(reminderDinner: true);
       expect(updated.themeMode, ThemeMode.dark);
       expect(updated.weightUnit, 'lbs');

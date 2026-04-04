@@ -16,8 +16,10 @@ class AnalyticsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Analytics',
-            style: TextStyle(fontWeight: FontWeight.w800)),
+        title: const Text(
+          'Analytics',
+          style: TextStyle(fontWeight: FontWeight.w800),
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showLogWeightSheet(context, ref),
@@ -100,20 +102,21 @@ class AnalyticsScreen extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text("Log today's weight",
-                style: Theme.of(ctx)
-                    .textTheme
-                    .titleLarge
-                    ?.copyWith(fontWeight: FontWeight.w700)),
+            Text(
+              "Log today's weight",
+              style: Theme.of(
+                ctx,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+            ),
             const SizedBox(height: 16),
             TextField(
               controller: ctrl,
               autofocus: true,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               inputFormatters: [
-                FilteringTextInputFormatter.allow(
-                    RegExp(r'^\d+\.?\d{0,1}')),
+                FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
               ],
               decoration: InputDecoration(
                 hintText: '70.0',
@@ -137,7 +140,10 @@ class AnalyticsScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text('Save', style: TextStyle(fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Save',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
             ),
             const SizedBox(height: 24),
           ],
@@ -168,8 +174,10 @@ class _WeightChart extends StatelessWidget {
     }).toList();
 
     final weights = spots.map((s) => s.y).toList();
-    final minY = (weights.reduce((a, b) => a < b ? a : b) - 2)
-        .clamp(0.0, double.infinity);
+    final minY = (weights.reduce((a, b) => a < b ? a : b) - 2).clamp(
+      0.0,
+      double.infinity,
+    );
     final maxY = weights.reduce((a, b) => a > b ? a : b) + 2;
 
     return Container(
@@ -194,12 +202,15 @@ class _WeightChart extends StatelessWidget {
                 ),
               ),
             ),
-            bottomTitles:
-                const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            topTitles:
-                const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            rightTitles:
-                const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            bottomTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            topTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            rightTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
           ),
           minY: minY,
           maxY: maxY,
@@ -209,12 +220,12 @@ class _WeightChart extends StatelessWidget {
               isCurved: true,
               color: Theme.of(context).colorScheme.onSurface,
               barWidth: 2.5,
-              dotData: FlDotData(
-                show: spots.length < 10,
-              ),
+              dotData: FlDotData(show: spots.length < 10),
               belowBarData: BarAreaData(
                 show: true,
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.06),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.06),
               ),
             ),
             if (targetWeightKg != null)
@@ -283,11 +294,14 @@ class _MacroBarChart extends StatelessWidget {
                     ),
                   ),
                   leftTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false)),
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
                   topTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false)),
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
                   rightTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false)),
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
                 ),
                 barGroups: days.asMap().entries.map((e) {
                   final i = e.key;
@@ -301,13 +315,20 @@ class _MacroBarChart extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                         rodStackItems: [
                           BarChartRodStackItem(
-                              0, d.proteinG, const Color(0xFFFF6B35)),
-                          BarChartRodStackItem(d.proteinG,
-                              d.proteinG + d.carbsG, const Color(0xFFFFB800)),
+                            0,
+                            d.proteinG,
+                            const Color(0xFFFF6B35),
+                          ),
                           BarChartRodStackItem(
-                              d.proteinG + d.carbsG,
-                              d.proteinG + d.carbsG + d.fatG,
-                              const Color(0xFF4A9EFF)),
+                            d.proteinG,
+                            d.proteinG + d.carbsG,
+                            const Color(0xFFFFB800),
+                          ),
+                          BarChartRodStackItem(
+                            d.proteinG + d.carbsG,
+                            d.proteinG + d.carbsG + d.fatG,
+                            const Color(0xFF4A9EFF),
+                          ),
                         ],
                       ),
                     ],
@@ -342,12 +363,11 @@ class _SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-        title,
-        style: Theme.of(context)
-            .textTheme
-            .titleMedium
-            ?.copyWith(fontWeight: FontWeight.w700),
-      );
+    title,
+    style: Theme.of(
+      context,
+    ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+  );
 }
 
 class _StatCard extends StatelessWidget {
@@ -375,18 +395,21 @@ class _StatCard extends StatelessWidget {
         children: [
           Text(icon, style: const TextStyle(fontSize: 24)),
           const SizedBox(height: 8),
-          Text(value,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(fontWeight: FontWeight.w800, color: color)),
-          Text(label,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.5),
-                  )),
+          Text(
+            value,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w800,
+              color: color,
+            ),
+          ),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.5),
+            ),
+          ),
         ],
       ),
     );
@@ -435,18 +458,19 @@ class _BmiCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             bmi != null ? bmi.toStringAsFixed(1) : '—',
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(fontWeight: FontWeight.w800, color: color),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w800,
+              color: color,
+            ),
           ),
-          Text(label,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.5),
-                  )),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.5),
+            ),
+          ),
         ],
       ),
     );
@@ -470,11 +494,8 @@ class _EmptyChart extends StatelessWidget {
         message,
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context)
-                  .colorScheme
-                  .onSurface
-                  .withValues(alpha: 0.4),
-            ),
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+        ),
       ),
     );
   }
@@ -491,10 +512,10 @@ class _LegendDot extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-            width: 8,
-            height: 8,
-            decoration:
-                BoxDecoration(color: color, shape: BoxShape.circle)),
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        ),
         const SizedBox(width: 4),
         Text(label, style: Theme.of(context).textTheme.labelSmall),
       ],

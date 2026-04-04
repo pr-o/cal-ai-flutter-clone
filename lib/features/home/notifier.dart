@@ -20,8 +20,9 @@ class SelectedDateNotifier extends Notifier<String> {
   void select(String date) => state = date;
 }
 
-final selectedDateProvider =
-    NotifierProvider<SelectedDateNotifier, String>(SelectedDateNotifier.new);
+final selectedDateProvider = NotifierProvider<SelectedDateNotifier, String>(
+  SelectedDateNotifier.new,
+);
 
 // ─── State ────────────────────────────────────────────────────────────────────
 
@@ -30,11 +31,7 @@ class MacroTotals {
   final double carbsG;
   final double fatG;
 
-  const MacroTotals({
-    this.proteinG = 0,
-    this.carbsG = 0,
-    this.fatG = 0,
-  });
+  const MacroTotals({this.proteinG = 0, this.carbsG = 0, this.fatG = 0});
 }
 
 class DailyState {
@@ -79,9 +76,9 @@ class DailyNotifier extends AsyncNotifier<DailyState> {
   Future<DailyState> _loadForDate(String date) async {
     final db = ref.read(databaseProvider);
 
-    final existing = await (db.select(db.dailyLogs)
-          ..where((t) => t.date.equals(date)))
-        .getSingleOrNull();
+    final existing = await (db.select(
+      db.dailyLogs,
+    )..where((t) => t.date.equals(date))).getSingleOrNull();
 
     final int logId;
     final int waterMl;
@@ -157,10 +154,12 @@ class DailyNotifier extends AsyncNotifier<DailyState> {
     required List<ExerciseEntry> exercise,
     required int waterMl,
   }) {
-    final caloriesConsumed =
-        food.fold(0.0, (sum, e) => sum + e.calories * e.servings).round();
-    final caloriesFromExercise =
-        exercise.fold(0.0, (sum, e) => sum + e.caloriesBurned).round();
+    final caloriesConsumed = food
+        .fold(0.0, (sum, e) => sum + e.calories * e.servings)
+        .round();
+    final caloriesFromExercise = exercise
+        .fold(0.0, (sum, e) => sum + e.caloriesBurned)
+        .round();
 
     final macros = MacroTotals(
       proteinG: food.fold(0.0, (sum, e) => sum + e.proteinG * e.servings),
@@ -183,8 +182,9 @@ class DailyNotifier extends AsyncNotifier<DailyState> {
 
 // ─── Providers ────────────────────────────────────────────────────────────────
 
-final dailyProvider =
-    AsyncNotifierProvider<DailyNotifier, DailyState>(DailyNotifier.new);
+final dailyProvider = AsyncNotifierProvider<DailyNotifier, DailyState>(
+  DailyNotifier.new,
+);
 
 final profileProvider = FutureProvider<Profile?>((ref) async {
   final db = ref.read(databaseProvider);

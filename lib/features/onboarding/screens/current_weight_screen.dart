@@ -34,19 +34,18 @@ class CurrentWeightScreen extends ConsumerWidget {
             const SizedBox(height: 32),
             Text(
               'What is your current weight?',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
             ),
             const SizedBox(height: 8),
             Text(
               'We need this to calculate your daily calorie target.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.5),
-                  ),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
             ),
             const Spacer(),
             RulerPicker(
@@ -57,9 +56,7 @@ class CurrentWeightScreen extends ConsumerWidget {
               unit: unit,
               onChanged: (v) {
                 final kg = isLbs ? lbsToKg(v) : v;
-                ref
-                    .read(onboardingProvider.notifier)
-                    .setCurrentWeight(kg);
+                ref.read(onboardingProvider.notifier).setCurrentWeight(kg);
               },
             ),
             const Spacer(),

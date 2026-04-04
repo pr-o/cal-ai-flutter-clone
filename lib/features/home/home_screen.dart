@@ -31,7 +31,8 @@ class HomeScreen extends ConsumerWidget {
         ),
         actions: [
           _StreakBadge(
-            dates: dailyAsync.value?.foodEntries
+            dates:
+                dailyAsync.value?.foodEntries
                     .map((e) => e.loggedAt.substring(0, 10))
                     .toList() ??
                 [],
@@ -50,7 +51,9 @@ class HomeScreen extends ConsumerWidget {
           final goalFat = profile?.dailyFatG ?? 65;
 
           final remaining =
-              goalCalories - daily.caloriesConsumed + daily.caloriesFromExercise;
+              goalCalories -
+              daily.caloriesConsumed +
+              daily.caloriesFromExercise;
 
           return RefreshIndicator(
             onRefresh: () async => ref.invalidate(dailyProvider),
@@ -59,13 +62,14 @@ class HomeScreen extends ConsumerWidget {
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                     child: WeekStrip(
                       selectedDate: selectedDate,
                       loggedDates: loggedDates,
-                      onDaySelected: (date) => ref
-                          .read(selectedDateProvider.notifier)
-                          .select(date),
+                      onDaySelected: (date) =>
+                          ref.read(selectedDateProvider.notifier).select(date),
                     ),
                   ),
                 ),
@@ -88,9 +92,9 @@ class HomeScreen extends ConsumerWidget {
                         Expanded(
                           child: MacroPill(
                             type: MacroType.protein,
-                            remaining: (goalProtein -
-                                    daily.macrosConsumed.proteinG)
-                                .clamp(0, goalProtein.toDouble()),
+                            remaining:
+                                (goalProtein - daily.macrosConsumed.proteinG)
+                                    .clamp(0, goalProtein.toDouble()),
                             goal: goalProtein.toDouble(),
                           ),
                         ),
@@ -98,9 +102,8 @@ class HomeScreen extends ConsumerWidget {
                         Expanded(
                           child: MacroPill(
                             type: MacroType.carbs,
-                            remaining:
-                                (goalCarbs - daily.macrosConsumed.carbsG)
-                                    .clamp(0, goalCarbs.toDouble()),
+                            remaining: (goalCarbs - daily.macrosConsumed.carbsG)
+                                .clamp(0, goalCarbs.toDouble()),
                             goal: goalCarbs.toDouble(),
                           ),
                         ),
@@ -108,9 +111,8 @@ class HomeScreen extends ConsumerWidget {
                         Expanded(
                           child: MacroPill(
                             type: MacroType.fat,
-                            remaining:
-                                (goalFat - daily.macrosConsumed.fatG)
-                                    .clamp(0, goalFat.toDouble()),
+                            remaining: (goalFat - daily.macrosConsumed.fatG)
+                                .clamp(0, goalFat.toDouble()),
                             goal: goalFat.toDouble(),
                           ),
                         ),
@@ -120,14 +122,12 @@ class HomeScreen extends ConsumerWidget {
                 ),
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding:
-                        const EdgeInsets.fromLTRB(16, 24, 16, 8),
+                    padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
                     child: Text(
                       'Recently logged',
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(fontWeight: FontWeight.w700),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
@@ -190,7 +190,9 @@ class HomeScreen extends ConsumerWidget {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Theme.of(ctx).colorScheme.onSurface.withValues(alpha: 0.2),
+                color: Theme.of(
+                  ctx,
+                ).colorScheme.onSurface.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -278,19 +280,17 @@ class _CalorieCard extends StatelessWidget {
               children: [
                 Text(
                   '$remaining',
-                  style: Theme.of(context)
-                      .textTheme
-                      .displaySmall
-                      ?.copyWith(fontWeight: FontWeight.w800),
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 Text(
                   'Calories left',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.5),
-                      ),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.5),
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Row(
@@ -311,11 +311,7 @@ class _CalorieCard extends StatelessWidget {
               ],
             ),
           ),
-          CalorieRing(
-            consumed: consumed,
-            goal: goal,
-            size: 140,
-          ),
+          CalorieRing(consumed: consumed, goal: goal, size: 140),
         ],
       ),
     );
@@ -330,8 +326,8 @@ class _StatChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = color ??
-        Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5);
+    final c =
+        color ?? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -394,30 +390,27 @@ class _EmptyState extends StatelessWidget {
           Icon(
             Icons.restaurant_menu_outlined,
             size: 72,
-            color: Theme.of(context)
-                .colorScheme
-                .onSurface
-                .withValues(alpha: 0.15),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.15),
           ),
           const SizedBox(height: 16),
           Text(
             'No food logged yet',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.4),
-                ),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.4),
+            ),
           ),
           const SizedBox(height: 6),
           Text(
             'Tap + to log your first meal',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.3),
-                ),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.3),
+            ),
           ),
         ],
       ),

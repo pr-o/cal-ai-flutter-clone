@@ -18,8 +18,7 @@ class TargetWeightScreen extends ConsumerWidget {
     final unit = ref.watch(settingsProvider).weightUnit;
     final isLbs = unit == 'lbs';
 
-    final displayValue =
-        isLbs ? kgToLbs(ob.targetWeightKg) : ob.targetWeightKg;
+    final displayValue = isLbs ? kgToLbs(ob.targetWeightKg) : ob.targetWeightKg;
     final min = isLbs ? 88.0 : 40.0;
     final max = isLbs ? 440.0 : 200.0;
     final step = isLbs ? 0.5 : 0.1;
@@ -41,19 +40,18 @@ class TargetWeightScreen extends ConsumerWidget {
             const SizedBox(height: 32),
             Text(
               'What is your target weight?',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
             ),
             const SizedBox(height: 8),
             Text(
               'Set the weight you want to reach.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.5),
-                  ),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
             ),
             const Spacer(),
             RulerPicker(
@@ -65,9 +63,7 @@ class TargetWeightScreen extends ConsumerWidget {
               label: goalLabel,
               onChanged: (v) {
                 final kg = isLbs ? lbsToKg(v) : v;
-                ref
-                    .read(onboardingProvider.notifier)
-                    .setTargetWeight(kg);
+                ref.read(onboardingProvider.notifier).setTargetWeight(kg);
               },
             ),
             const Spacer(),

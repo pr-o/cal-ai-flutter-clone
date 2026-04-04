@@ -35,7 +35,8 @@ class _CalAiAppState extends ConsumerState<CalAiApp> {
     final themeMode = ref.watch(settingsProvider.select((s) => s.themeMode));
 
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
-    final isDark = themeMode == ThemeMode.dark ||
+    final isDark =
+        themeMode == ThemeMode.dark ||
         (themeMode == ThemeMode.system &&
             platformBrightness == Brightness.dark);
 

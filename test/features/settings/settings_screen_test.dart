@@ -13,10 +13,7 @@ Widget _wrap(Widget child) {
   final router = GoRouter(
     initialLocation: '/settings',
     routes: [
-      GoRoute(
-        path: '/settings',
-        builder: (_, __) => child,
-      ),
+      GoRoute(path: '/settings', builder: (_, __) => child),
       GoRoute(
         path: '/onboarding/goal',
         builder: (_, __) => const Scaffold(body: Text('onboarding')),
@@ -24,21 +21,21 @@ Widget _wrap(Widget child) {
     ],
   );
   return ProviderScope(
-    overrides: [
-      profileProvider.overrideWith((ref) async => null),
-    ],
+    overrides: [profileProvider.overrideWith((ref) async => null)],
     child: MaterialApp.router(routerConfig: router),
   );
 }
 
 void main() {
   setUp(() {
-    FlutterSecureStoragePlatform.instance =
-        TestFlutterSecureStoragePlatform({});
+    FlutterSecureStoragePlatform.instance = TestFlutterSecureStoragePlatform(
+      {},
+    );
   });
 
-  testWidgets('shows theme SegmentedButton with System selected by default',
-      (tester) async {
+  testWidgets('shows theme SegmentedButton with System selected by default', (
+    tester,
+  ) async {
     await tester.pumpWidget(_wrap(const SettingsScreen()));
     await tester.pump();
 

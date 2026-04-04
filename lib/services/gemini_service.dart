@@ -72,18 +72,12 @@ All numbers should be per serving shown in the image. Return only the JSON with 
           'parts': [
             {'text': prompt},
             {
-              'inline_data': {
-                'mime_type': 'image/jpeg',
-                'data': base64Image,
-              },
+              'inline_data': {'mime_type': 'image/jpeg', 'data': base64Image},
             },
           ],
         },
       ],
-      'generationConfig': {
-        'temperature': 0.1,
-        'maxOutputTokens': 512,
-      },
+      'generationConfig': {'temperature': 0.1, 'maxOutputTokens': 512},
     });
 
     final response = await http.post(
@@ -94,7 +88,8 @@ All numbers should be per serving shown in the image. Return only the JSON with 
 
     if (response.statusCode != 200) {
       throw GeminiParseException(
-          'API error ${response.statusCode}: ${response.body}');
+        'API error ${response.statusCode}: ${response.body}',
+      );
     }
 
     return _parse(response.body);
@@ -124,11 +119,9 @@ All numbers should be per serving shown in the image. Return only the JSON with 
         carbsG: _toDouble(data['carbs_g']),
         fatG: _toDouble(data['fat_g']),
         servingSize: data['serving_size'] as String? ?? '1 serving',
-        healthScore:
-            (data['health_score'] as num?)?.toInt().clamp(1, 10) ?? 5,
-        ingredients: (data['ingredients'] as List?)
-                ?.map((e) => e.toString())
-                .toList() ??
+        healthScore: (data['health_score'] as num?)?.toInt().clamp(1, 10) ?? 5,
+        ingredients:
+            (data['ingredients'] as List?)?.map((e) => e.toString()).toList() ??
             [],
       );
     } catch (e) {

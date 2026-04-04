@@ -29,8 +29,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => _focus.requestFocus());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _focus.requestFocus());
     _ctrl.addListener(_onTextChanged);
   }
 
@@ -56,14 +55,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   Future<void> _search(String q) async {
-    final apiKey =
-        await ref.read(settingsProvider.notifier).getUsdaApiKey();
+    final apiKey = await ref.read(settingsProvider.notifier).getUsdaApiKey();
     if (apiKey == null || apiKey.isEmpty) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
-                'USDA API key not set. Add it in Settings to search foods.'),
+              'USDA API key not set. Add it in Settings to search foods.',
+            ),
           ),
         );
       }
@@ -72,14 +71,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
     setState(() => _loading = true);
     try {
-      final results =
-          await UsdaService(apiKey: apiKey).searchFoods(q);
+      final results = await UsdaService(apiKey: apiKey).searchFoods(q);
       if (mounted) setState(() => _results = results);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Search failed: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Search failed: $e')));
       }
     } finally {
       if (mounted) setState(() => _loading = false);
@@ -156,20 +154,18 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             Icon(
               Icons.search_rounded,
               size: 64,
-              color: Theme.of(context)
-                  .colorScheme
-                  .onSurface
-                  .withValues(alpha: 0.15),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.15),
             ),
             const SizedBox(height: 12),
             Text(
               'Search for a food',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.4),
-                  ),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.4),
+              ),
             ),
           ],
         ),
@@ -185,11 +181,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         child: Text(
           'No results for "$_query"',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withValues(alpha: 0.4),
-              ),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.4),
+          ),
         ),
       );
     }
@@ -206,18 +201,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: Theme.of(context)
-                  .colorScheme
-                  .surfaceContainerHighest,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(
               Icons.restaurant_outlined,
               size: 24,
-              color: Theme.of(context)
-                  .colorScheme
-                  .onSurface
-                  .withValues(alpha: 0.3),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.3),
             ),
           ),
           title: Text(
@@ -286,29 +278,26 @@ class _ConfirmSheetState extends State<_ConfirmSheet> {
             ),
             Text(
               r.name,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(fontWeight: FontWeight.w700),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
             ),
             if (r.brandOwner.isNotEmpty) ...[
               const SizedBox(height: 2),
               Text(
                 r.brandOwner,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.4),
-                    ),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.4),
+                ),
               ),
             ],
             const SizedBox(height: 16),
             // Servings stepper
             Row(
               children: [
-                Text('Servings',
-                    style: Theme.of(context).textTheme.bodyMedium),
+                Text('Servings', style: Theme.of(context).textTheme.bodyMedium),
                 const Spacer(),
                 IconButton(
                   icon: const Icon(Icons.remove_circle_outline),
@@ -320,10 +309,9 @@ class _ConfirmSheetState extends State<_ConfirmSheet> {
                   _servings == _servings.truncate()
                       ? '${_servings.toInt()}'
                       : '$_servings',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(fontWeight: FontWeight.w600),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.add_circle_outline),
@@ -334,36 +322,39 @@ class _ConfirmSheetState extends State<_ConfirmSheet> {
             Text(
               r.servingSize,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.4),
-                  ),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.4),
+              ),
             ),
             const Divider(height: 24),
             // Macro breakdown
             _MacroRow(
-                icon: Icons.local_fire_department_rounded,
-                color: const Color(0xFFFF5500),
-                label: 'Calories',
-                value: '$calories kcal'),
+              icon: Icons.local_fire_department_rounded,
+              color: const Color(0xFFFF5500),
+              label: 'Calories',
+              value: '$calories kcal',
+            ),
             const SizedBox(height: 8),
             Row(
               children: [
                 _MacroBadge(
-                    label: 'Protein',
-                    value: '${protein.toStringAsFixed(1)}g',
-                    color: const Color(0xFFFF6B35)),
+                  label: 'Protein',
+                  value: '${protein.toStringAsFixed(1)}g',
+                  color: const Color(0xFFFF6B35),
+                ),
                 const SizedBox(width: 8),
                 _MacroBadge(
-                    label: 'Carbs',
-                    value: '${carbs.toStringAsFixed(1)}g',
-                    color: const Color(0xFFFFB800)),
+                  label: 'Carbs',
+                  value: '${carbs.toStringAsFixed(1)}g',
+                  color: const Color(0xFFFFB800),
+                ),
                 const SizedBox(width: 8),
                 _MacroBadge(
-                    label: 'Fat',
-                    value: '${fat.toStringAsFixed(1)}g',
-                    color: const Color(0xFF4A9EFF)),
+                  label: 'Fat',
+                  value: '${fat.toStringAsFixed(1)}g',
+                  color: const Color(0xFF4A9EFF),
+                ),
               ],
             ),
             const SizedBox(height: 24),
@@ -375,8 +366,10 @@ class _ConfirmSheetState extends State<_ConfirmSheet> {
                   borderRadius: BorderRadius.circular(14),
                 ),
               ),
-              child: const Text('Add to log',
-                  style: TextStyle(fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Add to log',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
             ),
           ],
         ),
@@ -405,19 +398,23 @@ class _MacroRow extends StatelessWidget {
         const SizedBox(width: 8),
         Text(label, style: Theme.of(context).textTheme.bodyMedium),
         const Spacer(),
-        Text(value,
-            style: Theme.of(context)
-                .textTheme
-                .titleMedium
-                ?.copyWith(fontWeight: FontWeight.w700)),
+        Text(
+          value,
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+        ),
       ],
     );
   }
 }
 
 class _MacroBadge extends StatelessWidget {
-  const _MacroBadge(
-      {required this.label, required this.value, required this.color});
+  const _MacroBadge({
+    required this.label,
+    required this.value,
+    required this.color,
+  });
   final String label;
   final String value;
   final Color color;
@@ -426,26 +423,28 @@ class _MacroBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
           color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
           children: [
-            Text(value,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: color,
-                    )),
-            Text(label,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.5),
-                    )),
+            Text(
+              value,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: color,
+              ),
+            ),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
+            ),
           ],
         ),
       ),

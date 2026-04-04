@@ -61,9 +61,7 @@ class AnalyticsNotifier extends AsyncNotifier<AnalyticsState> {
         db.dailyLogs,
         db.dailyLogs.id.equalsExp(db.foodEntries.dailyLogId),
       ),
-    ])
-          ..where(db.dailyLogs.date.isBiggerOrEqualValue(cutoffDate)))
-        .get();
+    ])..where(db.dailyLogs.date.isBiggerOrEqualValue(cutoffDate))).get();
 
     // Group by date
     final Map<String, WeeklyMacroDay> byDate = {};
@@ -73,11 +71,11 @@ class AnalyticsNotifier extends AsyncNotifier<AnalyticsState> {
       final existing = byDate[log.date];
       byDate[log.date] = WeeklyMacroDay(
         date: log.date,
-        proteinG:
-            (existing?.proteinG ?? 0) + entry.proteinG * entry.servings,
+        proteinG: (existing?.proteinG ?? 0) + entry.proteinG * entry.servings,
         carbsG: (existing?.carbsG ?? 0) + entry.carbsG * entry.servings,
         fatG: (existing?.fatG ?? 0) + entry.fatG * entry.servings,
-        calories: (existing?.calories ?? 0) +
+        calories:
+            (existing?.calories ?? 0) +
             (entry.calories * entry.servings).round(),
       );
     }
@@ -89,22 +87,26 @@ class AnalyticsNotifier extends AsyncNotifier<AnalyticsState> {
           '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
       return byDate[key] ??
           WeeklyMacroDay(
-              date: key,
-              proteinG: 0,
-              carbsG: 0,
-              fatG: 0,
-              calories: 0);
+            date: key,
+            proteinG: 0,
+            carbsG: 0,
+            fatG: 0,
+            calories: 0,
+          );
     });
 
     // Streak from food entry dates
-    final allLoggedDates = await (db.selectOnly(db.dailyLogs)
-          ..addColumns([db.dailyLogs.date])
-          ..join([
-            innerJoin(db.foodEntries,
-                db.foodEntries.dailyLogId.equalsExp(db.dailyLogs.id))
-          ]))
-        .map((r) => r.read(db.dailyLogs.date)!)
-        .get();
+    final allLoggedDates =
+        await (db.selectOnly(db.dailyLogs)
+              ..addColumns([db.dailyLogs.date])
+              ..join([
+                innerJoin(
+                  db.foodEntries,
+                  db.foodEntries.dailyLogId.equalsExp(db.dailyLogs.id),
+                ),
+              ]))
+            .map((r) => r.read(db.dailyLogs.date)!)
+            .get();
     final streak = calculateStreak(allLoggedDates.toSet().toList());
 
     return AnalyticsState(
@@ -119,11 +121,13 @@ class AnalyticsNotifier extends AsyncNotifier<AnalyticsState> {
     final db = ref.read(databaseProvider);
     final today =
         '${DateTime.now().year}-${DateTime.now().month.toString().padLeft(2, '0')}-${DateTime.now().day.toString().padLeft(2, '0')}';
-    await db.weightDao.insertEntry(WeightLogsCompanion(
-      weightKg: Value(kg),
-      date: Value(today),
-      loggedAt: Value(DateTime.now().toIso8601String()),
-    ));
+    await db.weightDao.insertEntry(
+      WeightLogsCompanion(
+        weightKg: Value(kg),
+        date: Value(today),
+        loggedAt: Value(DateTime.now().toIso8601String()),
+      ),
+    );
     ref.invalidateSelf();
   }
 }
@@ -132,5 +136,5 @@ class AnalyticsNotifier extends AsyncNotifier<AnalyticsState> {
 
 final analyticsProvider =
     AsyncNotifierProvider<AnalyticsNotifier, AnalyticsState>(
-  AnalyticsNotifier.new,
-);
+      AnalyticsNotifier.new,
+    );

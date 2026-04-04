@@ -28,30 +28,29 @@ class BirthdayScreen extends ConsumerWidget {
             const SizedBox(height: 32),
             Text(
               'When were you born?',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
             ),
             const SizedBox(height: 8),
             Text(
               'Your age helps us fine-tune your calorie targets.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.5),
-                  ),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
             ),
             const SizedBox(height: 48),
             GestureDetector(
               onTap: () => _pickDate(context, ref, birthday),
               child: Container(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 20),
+                  horizontal: 20,
+                  vertical: 20,
+                ),
                 decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .surfaceContainerHighest,
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Row(
@@ -61,18 +60,15 @@ class BirthdayScreen extends ConsumerWidget {
                     Expanded(
                       child: Text(
                         display,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
+                        style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(fontWeight: FontWeight.w600),
                       ),
                     ),
                     Icon(
                       Icons.chevron_right_rounded,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.4),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.4),
                     ),
                   ],
                 ),
@@ -90,11 +86,17 @@ class BirthdayScreen extends ConsumerWidget {
   }
 
   Future<void> _pickDate(
-      BuildContext context, WidgetRef ref, String current) async {
+    BuildContext context,
+    WidgetRef ref,
+    String current,
+  ) async {
     final parts = current.split('-');
     final initial = parts.length == 3
         ? DateTime(
-            int.parse(parts[0]), int.parse(parts[1]), int.parse(parts[2]))
+            int.parse(parts[0]),
+            int.parse(parts[1]),
+            int.parse(parts[2]),
+          )
         : DateTime(1995, 1, 1);
 
     final picked = await showDatePicker(

@@ -61,8 +61,9 @@ class _CalorieRingState extends State<CalorieRing>
 
   @override
   Widget build(BuildContext context) {
-    final progress =
-        widget.goal > 0 ? (widget.consumed / widget.goal).clamp(0.0, 1.0) : 0.0;
+    final progress = widget.goal > 0
+        ? (widget.consumed / widget.goal).clamp(0.0, 1.0)
+        : 0.0;
 
     return SizedBox(
       width: widget.size,
@@ -74,33 +75,34 @@ class _CalorieRingState extends State<CalorieRing>
             painter: _RingPainter(
               progress: progress * _animation.value,
               strokeWidth: widget.strokeWidth,
-              trackColor: Theme.of(context)
-                  .colorScheme
-                  .onSurface
-                  .withValues(alpha: 0.08),
+              trackColor: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.08),
               fillColor: const Color(0xFFFF5500), // accentOrange
             ),
             child: Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.local_fire_department_rounded,
-                      size: 28, color: Color(0xFFFF5500)),
+                  const Icon(
+                    Icons.local_fire_department_rounded,
+                    size: 28,
+                    color: Color(0xFFFF5500),
+                  ),
                   const SizedBox(height: 2),
                   Text(
                     '${widget.consumed}',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                   Text(
                     'of ${widget.goal} kcal',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withValues(alpha: 0.5),
-                        ),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.5),
+                    ),
                   ),
                 ],
               ),

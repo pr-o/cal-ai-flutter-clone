@@ -13,21 +13,24 @@ Future<void> initNotifications() async {
   final timezoneName = await FlutterTimezone.getLocalTimezone();
   tz.setLocalLocation(tz.getLocation(timezoneName));
 
-  const androidSettings =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
+  const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
   const iosSettings = DarwinInitializationSettings();
-  const settings =
-      InitializationSettings(android: androidSettings, iOS: iosSettings);
+  const settings = InitializationSettings(
+    android: androidSettings,
+    iOS: iosSettings,
+  );
   await _plugin.initialize(settings);
 
   await _plugin
       .resolvePlatformSpecificImplementation<
-          IOSFlutterLocalNotificationsPlugin>()
+        IOSFlutterLocalNotificationsPlugin
+      >()
       ?.requestPermissions(alert: true, badge: true, sound: true);
 
   await _plugin
       .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin
+      >()
       ?.requestNotificationsPermission();
 
   const channel = AndroidNotificationChannel(
@@ -37,17 +40,28 @@ Future<void> initNotifications() async {
   );
   await _plugin
       .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin
+      >()
       ?.createNotificationChannel(channel);
 }
 
 Future<void> scheduleMealReminder(
-    int id, int hour, int minute, String label) async {
+  int id,
+  int hour,
+  int minute,
+  String label,
+) async {
   await _plugin.cancel(id);
 
   final now = tz.TZDateTime.now(tz.local);
-  var scheduled =
-      tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
+  var scheduled = tz.TZDateTime(
+    tz.local,
+    now.year,
+    now.month,
+    now.day,
+    hour,
+    minute,
+  );
   if (scheduled.isBefore(now)) {
     scheduled = scheduled.add(const Duration(days: 1));
   }

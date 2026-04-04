@@ -10,9 +10,9 @@ class FoodDao extends DatabaseAccessor<AppDatabase> with _$FoodDaoMixin {
 
   /// All food entries for a given date string (YYYY-MM-DD).
   Future<List<FoodEntry>> entriesForDate(String date) async {
-    final log = await (select(dailyLogs)
-          ..where((t) => t.date.equals(date)))
-        .getSingleOrNull();
+    final log = await (select(
+      dailyLogs,
+    )..where((t) => t.date.equals(date))).getSingleOrNull();
     if (log == null) return [];
     return (select(foodEntries)
           ..where((t) => t.dailyLogId.equals(log.id))

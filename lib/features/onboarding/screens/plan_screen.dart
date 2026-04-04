@@ -29,15 +29,19 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
 
   void _computeTdee() {
     final ob = ref.read(onboardingProvider);
-    final result = calculateTdee(TdeeInput(
-      currentWeightKg: ob.currentWeightKg,
-      heightCm: ob.heightCm,
-      birthday: ob.birthday,
-      gender: ob.gender,
-      activityLevel: ob.activityLevel,
-      goal: ob.goal,
-    ));
-    ref.read(onboardingProvider.notifier).setPlanTargets(
+    final result = calculateTdee(
+      TdeeInput(
+        currentWeightKg: ob.currentWeightKg,
+        heightCm: ob.heightCm,
+        birthday: ob.birthday,
+        gender: ob.gender,
+        activityLevel: ob.activityLevel,
+        goal: ob.goal,
+      ),
+    );
+    ref
+        .read(onboardingProvider.notifier)
+        .setPlanTargets(
           calories: result.calories,
           proteinG: result.proteinG,
           carbsG: result.carbsG,
@@ -51,11 +55,20 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
 
     // Rough estimate: 0.5 kg/week for lose/gain
     final weeksNeeded = (diff / 0.5).ceil();
-    final targetDate =
-        DateTime.now().add(Duration(days: weeksNeeded * 7));
+    final targetDate = DateTime.now().add(Duration(days: weeksNeeded * 7));
     final months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${months[targetDate.month - 1]} ${targetDate.day}, ${targetDate.year}';
   }
@@ -66,34 +79,37 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
       final ob = ref.read(onboardingProvider);
       final db = ref.read(databaseProvider);
 
-      await db.into(db.profiles).insert(ProfilesCompanion(
-            goal: Value(ob.goal),
-            gender: Value(ob.gender),
-            birthday: Value(ob.birthday),
-            currentWeightKg: Value(ob.currentWeightKg),
-            heightCm: Value(ob.heightCm),
-            targetWeightKg: Value(ob.targetWeightKg),
-            activityLevel: Value(ob.activityLevel),
-            dietaryPreferences:
-                Value(jsonEncode(ob.dietaryPreferences.toList())),
-            dailyCalories: Value(ob.dailyCalories),
-            dailyProteinG: Value(ob.dailyProteinG),
-            dailyCarbsG: Value(ob.dailyCarbsG),
-            dailyFatG: Value(ob.dailyFatG),
-            createdAt: Value(DateTime.now().toIso8601String()),
-          ));
+      await db
+          .into(db.profiles)
+          .insert(
+            ProfilesCompanion(
+              goal: Value(ob.goal),
+              gender: Value(ob.gender),
+              birthday: Value(ob.birthday),
+              currentWeightKg: Value(ob.currentWeightKg),
+              heightCm: Value(ob.heightCm),
+              targetWeightKg: Value(ob.targetWeightKg),
+              activityLevel: Value(ob.activityLevel),
+              dietaryPreferences: Value(
+                jsonEncode(ob.dietaryPreferences.toList()),
+              ),
+              dailyCalories: Value(ob.dailyCalories),
+              dailyProteinG: Value(ob.dailyProteinG),
+              dailyCarbsG: Value(ob.dailyCarbsG),
+              dailyFatG: Value(ob.dailyFatG),
+              createdAt: Value(DateTime.now().toIso8601String()),
+            ),
+          );
 
-      await ref
-          .read(settingsProvider.notifier)
-          .setOnboardingComplete(true);
+      await ref.read(settingsProvider.notifier).setOnboardingComplete(true);
 
       if (mounted) context.go('/home');
     } catch (e) {
       setState(() => _saving = false);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving profile: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error saving profile: $e')));
       }
     }
   }
@@ -111,16 +127,19 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 32),
-            const Icon(Icons.check_circle_outline_rounded,
-                size: 48, color: Color(0xFFFF5500)),
+            const Icon(
+              Icons.check_circle_outline_rounded,
+              size: 48,
+              color: Color(0xFFFF5500),
+            ),
             const SizedBox(height: 16),
             Text(
               'Congratulations,\nyour custom plan is ready!',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    height: 1.25,
-                  ),
+                fontWeight: FontWeight.w800,
+                height: 1.25,
+              ),
             ),
             const SizedBox(height: 12),
             if (ob.goal != 'maintain') ...[
@@ -130,11 +149,10 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
                     : 'You should gain: ${(ob.targetWeightKg - ob.currentWeightKg).abs().toStringAsFixed(1)} kg by ${_goalDateEstimate(ob)}',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.6),
-                    ),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.6),
+                ),
               ),
               const SizedBox(height: 4),
             ],
@@ -142,11 +160,10 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
               'Daily recommendation · You can edit this anytime',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.4),
-                  ),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.4),
+              ),
             ),
             const SizedBox(height: 24),
             // 2×2 grid of editable macro targets
@@ -231,8 +248,10 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
                       height: 22,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text("Let's get started!",
-                      style: TextStyle(fontWeight: FontWeight.w600)),
+                  : const Text(
+                      "Let's get started!",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
             ),
             const SizedBox(height: 32),
           ],
@@ -276,27 +295,26 @@ class _MacroCell extends StatelessWidget {
                 '$value',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: color,
-                    ),
+                  fontWeight: FontWeight.w800,
+                  color: color,
+                ),
               ),
               Text(
                 unit,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.5),
-                    ),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.5),
+                ),
               ),
               const SizedBox(height: 4),
               Text(
                 label,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
               ),
             ],
           ),
@@ -309,10 +327,9 @@ class _MacroCell extends StatelessWidget {
               child: Icon(
                 Icons.edit_outlined,
                 size: 18,
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withValues(alpha: 0.4),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.4),
               ),
             ),
           ),

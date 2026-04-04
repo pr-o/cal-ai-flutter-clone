@@ -46,7 +46,9 @@ class _ScanResultScreenState extends ConsumerState<ScanResultScreen> {
       _error = null;
     });
     try {
-      final apiKey = await ref.read(settingsProvider.notifier).getGeminiApiKey();
+      final apiKey = await ref
+          .read(settingsProvider.notifier)
+          .getGeminiApiKey();
       if (apiKey == null || apiKey.isEmpty) {
         setState(() {
           _loading = false;
@@ -57,8 +59,9 @@ class _ScanResultScreenState extends ConsumerState<ScanResultScreen> {
       }
       final bytes = await File(widget.photoPath).readAsBytes();
       final b64 = base64Encode(bytes);
-      final result = await GeminiService(apiKey: apiKey)
-          .analyzeFood(b64, correctionHint: hint);
+      final result = await GeminiService(
+        apiKey: apiKey,
+      ).analyzeFood(b64, correctionHint: hint);
       setState(() {
         _result = result;
         _nameCtrl.text = result.name;
@@ -145,10 +148,7 @@ class _ScanResultScreenState extends ConsumerState<ScanResultScreen> {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                Image.file(
-                  File(widget.photoPath),
-                  fit: BoxFit.cover,
-                ),
+                Image.file(File(widget.photoPath), fit: BoxFit.cover),
                 // Gradient overlay at bottom of photo
                 Positioned(
                   bottom: 0,
@@ -170,8 +170,10 @@ class _ScanResultScreenState extends ConsumerState<ScanResultScreen> {
                   child: Row(
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.arrow_back_rounded,
-                            color: Colors.white),
+                        icon: const Icon(
+                          Icons.arrow_back_rounded,
+                          color: Colors.white,
+                        ),
                         onPressed: () => context.pop(),
                       ),
                       const Spacer(),
@@ -197,19 +199,15 @@ class _ScanResultScreenState extends ConsumerState<ScanResultScreen> {
             child: _loading
                 ? const Center(child: CircularProgressIndicator())
                 : _error != null
-                    ? _ErrorView(
-                        message: _error!,
-                        onRetry: () => _analyze(),
-                      )
-                    : _ResultContent(
-                        result: _result!,
-                        servings: _servings,
-                        nameCtrl: _nameCtrl,
-                        onServingsChanged: (v) =>
-                            setState(() => _servings = v),
-                        onFix: _showFixDialog,
-                        onDone: _done,
-                      ),
+                ? _ErrorView(message: _error!, onRetry: () => _analyze())
+                : _ResultContent(
+                    result: _result!,
+                    servings: _servings,
+                    nameCtrl: _nameCtrl,
+                    onServingsChanged: (v) => setState(() => _servings = v),
+                    onFix: _showFixDialog,
+                    onDone: _done,
+                  ),
           ),
         ],
       ),
@@ -254,10 +252,9 @@ class _ResultContent extends StatelessWidget {
               Expanded(
                 child: TextField(
                   controller: nameCtrl,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge
-                      ?.copyWith(fontWeight: FontWeight.w700),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.zero,
@@ -269,10 +266,9 @@ class _ResultContent extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.2),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.2),
                   ),
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -289,10 +285,9 @@ class _ResultContent extends StatelessWidget {
                     ),
                     Text(
                       _fmtServings(servings),
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelLarge
-                          ?.copyWith(fontWeight: FontWeight.w600),
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     IconButton(
                       icon: const Icon(Icons.add, size: 16),
@@ -309,27 +304,28 @@ class _ResultContent extends StatelessWidget {
           Text(
             result.servingSize,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.5),
-                ),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.5),
+            ),
           ),
           const SizedBox(height: 16),
           // Calories
           Row(
             children: [
-              const Icon(Icons.local_fire_department_rounded,
-                  color: Color(0xFFFF5500), size: 20),
+              const Icon(
+                Icons.local_fire_department_rounded,
+                color: Color(0xFFFF5500),
+                size: 20,
+              ),
               const SizedBox(width: 6),
               const Text('Calories'),
               const Spacer(),
               Text(
                 '$calories',
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(fontWeight: FontWeight.w800),
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ],
           ),
@@ -337,26 +333,40 @@ class _ResultContent extends StatelessWidget {
           // Macros row
           Row(
             children: [
-              _MacroItem(label: 'Protein', value: protein, color: const Color(0xFFFF6B35)),
-              _MacroItem(label: 'Carbs', value: carbs, color: const Color(0xFFFFB800)),
-              _MacroItem(label: 'Fat', value: fat, color: const Color(0xFF4A9EFF)),
+              _MacroItem(
+                label: 'Protein',
+                value: protein,
+                color: const Color(0xFFFF6B35),
+              ),
+              _MacroItem(
+                label: 'Carbs',
+                value: carbs,
+                color: const Color(0xFFFFB800),
+              ),
+              _MacroItem(
+                label: 'Fat',
+                value: fat,
+                color: const Color(0xFF4A9EFF),
+              ),
             ],
           ),
           const SizedBox(height: 20),
           // Health score
           Row(
             children: [
-              const Icon(Icons.favorite_outline_rounded,
-                  size: 18, color: Colors.green),
+              const Icon(
+                Icons.favorite_outline_rounded,
+                size: 18,
+                color: Colors.green,
+              ),
               const SizedBox(width: 8),
               const Text('Health Score'),
               const Spacer(),
               Text(
                 '${result.healthScore}/10',
-                style: Theme.of(context)
-                    .textTheme
-                    .labelLarge
-                    ?.copyWith(fontWeight: FontWeight.w700),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
               ),
             ],
           ),
@@ -381,11 +391,10 @@ class _ResultContent extends StatelessWidget {
                   child: Text(
                     result.ingredients.join(', '),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withValues(alpha: 0.6),
-                        ),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.6),
+                    ),
                   ),
                 ),
               ],
@@ -398,8 +407,7 @@ class _ResultContent extends StatelessWidget {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: onFix,
-                  icon: const Text('✦',
-                      style: TextStyle(fontSize: 12)),
+                  icon: const Text('✦', style: TextStyle(fontSize: 12)),
                   label: const Text('Fix Results'),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size.fromHeight(50),
@@ -419,8 +427,10 @@ class _ResultContent extends StatelessWidget {
                       borderRadius: BorderRadius.circular(14),
                     ),
                   ),
-                  child: const Text('Done',
-                      style: TextStyle(fontWeight: FontWeight.w600)),
+                  child: const Text(
+                    'Done',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
             ],
@@ -430,8 +440,7 @@ class _ResultContent extends StatelessWidget {
     );
   }
 
-  String _fmtServings(double v) =>
-      v == v.truncate() ? '${v.toInt()}' : '$v';
+  String _fmtServings(double v) => v == v.truncate() ? '${v.toInt()}' : '$v';
 }
 
 class _MacroItem extends StatelessWidget {
@@ -452,18 +461,17 @@ class _MacroItem extends StatelessWidget {
           Text(
             '${value.toStringAsFixed(1)}g',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: color,
-                ),
+              fontWeight: FontWeight.w700,
+              color: color,
+            ),
           ),
           Text(
             label,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.5),
-                ),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.5),
+            ),
           ),
         ],
       ),
@@ -485,8 +493,7 @@ class _ErrorView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.error_outline_rounded,
-              size: 48, color: Colors.red),
+          const Icon(Icons.error_outline_rounded, size: 48, color: Colors.red),
           const SizedBox(height: 16),
           Text(
             message,
@@ -494,10 +501,7 @@ class _ErrorView extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 24),
-          FilledButton(
-            onPressed: onRetry,
-            child: const Text('Try again'),
-          ),
+          FilledButton(onPressed: onRetry, child: const Text('Try again')),
         ],
       ),
     );

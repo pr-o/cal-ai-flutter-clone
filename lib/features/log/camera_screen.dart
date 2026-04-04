@@ -82,9 +82,9 @@ class _CameraScreenState extends State<CameraScreen>
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to capture: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to capture: $e')));
       }
     } finally {
       if (mounted) setState(() => _isCapturing = false);
@@ -110,23 +110,22 @@ class _CameraScreenState extends State<CameraScreen>
                 ),
               ),
             )
-          else if (_controller == null ||
-              !_controller!.value.isInitialized)
-            const Center(
-              child: CircularProgressIndicator(color: Colors.white),
-            )
+          else if (_controller == null || !_controller!.value.isInitialized)
+            const Center(child: CircularProgressIndicator(color: Colors.white))
           else
             CameraPreview(_controller!),
           // Top bar
           SafeArea(
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.close_rounded,
-                        color: Colors.white, size: 28),
+                    icon: const Icon(
+                      Icons.close_rounded,
+                      color: Colors.white,
+                      size: 28,
+                    ),
                     onPressed: () => context.pop(),
                   ),
                   const Spacer(),

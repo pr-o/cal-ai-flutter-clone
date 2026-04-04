@@ -38,8 +38,7 @@ class _RulerPickerState extends State<RulerPicker> {
   static const double _rulerHeight = 64.0;
   bool _isScrolling = false;
 
-  int get _totalTicks =>
-      ((widget.max - widget.min) / widget.step).round() + 1;
+  int get _totalTicks => ((widget.max - widget.min) / widget.step).round() + 1;
 
   double _valueToOffset(double value, double viewWidth) {
     final index = ((value - widget.min) / widget.step).round();
@@ -64,8 +63,10 @@ class _RulerPickerState extends State<RulerPicker> {
 
   void _jumpToValue() {
     if (!_scroll.hasClients) return;
-    final offset =
-        _valueToOffset(widget.value, _scroll.position.viewportDimension);
+    final offset = _valueToOffset(
+      widget.value,
+      _scroll.position.viewportDimension,
+    );
     _scroll.jumpTo(offset.clamp(0, _scroll.position.maxScrollExtent));
   }
 
@@ -92,20 +93,19 @@ class _RulerPickerState extends State<RulerPicker> {
           Text(
             widget.label!,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.5),
-                ),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.5),
+            ),
           ),
           const SizedBox(height: 4),
         ],
         // Value display
         Text(
           '${_fmt(widget.value)} ${widget.unit}',
-          style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w800),
         ),
         const SizedBox(height: 16),
         // Ruler
@@ -137,8 +137,11 @@ class _RulerPickerState extends State<RulerPicker> {
                   itemBuilder: (context, index) {
                     final isMajor = index % 10 == 0;
                     final isMid = index % 5 == 0;
-                    final tickHeight =
-                        isMajor ? 32.0 : isMid ? 20.0 : 12.0;
+                    final tickHeight = isMajor
+                        ? 32.0
+                        : isMid
+                        ? 20.0
+                        : 12.0;
                     return Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(

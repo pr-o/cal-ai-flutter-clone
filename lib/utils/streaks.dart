@@ -8,14 +8,16 @@ int calculateStreak(List<String> dates) {
 
   final dateSet = dates.toSet();
   final today = _dateString(DateTime.now());
-  final yesterday = _dateString(DateTime.now().subtract(const Duration(days: 1)));
+  final yesterday = _dateString(
+    DateTime.now().subtract(const Duration(days: 1)),
+  );
 
   // Start from today if logged, otherwise start from yesterday.
   DateTime? cursor = dateSet.contains(today)
       ? DateTime.now()
       : dateSet.contains(yesterday)
-          ? DateTime.now().subtract(const Duration(days: 1))
-          : null;
+      ? DateTime.now().subtract(const Duration(days: 1))
+      : null;
 
   if (cursor == null) return 0;
 

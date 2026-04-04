@@ -39,8 +39,9 @@ class MacroPill extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = _colors[type]!;
     final label = _labels[type]!;
-    final progress =
-        goal > 0 ? ((goal - remaining) / goal).clamp(0.0, 1.0) : 0.0;
+    final progress = goal > 0
+        ? ((goal - remaining) / goal).clamp(0.0, 1.0)
+        : 0.0;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
@@ -55,20 +56,19 @@ class MacroPill extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             '${remaining.round()}g',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 2),
           Text(
             label,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.5),
-                ),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.5),
+            ),
           ),
         ],
       ),
@@ -94,10 +94,9 @@ class _MiniRing extends StatelessWidget {
       painter: _MiniRingPainter(
         progress: progress,
         color: color,
-        trackColor: Theme.of(context)
-            .colorScheme
-            .onSurface
-            .withValues(alpha: 0.08),
+        trackColor: Theme.of(
+          context,
+        ).colorScheme.onSurface.withValues(alpha: 0.08),
       ),
     );
   }

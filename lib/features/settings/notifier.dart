@@ -33,15 +33,14 @@ class SettingsState {
     bool? reminderBreakfast,
     bool? reminderLunch,
     bool? reminderDinner,
-  }) =>
-      SettingsState(
-        themeMode: themeMode ?? this.themeMode,
-        weightUnit: weightUnit ?? this.weightUnit,
-        onboardingComplete: onboardingComplete ?? this.onboardingComplete,
-        reminderBreakfast: reminderBreakfast ?? this.reminderBreakfast,
-        reminderLunch: reminderLunch ?? this.reminderLunch,
-        reminderDinner: reminderDinner ?? this.reminderDinner,
-      );
+  }) => SettingsState(
+    themeMode: themeMode ?? this.themeMode,
+    weightUnit: weightUnit ?? this.weightUnit,
+    onboardingComplete: onboardingComplete ?? this.onboardingComplete,
+    reminderBreakfast: reminderBreakfast ?? this.reminderBreakfast,
+    reminderLunch: reminderLunch ?? this.reminderLunch,
+    reminderDinner: reminderDinner ?? this.reminderDinner,
+  );
 }
 
 // ─── Notifier ─────────────────────────────────────────────────────────────────
@@ -132,19 +131,20 @@ class SettingsNotifier extends Notifier<SettingsState> {
   // ── Helpers ──────────────────────────────────────────────────────────────────
 
   ThemeMode _modeFrom(String s) => switch (s) {
-        'light' => ThemeMode.light,
-        'dark' => ThemeMode.dark,
-        _ => ThemeMode.system,
-      };
+    'light' => ThemeMode.light,
+    'dark' => ThemeMode.dark,
+    _ => ThemeMode.system,
+  };
 
   String _modeToString(ThemeMode m) => switch (m) {
-        ThemeMode.light => 'light',
-        ThemeMode.dark => 'dark',
-        _ => 'system',
-      };
+    ThemeMode.light => 'light',
+    ThemeMode.dark => 'dark',
+    _ => 'system',
+  };
 }
 
 // ─── Provider ─────────────────────────────────────────────────────────────────
 
-final settingsProvider =
-    NotifierProvider<SettingsNotifier, SettingsState>(SettingsNotifier.new);
+final settingsProvider = NotifierProvider<SettingsNotifier, SettingsState>(
+  SettingsNotifier.new,
+);

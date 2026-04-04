@@ -35,7 +35,9 @@ class OnboardingLayout extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               child: Row(
                 children: [
-                  _BackButton(onBack: onBack ?? () => Navigator.of(context).pop()),
+                  _BackButton(
+                    onBack: onBack ?? () => Navigator.of(context).pop(),
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: ClipRRect(

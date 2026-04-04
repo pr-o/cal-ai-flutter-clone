@@ -56,8 +56,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings',
-            style: TextStyle(fontWeight: FontWeight.w800)),
+        title: const Text(
+          'Settings',
+          style: TextStyle(fontWeight: FontWeight.w800),
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -113,8 +115,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           const SizedBox(height: 8),
           profileAsync.when(
             loading: () => const SizedBox(
-                height: 60,
-                child: Center(child: CircularProgressIndicator())),
+              height: 60,
+              child: Center(child: CircularProgressIndicator()),
+            ),
             error: (e, _) => Text('Error: $e'),
             data: (profile) => _ProfileSection(profile: profile),
           ),
@@ -136,9 +139,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   Future<void> _testGeminiKey(BuildContext context, String key) async {
     if (key.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter a key first')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Enter a key first')));
       return;
     }
     try {
@@ -149,20 +152,19 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         'contents': [
           {
             'parts': [
-              {'text': 'Say OK'}
-            ]
-          }
-        ]
+              {'text': 'Say OK'},
+            ],
+          },
+        ],
       });
       final res = await http
-          .post(url,
-              headers: {'Content-Type': 'application/json'}, body: body)
+          .post(url, headers: {'Content-Type': 'application/json'}, body: body)
           .timeout(const Duration(seconds: 10));
       if (!context.mounted) return;
       if (res.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('✓ Gemini key is valid')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('✓ Gemini key is valid')));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Gemini error ${res.statusCode}')),
@@ -170,40 +172,39 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       }
     } catch (e) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Gemini test failed: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Gemini test failed: $e')));
     }
   }
 
   Future<void> _testUsdaKey(BuildContext context, String key) async {
     if (key.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter a key first')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Enter a key first')));
       return;
     }
     try {
       final url = Uri.parse(
         'https://api.nal.usda.gov/fdc/v1/foods/search?query=apple&pageSize=1&api_key=$key',
       );
-      final res =
-          await http.get(url).timeout(const Duration(seconds: 10));
+      final res = await http.get(url).timeout(const Duration(seconds: 10));
       if (!context.mounted) return;
       if (res.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('✓ USDA key is valid')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('✓ USDA key is valid')));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('USDA error ${res.statusCode}')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('USDA error ${res.statusCode}')));
       }
     } catch (e) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('USDA test failed: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('USDA test failed: $e')));
     }
   }
 
@@ -213,7 +214,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       builder: (ctx) => AlertDialog(
         title: const Text('Reset onboarding?'),
         content: const Text(
-            'This will delete your profile and return you to the setup flow.'),
+          'This will delete your profile and return you to the setup flow.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
@@ -246,12 +248,11 @@ class _SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-        title,
-        style: Theme.of(context)
-            .textTheme
-            .titleMedium
-            ?.copyWith(fontWeight: FontWeight.w700),
-      );
+    title,
+    style: Theme.of(
+      context,
+    ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+  );
 }
 
 class _ThemeSegment extends ConsumerWidget {
@@ -294,15 +295,13 @@ class _WeightUnitTile extends ConsumerWidget {
         subtitle: Text(unit == 'lbs' ? 'Pounds (lbs)' : 'Kilograms (kg)'),
         secondary: Text(
           unit,
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium
-              ?.copyWith(fontWeight: FontWeight.w700),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
         ),
         value: unit == 'lbs',
-        onChanged: (v) => ref
-            .read(settingsProvider.notifier)
-            .setWeightUnit(v ? 'lbs' : 'kg'),
+        onChanged: (v) =>
+            ref.read(settingsProvider.notifier).setWeightUnit(v ? 'lbs' : 'kg'),
       ),
     );
   }
@@ -337,9 +336,7 @@ class _ApiKeyFieldState extends State<_ApiKeyField> {
           obscureText: _obscure,
           decoration: InputDecoration(
             labelText: widget.label,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             suffixIcon: IconButton(
               icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
               onPressed: () => setState(() => _obscure = !_obscure),
@@ -350,10 +347,7 @@ class _ApiKeyFieldState extends State<_ApiKeyField> {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            TextButton(
-              onPressed: widget.onTest,
-              child: const Text('Test'),
-            ),
+            TextButton(onPressed: widget.onTest, child: const Text('Test')),
             const SizedBox(width: 8),
             FilledButton(
               onPressed: widget.onSave,
@@ -402,10 +396,9 @@ class _ProfileSection extends ConsumerWidget {
             children: [
               Text(
                 _goalLabel(profile!.goal),
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall
-                    ?.copyWith(fontWeight: FontWeight.w700),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
               ),
               TextButton(
                 onPressed: () => _showEditGoals(context, ref, profile!),
@@ -424,10 +417,10 @@ class _ProfileSection extends ConsumerWidget {
   }
 
   String _goalLabel(String goal) => switch (goal) {
-        'lose' => 'Goal: Lose weight',
-        'gain' => 'Goal: Gain muscle',
-        _ => 'Goal: Maintain weight',
-      };
+    'lose' => 'Goal: Lose weight',
+    'gain' => 'Goal: Gain muscle',
+    _ => 'Goal: Maintain weight',
+  };
 
   void _showEditGoals(BuildContext context, WidgetRef ref, Profile profile) {
     showModalBottomSheet<void>(
@@ -453,18 +446,20 @@ class _GoalRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.6),
-                  )),
-          Text(value,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(fontWeight: FontWeight.w600)),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.6),
+            ),
+          ),
+          Text(
+            value,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+          ),
         ],
       ),
     );
@@ -488,14 +483,16 @@ class _EditGoalsSheetState extends ConsumerState<_EditGoalsSheet> {
   @override
   void initState() {
     super.initState();
-    _calCtrl =
-        TextEditingController(text: widget.profile.dailyCalories.toString());
-    _proteinCtrl =
-        TextEditingController(text: widget.profile.dailyProteinG.toString());
-    _carbsCtrl =
-        TextEditingController(text: widget.profile.dailyCarbsG.toString());
-    _fatCtrl =
-        TextEditingController(text: widget.profile.dailyFatG.toString());
+    _calCtrl = TextEditingController(
+      text: widget.profile.dailyCalories.toString(),
+    );
+    _proteinCtrl = TextEditingController(
+      text: widget.profile.dailyProteinG.toString(),
+    );
+    _carbsCtrl = TextEditingController(
+      text: widget.profile.dailyCarbsG.toString(),
+    );
+    _fatCtrl = TextEditingController(text: widget.profile.dailyFatG.toString());
   }
 
   @override
@@ -520,11 +517,12 @@ class _EditGoalsSheetState extends ConsumerState<_EditGoalsSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('Edit Daily Goals',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(fontWeight: FontWeight.w700)),
+          Text(
+            'Edit Daily Goals',
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+          ),
           const SizedBox(height: 16),
           _NumField(label: 'Calories (kcal)', controller: _calCtrl),
           const SizedBox(height: 12),
@@ -539,7 +537,8 @@ class _EditGoalsSheetState extends ConsumerState<_EditGoalsSheet> {
             style: FilledButton.styleFrom(
               minimumSize: const Size.fromHeight(52),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             child: const Text('Save Goals'),
           ),
@@ -557,14 +556,16 @@ class _EditGoalsSheetState extends ConsumerState<_EditGoalsSheet> {
     if (cal == null || protein == null || carbs == null || fat == null) return;
 
     final db = ref.read(databaseProvider);
-    await (db.update(db.profiles)
-          ..where((t) => t.id.equals(widget.profile.id)))
-        .write(ProfilesCompanion(
-      dailyCalories: Value(cal),
-      dailyProteinG: Value(protein),
-      dailyCarbsG: Value(carbs),
-      dailyFatG: Value(fat),
-    ));
+    await (db.update(
+      db.profiles,
+    )..where((t) => t.id.equals(widget.profile.id))).write(
+      ProfilesCompanion(
+        dailyCalories: Value(cal),
+        dailyProteinG: Value(protein),
+        dailyCarbsG: Value(carbs),
+        dailyFatG: Value(fat),
+      ),
+    );
     ref.invalidate(profileProvider);
 
     if (mounted) Navigator.of(context).pop();
@@ -684,13 +685,12 @@ class _ReminderRow extends StatelessWidget {
     return SwitchListTile(
       secondary: Text(emoji, style: const TextStyle(fontSize: 22)),
       title: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
-      subtitle: Text(time,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withValues(alpha: 0.6),
-              )),
+      subtitle: Text(
+        time,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+        ),
+      ),
       value: value,
       onChanged: loading ? null : onChanged,
     );

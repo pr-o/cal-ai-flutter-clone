@@ -101,8 +101,7 @@ int _ageFromBirthday(String birthday) {
   );
   final now = DateTime.now();
   int age = now.year - dob.year;
-  if (now.month < dob.month ||
-      (now.month == dob.month && now.day < dob.day)) {
+  if (now.month < dob.month || (now.month == dob.month && now.day < dob.day)) {
     age--;
   }
   return age.clamp(1, 120);

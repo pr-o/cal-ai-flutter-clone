@@ -30,31 +30,31 @@ class GenderScreen extends ConsumerWidget {
             const SizedBox(height: 32),
             Text(
               'What is your gender?',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
             ),
             const SizedBox(height: 8),
             Text(
               'This helps us calculate your calorie needs accurately.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.5),
-                  ),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
             ),
             const SizedBox(height: 32),
-            ..._options.map((opt) => Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: OnboardingOptionPill(
-                    label: opt.$2,
-                    selected: selected == opt.$1,
-                    onTap: () => ref
-                        .read(onboardingProvider.notifier)
-                        .setGender(opt.$1),
-                  ),
-                )),
+            ..._options.map(
+              (opt) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: OnboardingOptionPill(
+                  label: opt.$2,
+                  selected: selected == opt.$1,
+                  onTap: () =>
+                      ref.read(onboardingProvider.notifier).setGender(opt.$1),
+                ),
+              ),
+            ),
             const Spacer(),
             OnboardingNextButton(
               onPressed: () => context.go('/onboarding/birthday'),
