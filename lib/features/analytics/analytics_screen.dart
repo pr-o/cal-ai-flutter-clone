@@ -21,8 +21,8 @@ class AnalyticsScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showLogWeightSheet(context, ref),
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.onSurface,
+        foregroundColor: Theme.of(context).colorScheme.surface,
         icon: const Icon(Icons.monitor_weight_outlined),
         label: const Text('Log Weight'),
       ),

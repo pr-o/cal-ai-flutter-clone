@@ -168,8 +168,8 @@ class HomeScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showLogSheet(context),
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.onSurface,
+        foregroundColor: Theme.of(context).colorScheme.surface,
         child: const Icon(Icons.add_rounded, size: 28),
       ),
     );
@@ -190,7 +190,7 @@ class HomeScreen extends ConsumerWidget {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey.shade300,
+                color: Theme.of(ctx).colorScheme.onSurface.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
