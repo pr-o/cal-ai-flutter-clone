@@ -1,3 +1,214 @@
+# Phase 11 — Settings Screen Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Build the full Settings screen — theme switcher, weight unit toggle, API key management, profile goal editor, and onboarding reset.
+
+**Architecture:** Single file `settings_screen.dart` rewritten from stub; `main.dart` updated to read `themeMode` from `settingsProvider`. No new providers needed — `settingsProvider` and `profileProvider` (both already exist) cover all state. Profile goal updates go direct to `databaseProvider` followed by `ref.invalidate(profileProvider)`.
+
+**Tech Stack:** Flutter Riverpod (`settingsProvider`, `profileProvider`, `databaseProvider`), `flutter_secure_storage` (API keys via `SettingsNotifier`), `http` (API key test calls), Drift (profile goal updates), `go_router` (`context.go('/onboarding/goal')` on reset).
+
+---
+
+## File Map
+
+| File | Action | Responsibility |
+|---|---|---|
+| `lib/main.dart` | Modify | Watch `settingsProvider` and pass `themeMode` to `MaterialApp.router` |
+| `lib/features/settings/settings_screen.dart` | Rewrite | Full settings UI — all 5 sections |
+| `test/features/settings/settings_screen_test.dart` | Create | Widget tests covering all sections |
+
+---
+
+### Task 1: Wire themeMode from settingsProvider into MaterialApp
+
+**Files:**
+- Modify: `lib/main.dart`
+- Test: `test/widget_test.dart`
+
+- [ ] **Step 1.1: Update `_CalAiAppState.build()` to watch `settingsProvider`**
+
+Replace the hardcoded `themeMode: ThemeMode.system` with a value read from `settingsProvider`:
+
+```dart
+// lib/main.dart — full file replacement
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import 'features/home/notifier.dart';
+import 'features/settings/notifier.dart';
+import 'router.dart';
+import 'theme/app_theme.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final router = await buildRouter();
+  runApp(ProviderScope(child: CalAiApp(router: router)));
+}
+
+class CalAiApp extends ConsumerStatefulWidget {
+  const CalAiApp({super.key, required this.router});
+  final GoRouter router;
+
+  @override
+  ConsumerState<CalAiApp> createState() => _CalAiAppState();
+}
+
+class _CalAiAppState extends ConsumerState<CalAiApp> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(profileProvider);
+    ref.read(dailyProvider);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final themeMode = ref.watch(settingsProvider.select((s) => s.themeMode));
+    return MaterialApp.router(
+      title: 'Cal AI',
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: themeMode,
+      routerConfig: widget.router,
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+```
+
+- [ ] **Step 1.2: Run existing smoke test to verify it still passes**
+
+```bash
+flutter test test/widget_test.dart
+```
+
+Expected output: `All tests passed!`
+
+- [ ] **Step 1.3: Commit**
+
+```bash
+git add lib/main.dart
+git commit -m "feat: wire themeMode from settingsProvider into MaterialApp"
+```
+
+---
+
+### Task 2: Settings screen scaffold + Theme & Weight Unit sections
+
+**Files:**
+- Rewrite: `lib/features/settings/settings_screen.dart`
+- Create: `test/features/settings/settings_screen_test.dart`
+
+- [ ] **Step 2.1: Write failing tests for theme and weight unit sections**
+
+```bash
+mkdir -p test/features/settings
+```
+
+Create `test/features/settings/settings_screen_test.dart`:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
+
+import 'package:cal_ai_flutter_clone/db/database.dart';
+import 'package:cal_ai_flutter_clone/features/home/notifier.dart';
+import 'package:cal_ai_flutter_clone/features/settings/notifier.dart';
+import 'package:cal_ai_flutter_clone/features/settings/settings_screen.dart';
+
+// Minimal router wrapper so GoRouter context is available.
+Widget _wrap(Widget child, {List<Override> overrides = const []}) {
+  final router = GoRouter(
+    initialLocation: '/settings',
+    routes: [
+      GoRoute(
+        path: '/settings',
+        builder: (_, __) => child,
+      ),
+      GoRoute(
+        path: '/onboarding/goal',
+        builder: (_, __) => const Scaffold(body: Text('onboarding')),
+      ),
+    ],
+  );
+  return ProviderScope(
+    overrides: [
+      profileProvider.overrideWith((ref) async => null),
+      ...overrides,
+    ],
+    child: MaterialApp.router(routerConfig: router),
+  );
+}
+
+void main() {
+  testWidgets('shows theme SegmentedButton with System selected by default',
+      (tester) async {
+    await tester.pumpWidget(_wrap(const SettingsScreen()));
+    await tester.pump();
+
+    expect(find.text('Theme'), findsOneWidget);
+    expect(find.text('Light'), findsOneWidget);
+    expect(find.text('Dark'), findsOneWidget);
+    expect(find.text('System'), findsOneWidget);
+  });
+
+  testWidgets('shows weight unit section', (tester) async {
+    await tester.pumpWidget(_wrap(const SettingsScreen()));
+    await tester.pump();
+
+    expect(find.text('Weight Unit'), findsOneWidget);
+    expect(find.text('kg'), findsOneWidget);
+    expect(find.text('lbs'), findsOneWidget);
+  });
+
+  testWidgets('shows API keys section', (tester) async {
+    await tester.pumpWidget(_wrap(const SettingsScreen()));
+    await tester.pump();
+
+    expect(find.text('API Keys'), findsOneWidget);
+    expect(find.text('Gemini API Key'), findsOneWidget);
+    expect(find.text('USDA API Key'), findsOneWidget);
+  });
+
+  testWidgets('shows reset onboarding button', (tester) async {
+    await tester.pumpWidget(_wrap(const SettingsScreen()));
+    await tester.pump();
+
+    expect(find.text('Reset Onboarding'), findsOneWidget);
+  });
+
+  testWidgets('reset onboarding shows confirmation dialog', (tester) async {
+    await tester.pumpWidget(_wrap(const SettingsScreen()));
+    await tester.pump();
+
+    await tester.tap(find.text('Reset Onboarding'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Reset onboarding?'), findsOneWidget);
+    expect(find.text('Cancel'), findsOneWidget);
+    expect(find.text('Reset'), findsOneWidget);
+  });
+}
+```
+
+- [ ] **Step 2.2: Run tests — verify they fail (SettingsScreen is still a stub)**
+
+```bash
+flutter test test/features/settings/settings_screen_test.dart
+```
+
+Expected: FAIL — tests for Theme/Weight Unit/API Keys/Reset not found.
+
+- [ ] **Step 2.3: Rewrite `settings_screen.dart` with scaffold, theme and weight unit sections**
+
+```dart
+// lib/features/settings/settings_screen.dart
+
 import 'dart:convert';
 
 import 'package:drift/drift.dart' show Value;
@@ -18,6 +229,7 @@ class SettingsScreen extends ConsumerStatefulWidget {
 }
 
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+  // API key controllers — loaded once from secure storage on init.
   final _geminiCtrl = TextEditingController();
   final _usdaCtrl = TextEditingController();
   bool _keysLoaded = false;
@@ -65,6 +277,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           const SizedBox(height: 8),
           _ThemeSegment(current: settings.themeMode),
           const SizedBox(height: 20),
+          _SectionHeader('Weight Unit'),
+          const SizedBox(height: 8),
           _WeightUnitTile(unit: settings.weightUnit),
           const SizedBox(height: 20),
           _SectionHeader('API Keys'),
@@ -107,9 +321,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           _SectionHeader('Profile & Goals'),
           const SizedBox(height: 8),
           profileAsync.when(
-            loading: () => const SizedBox(
-                height: 60,
-                child: Center(child: CircularProgressIndicator())),
+            loading: () => const SizedBox(height: 60, child: Center(child: CircularProgressIndicator())),
             error: (e, _) => Text('Error: $e'),
             data: (profile) => _ProfileSection(profile: profile),
           ),
@@ -128,6 +340,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       ),
     );
   }
+
+  // ── API key test calls ──────────────────────────────────────────────────────
 
   Future<void> _testGeminiKey(BuildContext context, String key) async {
     if (key.isEmpty) {
@@ -182,8 +396,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       final url = Uri.parse(
         'https://api.nal.usda.gov/fdc/v1/foods/search?query=apple&pageSize=1&api_key=$key',
       );
-      final res =
-          await http.get(url).timeout(const Duration(seconds: 10));
+      final res = await http
+          .get(url)
+          .timeout(const Duration(seconds: 10));
       if (!context.mounted) return;
       if (res.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -201,6 +416,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       );
     }
   }
+
+  // ── Reset onboarding ────────────────────────────────────────────────────────
 
   Future<void> _confirmReset(BuildContext context) async {
     final confirmed = await showDialog<bool>(
@@ -468,6 +685,8 @@ class _GoalRow extends StatelessWidget {
   }
 }
 
+// ─── Edit Goals bottom sheet ──────────────────────────────────────────────────
+
 class _EditGoalsSheet extends ConsumerStatefulWidget {
   const _EditGoalsSheet({required this.profile});
   final Profile profile;
@@ -582,8 +801,84 @@ class _NumField extends StatelessWidget {
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         labelText: label,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        border:
+            OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
 }
+```
+
+- [ ] **Step 2.4: Run tests**
+
+```bash
+flutter test test/features/settings/settings_screen_test.dart
+```
+
+Expected: All 5 tests pass.
+
+- [ ] **Step 2.5: Run analyze**
+
+```bash
+flutter analyze lib/features/settings/settings_screen.dart
+```
+
+Expected: No issues found.
+
+- [ ] **Step 2.6: Commit**
+
+```bash
+git add lib/features/settings/settings_screen.dart test/features/settings/settings_screen_test.dart
+git commit -m "feat: Phase 11 — settings screen (theme, unit, API keys, profile, reset)"
+```
+
+---
+
+### Task 3: Update CLAUDE.md Phase 11 checkboxes
+
+**Files:**
+- Modify: `CLAUDE.md`
+
+- [ ] **Step 3.1: Mark Phase 11 checkboxes as complete**
+
+In `CLAUDE.md`, replace the Phase 11 section:
+
+```markdown
+### Phase 11 — Settings Screen
+
+- [x] Build `lib/features/settings/settings_screen.dart`:
+  - [x] **Theme** — `SegmentedButton` (Light / Dark / System); writes to `settingsNotifier.setTheme()`; `MaterialApp.themeMode` updates immediately
+  - [x] **Weight unit** — `Switch` tile (kg / lbs); writes to `settingsNotifier.setWeightUnit()`
+  - [x] **API Keys** — two `TextField`s with obscured text for `gemini_api_key` and `usda_api_key`; "Save" `FilledButton` writes to `flutter_secure_storage`; inline "Test" `TextButton` per key that makes a minimal API call and shows a `SnackBar`
+  - [x] **Profile section** — display goal + daily calorie + macro targets; "Edit Goals" `TextButton` opens a `showModalBottomSheet` reusing `CalorieRing` donut widgets for post-onboarding target adjustment
+  - [x] **Reset onboarding** — red `TextButton` with `showDialog` confirmation; on confirm: clears `SharedPreferences.onboarding_complete` + deletes `Profiles` row → `context.go('/onboarding/goal')`
+```
+
+- [ ] **Step 3.2: Run full test suite**
+
+```bash
+flutter test
+```
+
+Expected: All tests pass.
+
+- [ ] **Step 3.3: Commit**
+
+```bash
+git add CLAUDE.md
+git commit -m "docs: mark Phase 11 complete in CLAUDE.md"
+```
+
+---
+
+### Task 4: Merge develop → main
+
+- [ ] **Step 4.1: Merge and push**
+
+```bash
+git checkout main
+git merge develop --no-ff -m "Merge develop into main: Phase 11 — settings screen"
+git push origin main
+git checkout develop
+git push origin develop
+```

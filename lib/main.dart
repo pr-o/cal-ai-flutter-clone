@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'features/home/notifier.dart';
+import 'features/settings/notifier.dart';
 import 'router.dart';
 import 'theme/app_theme.dart';
 
@@ -31,11 +32,12 @@ class _CalAiAppState extends ConsumerState<CalAiApp> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = ref.watch(settingsProvider.select((s) => s.themeMode));
     return MaterialApp.router(
       title: 'Cal AI',
       theme: lightTheme,
       darkTheme: darkTheme,
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
       routerConfig: widget.router,
       debugShowCheckedModeBanner: false,
     );
