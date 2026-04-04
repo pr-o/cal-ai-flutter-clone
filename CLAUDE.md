@@ -246,6 +246,29 @@ test/
   - `accentOrange`: `#FF5500` (streak flame)
   - `macroProtein`: `#FF6B35`, `macroCarbs`: `#FFB800`, `macroFat`: `#4A9EFF`
 - **Primary font:** Inter (via `google_fonts` package, fallback: system sans-serif).
+- **Date string formatting:** Use manual `padLeft(2, '0')` formatting — `'${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}'`. No `intl`/`DateFormat` package in the project.
+- **Color opacity:** Use `.withValues(alpha: x)` not the deprecated `.withOpacity(x)` (Flutter 3.x).
+
+---
+
+## Learnings & Gotchas
+
+### Drift
+
+- **Full import required for joins and column ops:** Use `import 'package:drift/drift.dart';` (not just `drift_flutter`) whenever you need `innerJoin`, `equalsExp`, `isBiggerOrEqualValue`, `selectOnly`, `addColumns`. The narrower import omits these symbols and causes confusing "undefined" errors.
+- **Reading typed rows from joins:** After a `.join([innerJoin(...)])` query, extract rows with `row.readTable(db.tableName)` — not `.read(db.columnName)` directly on the row.
+- **Distinct values via `selectOnly`:** To fetch a single column (e.g., distinct dates) without loading full rows:
+  ```dart
+  db.selectOnly(db.dailyLogs)
+    ..addColumns([db.dailyLogs.date])
+    ..join([innerJoin(db.foodEntries, db.foodEntries.dailyLogId.equalsExp(db.dailyLogs.id))])
+  ```
+
+### fl_chart
+
+- **Stacked bar chart values are cumulative:** `BarChartRodStackItem(from, to, color)` — `from` is the sum of all previous segments, `to` is that sum plus the current value. Not individual segment heights.
+- **Dashed reference line:** Use `dashArray: [6, 4]` on a `LineChartBarData` with two `FlSpot`s spanning the full x range.
+- **Always fill all N days:** When charting weekly data, use `List.generate(7, ...)` to produce a slot for every day even if no food was logged, so the chart has no gaps.
 
 ---
 
