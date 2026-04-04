@@ -132,15 +132,12 @@ class AnalyticsScreen extends ConsumerWidget {
                 await ref.read(analyticsProvider.notifier).logWeight(kg);
               },
               style: FilledButton.styleFrom(
-                backgroundColor: Colors.black,
                 minimumSize: const Size.fromHeight(52),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text('Save',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w600)),
+              child: const Text('Save', style: TextStyle(fontWeight: FontWeight.w600)),
             ),
             const SizedBox(height: 24),
           ],

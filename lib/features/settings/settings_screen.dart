@@ -353,8 +353,6 @@ class _ApiKeyFieldState extends State<_ApiKeyField> {
             FilledButton(
               onPressed: widget.onSave,
               style: FilledButton.styleFrom(
-                backgroundColor: Colors.black,
-                foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -534,8 +532,6 @@ class _EditGoalsSheetState extends ConsumerState<_EditGoalsSheet> {
           FilledButton(
             onPressed: _save,
             style: FilledButton.styleFrom(
-              backgroundColor: Colors.black,
-              foregroundColor: Colors.white,
               minimumSize: const Size.fromHeight(52),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),

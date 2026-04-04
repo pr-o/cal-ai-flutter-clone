@@ -414,16 +414,13 @@ class _ResultContent extends StatelessWidget {
                 child: FilledButton(
                   onPressed: onDone,
                   style: FilledButton.styleFrom(
-                    backgroundColor: Colors.black,
                     minimumSize: const Size.fromHeight(50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
                   ),
                   child: const Text('Done',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600)),
+                      style: TextStyle(fontWeight: FontWeight.w600)),
                 ),
               ),
             ],
