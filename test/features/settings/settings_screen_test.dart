@@ -52,7 +52,7 @@ void main() {
     await tester.pumpWidget(_wrap(const SettingsScreen()));
     await tester.pump();
 
-    expect(find.text('Weight Unit'), findsWidgets);
+    expect(find.text('Weight Unit'), findsOneWidget);
     expect(find.text('kg'), findsOneWidget);
   });
 

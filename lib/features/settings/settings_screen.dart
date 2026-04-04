@@ -65,8 +65,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           const SizedBox(height: 8),
           _ThemeSegment(current: settings.themeMode),
           const SizedBox(height: 20),
-          _SectionHeader('Weight Unit'),
-          const SizedBox(height: 8),
           _WeightUnitTile(unit: settings.weightUnit),
           const SizedBox(height: 20),
           _SectionHeader('API Keys'),
