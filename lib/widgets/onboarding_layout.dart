@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_theme.dart';
-
 /// Wraps onboarding screen content with a back arrow, thin progress bar,
 /// and safe-area padding matching the Cal AI onboarding design.
 class OnboardingLayout extends StatelessWidget {
@@ -24,9 +22,10 @@ class OnboardingLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final progress = step / totalSteps;
+    final cs = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: cs.surface,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -44,10 +43,8 @@ class OnboardingLayout extends StatelessWidget {
                       child: LinearProgressIndicator(
                         value: progress,
                         minHeight: 3,
-                        backgroundColor: AppColors.pillUnselected,
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                          AppColors.black,
-                        ),
+                        backgroundColor: cs.surfaceContainerHighest,
+                        valueColor: AlwaysStoppedAnimation<Color>(cs.onSurface),
                       ),
                     ),
                   ),
@@ -70,16 +67,17 @@ class _BackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: onBack,
       child: Container(
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: AppColors.pillUnselected,
+          color: cs.surfaceContainerHighest,
           shape: BoxShape.circle,
         ),
-        child: const Icon(Icons.arrow_back, size: 20, color: AppColors.black),
+        child: Icon(Icons.arrow_back, size: 20, color: cs.onSurface),
       ),
     );
   }
