@@ -417,12 +417,12 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ### Phase 11 — Settings Screen
 
-- [ ] Build `lib/features/settings/settings_screen.dart`:
-  - [ ] **Theme** — `SegmentedButton` (Light / Dark / System); writes to `settingsNotifier.setTheme()`; `MaterialApp.themeMode` updates immediately
-  - [ ] **Weight unit** — `Switch` tile (kg / lbs); writes to `settingsNotifier.setWeightUnit()`
-  - [ ] **API Keys** — two `TextField`s with obscured text for `gemini_api_key` and `usda_api_key`; "Save" `FilledButton` writes to `flutter_secure_storage`; inline "Test" `TextButton` per key that makes a minimal API call and shows a `SnackBar`
-  - [ ] **Profile section** — display goal + daily calorie + macro targets; "Edit Goals" `TextButton` opens a `showModalBottomSheet` reusing `CalorieRing` donut widgets for post-onboarding target adjustment
-  - [ ] **Reset onboarding** — red `TextButton` with `showDialog` confirmation; on confirm: clears `SharedPreferences.onboarding_complete` + deletes `Profiles` row → `context.go('/onboarding/goal')`
+- [x] Build `lib/features/settings/settings_screen.dart`:
+  - [x] **Theme** — `SegmentedButton` (Light / Dark / System); writes to `settingsNotifier.setTheme()`; `MaterialApp.themeMode` updates immediately
+  - [x] **Weight unit** — `Switch` tile (kg / lbs); writes to `settingsNotifier.setWeightUnit()`
+  - [x] **API Keys** — two `TextField`s with obscured text for `gemini_api_key` and `usda_api_key`; "Save" `FilledButton` writes to `flutter_secure_storage`; inline "Test" `TextButton` per key that makes a minimal API call and shows a `SnackBar`
+  - [x] **Profile section** — display goal + daily calorie + macro targets; "Edit Goals" `TextButton` opens a `showModalBottomSheet` reusing `CalorieRing` donut widgets for post-onboarding target adjustment
+  - [x] **Reset onboarding** — red `TextButton` with `showDialog` confirmation; on confirm: clears `SharedPreferences.onboarding_complete` + deletes `Profiles` row → `context.go('/onboarding/goal')`
 
 ---
 
