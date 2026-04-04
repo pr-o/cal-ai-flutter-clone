@@ -207,14 +207,14 @@ class _WeightChart extends StatelessWidget {
             LineChartBarData(
               spots: spots,
               isCurved: true,
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onSurface,
               barWidth: 2.5,
               dotData: FlDotData(
                 show: spots.length < 10,
               ),
               belowBarData: BarAreaData(
                 show: true,
-                color: Colors.black.withValues(alpha: 0.06),
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.06),
               ),
             ),
             if (targetWeightKg != null)

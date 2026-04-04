@@ -86,7 +86,7 @@ class _ResultsChart extends StatelessWidget {
             LineChartBarData(
               spots: calAiSpots,
               isCurved: true,
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onSurface,
               barWidth: 3,
               dotData: const FlDotData(show: false),
             ),
