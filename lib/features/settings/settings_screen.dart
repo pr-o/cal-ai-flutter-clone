@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 
 import '../../db/database.dart';
 import '../../features/home/notifier.dart';
+import '../../utils/notifications.dart';
 import 'notifier.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -66,6 +67,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           _ThemeSegment(current: settings.themeMode),
           const SizedBox(height: 20),
           _WeightUnitTile(unit: settings.weightUnit),
+          const SizedBox(height: 20),
+          _SectionHeader('Reminders'),
+          const SizedBox(height: 8),
+          const _RemindersTile(),
           const SizedBox(height: 20),
           _SectionHeader('API Keys'),
           const SizedBox(height: 8),
@@ -580,6 +585,114 @@ class _NumField extends StatelessWidget {
         labelText: label,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
+    );
+  }
+}
+
+class _RemindersTile extends ConsumerStatefulWidget {
+  const _RemindersTile();
+
+  @override
+  ConsumerState<_RemindersTile> createState() => _RemindersTileState();
+}
+
+class _RemindersTileState extends ConsumerState<_RemindersTile> {
+  bool _breakfastLoading = false;
+  bool _lunchLoading = false;
+  bool _dinnerLoading = false;
+
+  Future<void> _toggle(String meal, bool value) async {
+    setState(() {
+      if (meal == 'breakfast') _breakfastLoading = true;
+      if (meal == 'lunch') _lunchLoading = true;
+      if (meal == 'dinner') _dinnerLoading = true;
+    });
+    // Request permission on first enable
+    if (value) await initNotifications();
+    await ref.read(settingsProvider.notifier).setReminder(meal, value);
+    if (mounted) {
+      setState(() {
+        if (meal == 'breakfast') _breakfastLoading = false;
+        if (meal == 'lunch') _lunchLoading = false;
+        if (meal == 'dinner') _dinnerLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final settings = ref.watch(settingsProvider);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          _ReminderRow(
+            emoji: '🌅',
+            label: 'Breakfast',
+            time: '8:00 AM',
+            value: settings.reminderBreakfast,
+            loading: _breakfastLoading,
+            onChanged: (v) => _toggle('breakfast', v),
+          ),
+          const Divider(height: 1, indent: 16, endIndent: 16),
+          _ReminderRow(
+            emoji: '☀️',
+            label: 'Lunch',
+            time: '12:00 PM',
+            value: settings.reminderLunch,
+            loading: _lunchLoading,
+            onChanged: (v) => _toggle('lunch', v),
+          ),
+          const Divider(height: 1, indent: 16, endIndent: 16),
+          _ReminderRow(
+            emoji: '🌙',
+            label: 'Dinner',
+            time: '7:00 PM',
+            value: settings.reminderDinner,
+            loading: _dinnerLoading,
+            onChanged: (v) => _toggle('dinner', v),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ReminderRow extends StatelessWidget {
+  const _ReminderRow({
+    required this.emoji,
+    required this.label,
+    required this.time,
+    required this.value,
+    required this.loading,
+    required this.onChanged,
+  });
+
+  final String emoji;
+  final String label;
+  final String time;
+  final bool value;
+  final bool loading;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile(
+      secondary: Text(emoji, style: const TextStyle(fontSize: 22)),
+      title: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
+      subtitle: Text(time,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.6),
+              )),
+      value: value,
+      onChanged: loading ? null : onChanged,
     );
   }
 }
