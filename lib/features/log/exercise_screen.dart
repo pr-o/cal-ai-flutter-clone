@@ -178,7 +178,6 @@ class _ExerciseScreenState extends ConsumerState<ExerciseScreen> {
             FilledButton(
               onPressed: _saving ? null : _log,
               style: FilledButton.styleFrom(
-                backgroundColor: Colors.black,
                 minimumSize: const Size.fromHeight(52),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -188,13 +187,10 @@ class _ExerciseScreenState extends ConsumerState<ExerciseScreen> {
                   ? const SizedBox(
                       width: 20,
                       height: 20,
-                      child: CircularProgressIndicator(
-                          strokeWidth: 2, color: Colors.white),
+                      child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : const Text('Log Exercise',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600)),
+                      style: TextStyle(fontWeight: FontWeight.w600)),
             ),
           ],
         ),

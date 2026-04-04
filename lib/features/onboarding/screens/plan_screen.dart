@@ -220,8 +220,6 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
             FilledButton(
               onPressed: _saving ? null : _saveAndStart,
               style: FilledButton.styleFrom(
-                backgroundColor: Colors.black,
-                foregroundColor: Colors.white,
                 minimumSize: const Size.fromHeight(56),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -229,10 +227,9 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
               ),
               child: _saving
                   ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                          strokeWidth: 2, color: Colors.white),
+                      width: 22,
+                      height: 22,
+                      child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : const Text("Let's get started!",
                       style: TextStyle(fontWeight: FontWeight.w600)),

@@ -21,8 +21,8 @@ class AnalyticsScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showLogWeightSheet(context, ref),
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.onSurface,
+        foregroundColor: Theme.of(context).colorScheme.surface,
         icon: const Icon(Icons.monitor_weight_outlined),
         label: const Text('Log Weight'),
       ),
@@ -132,15 +132,12 @@ class AnalyticsScreen extends ConsumerWidget {
                 await ref.read(analyticsProvider.notifier).logWeight(kg);
               },
               style: FilledButton.styleFrom(
-                backgroundColor: Colors.black,
                 minimumSize: const Size.fromHeight(52),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text('Save',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w600)),
+              child: const Text('Save', style: TextStyle(fontWeight: FontWeight.w600)),
             ),
             const SizedBox(height: 24),
           ],
@@ -210,14 +207,14 @@ class _WeightChart extends StatelessWidget {
             LineChartBarData(
               spots: spots,
               isCurved: true,
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onSurface,
               barWidth: 2.5,
               dotData: FlDotData(
                 show: spots.length < 10,
               ),
               belowBarData: BarAreaData(
                 show: true,
-                color: Colors.black.withValues(alpha: 0.06),
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.06),
               ),
             ),
             if (targetWeightKg != null)

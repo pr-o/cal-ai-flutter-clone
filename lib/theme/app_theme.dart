@@ -45,8 +45,8 @@ ThemeData _base(ColorScheme colorScheme) {
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        backgroundColor: AppColors.black,
-        foregroundColor: AppColors.white,
+        backgroundColor: colorScheme.onSurface,
+        foregroundColor: colorScheme.surface,
         minimumSize: const Size(double.infinity, 56),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
@@ -66,7 +66,7 @@ ThemeData _base(ColorScheme colorScheme) {
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: colorScheme.surface,
-      selectedItemColor: AppColors.black,
+      selectedItemColor: colorScheme.onSurface,
       unselectedItemColor: colorScheme.onSurface.withValues(alpha: 0.4),
       type: BottomNavigationBarType.fixed,
       elevation: 0,

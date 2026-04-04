@@ -178,14 +178,12 @@ class _WaterScreenState extends ConsumerState<WaterScreen> {
                           _add(ml);
                         },
                   style: FilledButton.styleFrom(
-                    backgroundColor: Colors.black,
                     minimumSize: const Size(80, 52),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('Add',
-                      style: TextStyle(color: Colors.white)),
+                  child: const Text('Add'),
                 ),
               ],
             ),

@@ -370,15 +370,13 @@ class _ConfirmSheetState extends State<_ConfirmSheet> {
             FilledButton(
               onPressed: widget.onAdd,
               style: FilledButton.styleFrom(
-                backgroundColor: Colors.black,
                 minimumSize: const Size.fromHeight(52),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
               ),
               child: const Text('Add to log',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w600)),
+                  style: TextStyle(fontWeight: FontWeight.w600)),
             ),
           ],
         ),

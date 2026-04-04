@@ -428,10 +428,10 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ### Phase 12 — Dark Mode Polish
 
-- [ ] Audit every screen and widget for hardcoded `Color` values — every color must reference `Theme.of(context).colorScheme` or `app_theme.dart` tokens
-- [ ] Verify `CalorieRing`, `MacroPill`, `FoodEntryCard`, `WeekStrip`, `RulerPicker`, `OnboardingLayout` render correctly in both `ThemeMode.light` and `ThemeMode.dark`
-- [ ] Test theme switching in Settings — confirm `MaterialApp.themeMode` update rebuilds the full widget tree without restart
-- [ ] Verify `SystemChrome.setSystemUIOverlayStyle` matches the active theme (dark icons on light, light icons on dark)
+- [x] Audit every screen and widget for hardcoded `Color` values — every color must reference `Theme.of(context).colorScheme` or `app_theme.dart` tokens
+- [x] Verify `CalorieRing`, `MacroPill`, `FoodEntryCard`, `WeekStrip`, `RulerPicker`, `OnboardingLayout` render correctly in both `ThemeMode.light` and `ThemeMode.dark`
+- [x] Test theme switching in Settings — confirm `MaterialApp.themeMode` update rebuilds the full widget tree without restart
+- [x] Verify `SystemChrome.setSystemUIOverlayStyle` matches the active theme (dark icons on light, light icons on dark)
 
 ---
 
