@@ -22,9 +22,9 @@ class ResultsScreen extends StatelessWidget {
             Text(
               'Cal AI creates\nlong-term results',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    height: 1.2,
-                  ),
+                fontWeight: FontWeight.w800,
+                height: 1.2,
+              ),
             ),
             const SizedBox(height: 24),
             _ResultsChart(),
@@ -125,12 +125,11 @@ class _StatCard extends StatelessWidget {
             child: Text(
               '80% of Cal AI users maintain their weight loss even 6 months later.',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontStyle: FontStyle.italic,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.6),
-                  ),
+                fontStyle: FontStyle.italic,
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
             ),
           ),
         ],

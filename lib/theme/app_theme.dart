@@ -48,9 +48,7 @@ ThemeData _base(ColorScheme colorScheme) {
         backgroundColor: colorScheme.onSurface,
         foregroundColor: colorScheme.surface,
         minimumSize: const Size(double.infinity, 56),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         textStyle: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
       ),
     ),
@@ -58,9 +56,7 @@ ThemeData _base(ColorScheme colorScheme) {
       style: OutlinedButton.styleFrom(
         foregroundColor: colorScheme.onSurface,
         minimumSize: const Size(0, 52),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         side: BorderSide(color: colorScheme.outline),
       ),
     ),

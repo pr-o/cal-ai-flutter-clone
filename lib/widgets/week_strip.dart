@@ -85,15 +85,13 @@ class _DayTile extends StatelessWidget {
             Text(
               _dayLetters[date.weekday % 7],
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: isSelected
-                        ? activeColor
-                        : Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.4),
-                    fontWeight:
-                        isSelected ? FontWeight.w700 : FontWeight.w400,
-                  ),
+                color: isSelected
+                    ? activeColor
+                    : Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.4),
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
+              ),
             ),
             const SizedBox(height: 4),
             _DateCircle(
@@ -132,19 +130,14 @@ class _DateCircle extends StatelessWidget {
       return Container(
         width: 32,
         height: 32,
-        decoration: BoxDecoration(
-          color: activeColor,
-          shape: BoxShape.circle,
-        ),
+        decoration: BoxDecoration(color: activeColor, shape: BoxShape.circle),
         alignment: Alignment.center,
         child: Text(
           label,
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: activeColor == Colors.black
-                    ? Colors.white
-                    : Colors.black,
-                fontWeight: FontWeight.w700,
-              ),
+            color: activeColor == Colors.black ? Colors.white : Colors.black,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       );
     }
@@ -160,9 +153,9 @@ class _DateCircle extends StatelessWidget {
             child: Text(
               label,
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: isSelected ? activeColor : null,
-                  ),
+                fontWeight: FontWeight.w700,
+                color: isSelected ? activeColor : null,
+              ),
             ),
           ),
         ),
@@ -177,10 +170,7 @@ class _DateCircle extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              label,
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
+            Text(label, style: Theme.of(context).textTheme.labelMedium),
             const SizedBox(height: 2),
             Container(
               width: 4,
@@ -203,11 +193,10 @@ class _DateCircle extends StatelessWidget {
         child: Text(
           label,
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withValues(alpha: 0.5),
-              ),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.5),
+          ),
         ),
       ),
     );

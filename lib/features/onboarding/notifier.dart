@@ -56,21 +56,20 @@ class OnboardingState {
     int? dailyProteinG,
     int? dailyCarbsG,
     int? dailyFatG,
-  }) =>
-      OnboardingState(
-        goal: goal ?? this.goal,
-        gender: gender ?? this.gender,
-        birthday: birthday ?? this.birthday,
-        currentWeightKg: currentWeightKg ?? this.currentWeightKg,
-        heightCm: heightCm ?? this.heightCm,
-        targetWeightKg: targetWeightKg ?? this.targetWeightKg,
-        activityLevel: activityLevel ?? this.activityLevel,
-        dietaryPreferences: dietaryPreferences ?? this.dietaryPreferences,
-        dailyCalories: dailyCalories ?? this.dailyCalories,
-        dailyProteinG: dailyProteinG ?? this.dailyProteinG,
-        dailyCarbsG: dailyCarbsG ?? this.dailyCarbsG,
-        dailyFatG: dailyFatG ?? this.dailyFatG,
-      );
+  }) => OnboardingState(
+    goal: goal ?? this.goal,
+    gender: gender ?? this.gender,
+    birthday: birthday ?? this.birthday,
+    currentWeightKg: currentWeightKg ?? this.currentWeightKg,
+    heightCm: heightCm ?? this.heightCm,
+    targetWeightKg: targetWeightKg ?? this.targetWeightKg,
+    activityLevel: activityLevel ?? this.activityLevel,
+    dietaryPreferences: dietaryPreferences ?? this.dietaryPreferences,
+    dailyCalories: dailyCalories ?? this.dailyCalories,
+    dailyProteinG: dailyProteinG ?? this.dailyProteinG,
+    dailyCarbsG: dailyCarbsG ?? this.dailyCarbsG,
+    dailyFatG: dailyFatG ?? this.dailyFatG,
+  );
 }
 
 // ─── Notifier ─────────────────────────────────────────────────────────────────
@@ -82,13 +81,10 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
   void setGoal(String v) => state = state.copyWith(goal: v);
   void setGender(String v) => state = state.copyWith(gender: v);
   void setBirthday(String v) => state = state.copyWith(birthday: v);
-  void setCurrentWeight(double v) =>
-      state = state.copyWith(currentWeightKg: v);
+  void setCurrentWeight(double v) => state = state.copyWith(currentWeightKg: v);
   void setHeight(double v) => state = state.copyWith(heightCm: v);
-  void setTargetWeight(double v) =>
-      state = state.copyWith(targetWeightKg: v);
-  void setActivityLevel(String v) =>
-      state = state.copyWith(activityLevel: v);
+  void setTargetWeight(double v) => state = state.copyWith(targetWeightKg: v);
+  void setActivityLevel(String v) => state = state.copyWith(activityLevel: v);
   void toggleDiet(String pref) {
     final prefs = Set<String>.from(state.dietaryPreferences);
     if (prefs.contains(pref)) {
@@ -104,18 +100,17 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
     required int proteinG,
     required int carbsG,
     required int fatG,
-  }) =>
-      state = state.copyWith(
-        dailyCalories: calories,
-        dailyProteinG: proteinG,
-        dailyCarbsG: carbsG,
-        dailyFatG: fatG,
-      );
+  }) => state = state.copyWith(
+    dailyCalories: calories,
+    dailyProteinG: proteinG,
+    dailyCarbsG: carbsG,
+    dailyFatG: fatG,
+  );
 }
 
 // ─── Provider ─────────────────────────────────────────────────────────────────
 
 final onboardingProvider =
     NotifierProvider<OnboardingNotifier, OnboardingState>(
-  OnboardingNotifier.new,
-);
+      OnboardingNotifier.new,
+    );

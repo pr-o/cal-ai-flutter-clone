@@ -22,14 +22,11 @@ class OnboardingOptionPill extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
-        padding:
-            const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
         decoration: BoxDecoration(
           color: selected
               ? (isDark ? Colors.white : Colors.black)
-              : (isDark
-                  ? const Color(0xFF2A2A2A)
-                  : const Color(0xFFF0F0F0)),
+              : (isDark ? const Color(0xFF2A2A2A) : const Color(0xFFF0F0F0)),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
@@ -40,33 +37,24 @@ class OnboardingOptionPill extends StatelessWidget {
                 children: [
                   Text(
                     label,
-                    style:
-                        Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: selected
-                                  ? (isDark
-                                      ? Colors.black
-                                      : Colors.white)
-                                  : null,
-                            ),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: selected
+                          ? (isDark ? Colors.black : Colors.white)
+                          : null,
+                    ),
                   ),
                   if (subtitle != null) ...[
                     const SizedBox(height: 2),
                     Text(
                       subtitle!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(
-                            color: selected
-                                ? (isDark
-                                    ? Colors.black54
-                                    : Colors.white70)
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .onSurface
-                                    .withValues(alpha: 0.4),
-                          ),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: selected
+                            ? (isDark ? Colors.black54 : Colors.white70)
+                            : Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.4),
+                      ),
                     ),
                   ],
                 ],
@@ -101,12 +89,9 @@ class OnboardingNextButton extends StatelessWidget {
       onPressed: onPressed,
       style: FilledButton.styleFrom(
         minimumSize: const Size.fromHeight(56),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),
-      child: Text(label,
-          style: const TextStyle(fontWeight: FontWeight.w600)),
+      child: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
     );
   }
 }

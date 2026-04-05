@@ -8,9 +8,24 @@ class ScaffoldWithNavBar extends StatelessWidget {
   final Widget child;
 
   static const _tabs = [
-    (path: '/home', icon: Icons.home_outlined, activeIcon: Icons.home_rounded, label: 'Home'),
-    (path: '/analytics', icon: Icons.bar_chart_outlined, activeIcon: Icons.bar_chart_rounded, label: 'Analytics'),
-    (path: '/settings', icon: Icons.person_outline_rounded, activeIcon: Icons.person_rounded, label: 'Profile'),
+    (
+      path: '/home',
+      icon: Icons.home_outlined,
+      activeIcon: Icons.home_rounded,
+      label: 'Home',
+    ),
+    (
+      path: '/analytics',
+      icon: Icons.bar_chart_outlined,
+      activeIcon: Icons.bar_chart_rounded,
+      label: 'Analytics',
+    ),
+    (
+      path: '/settings',
+      icon: Icons.person_outline_rounded,
+      activeIcon: Icons.person_rounded,
+      label: 'Profile',
+    ),
   ];
 
   int _currentIndex(BuildContext context) {
@@ -31,17 +46,20 @@ class ScaffoldWithNavBar extends StatelessWidget {
         currentIndex: currentIndex,
         onTap: (i) => context.go(_tabs[i].path),
         selectedItemColor: Theme.of(context).colorScheme.onSurface,
-        unselectedItemColor:
-            Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+        unselectedItemColor: Theme.of(
+          context,
+        ).colorScheme.onSurface.withValues(alpha: 0.4),
         showSelectedLabels: true,
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
         items: _tabs
-            .map((t) => BottomNavigationBarItem(
-                  icon: Icon(t.icon),
-                  activeIcon: Icon(t.activeIcon),
-                  label: t.label,
-                ))
+            .map(
+              (t) => BottomNavigationBarItem(
+                icon: Icon(t.icon),
+                activeIcon: Icon(t.activeIcon),
+                label: t.label,
+              ),
+            )
             .toList(),
       ),
     );

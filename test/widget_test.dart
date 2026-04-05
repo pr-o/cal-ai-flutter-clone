@@ -13,8 +13,7 @@ void main() {
       routes: [
         GoRoute(
           path: '/onboarding/goal',
-          builder: (context, state) =>
-              const Scaffold(body: Text('Cal AI')),
+          builder: (context, state) => const Scaffold(body: Text('Cal AI')),
         ),
       ],
     );

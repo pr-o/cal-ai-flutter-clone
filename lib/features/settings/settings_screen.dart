@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 
 import '../../db/database.dart';
 import '../../features/home/notifier.dart';
+import '../../utils/notifications.dart';
 import 'notifier.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -55,8 +56,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings',
-            style: TextStyle(fontWeight: FontWeight.w800)),
+        title: const Text(
+          'Settings',
+          style: TextStyle(fontWeight: FontWeight.w800),
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -66,6 +69,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           _ThemeSegment(current: settings.themeMode),
           const SizedBox(height: 20),
           _WeightUnitTile(unit: settings.weightUnit),
+          const SizedBox(height: 20),
+          _SectionHeader('Reminders'),
+          const SizedBox(height: 8),
+          const _RemindersTile(),
           const SizedBox(height: 20),
           _SectionHeader('API Keys'),
           const SizedBox(height: 8),
@@ -108,8 +115,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           const SizedBox(height: 8),
           profileAsync.when(
             loading: () => const SizedBox(
-                height: 60,
-                child: Center(child: CircularProgressIndicator())),
+              height: 60,
+              child: Center(child: CircularProgressIndicator()),
+            ),
             error: (e, _) => Text('Error: $e'),
             data: (profile) => _ProfileSection(profile: profile),
           ),
@@ -131,9 +139,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   Future<void> _testGeminiKey(BuildContext context, String key) async {
     if (key.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter a key first')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Enter a key first')));
       return;
     }
     try {
@@ -144,20 +152,19 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         'contents': [
           {
             'parts': [
-              {'text': 'Say OK'}
-            ]
-          }
-        ]
+              {'text': 'Say OK'},
+            ],
+          },
+        ],
       });
       final res = await http
-          .post(url,
-              headers: {'Content-Type': 'application/json'}, body: body)
+          .post(url, headers: {'Content-Type': 'application/json'}, body: body)
           .timeout(const Duration(seconds: 10));
       if (!context.mounted) return;
       if (res.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('✓ Gemini key is valid')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('✓ Gemini key is valid')));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Gemini error ${res.statusCode}')),
@@ -165,40 +172,39 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       }
     } catch (e) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Gemini test failed: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Gemini test failed: $e')));
     }
   }
 
   Future<void> _testUsdaKey(BuildContext context, String key) async {
     if (key.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter a key first')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Enter a key first')));
       return;
     }
     try {
       final url = Uri.parse(
         'https://api.nal.usda.gov/fdc/v1/foods/search?query=apple&pageSize=1&api_key=$key',
       );
-      final res =
-          await http.get(url).timeout(const Duration(seconds: 10));
+      final res = await http.get(url).timeout(const Duration(seconds: 10));
       if (!context.mounted) return;
       if (res.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('✓ USDA key is valid')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('✓ USDA key is valid')));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('USDA error ${res.statusCode}')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('USDA error ${res.statusCode}')));
       }
     } catch (e) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('USDA test failed: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('USDA test failed: $e')));
     }
   }
 
@@ -208,7 +214,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       builder: (ctx) => AlertDialog(
         title: const Text('Reset onboarding?'),
         content: const Text(
-            'This will delete your profile and return you to the setup flow.'),
+          'This will delete your profile and return you to the setup flow.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
@@ -241,12 +248,11 @@ class _SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-        title,
-        style: Theme.of(context)
-            .textTheme
-            .titleMedium
-            ?.copyWith(fontWeight: FontWeight.w700),
-      );
+    title,
+    style: Theme.of(
+      context,
+    ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+  );
 }
 
 class _ThemeSegment extends ConsumerWidget {
@@ -289,15 +295,13 @@ class _WeightUnitTile extends ConsumerWidget {
         subtitle: Text(unit == 'lbs' ? 'Pounds (lbs)' : 'Kilograms (kg)'),
         secondary: Text(
           unit,
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium
-              ?.copyWith(fontWeight: FontWeight.w700),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
         ),
         value: unit == 'lbs',
-        onChanged: (v) => ref
-            .read(settingsProvider.notifier)
-            .setWeightUnit(v ? 'lbs' : 'kg'),
+        onChanged: (v) =>
+            ref.read(settingsProvider.notifier).setWeightUnit(v ? 'lbs' : 'kg'),
       ),
     );
   }
@@ -332,9 +336,7 @@ class _ApiKeyFieldState extends State<_ApiKeyField> {
           obscureText: _obscure,
           decoration: InputDecoration(
             labelText: widget.label,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             suffixIcon: IconButton(
               icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
               onPressed: () => setState(() => _obscure = !_obscure),
@@ -345,10 +347,7 @@ class _ApiKeyFieldState extends State<_ApiKeyField> {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            TextButton(
-              onPressed: widget.onTest,
-              child: const Text('Test'),
-            ),
+            TextButton(onPressed: widget.onTest, child: const Text('Test')),
             const SizedBox(width: 8),
             FilledButton(
               onPressed: widget.onSave,
@@ -397,10 +396,9 @@ class _ProfileSection extends ConsumerWidget {
             children: [
               Text(
                 _goalLabel(profile!.goal),
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall
-                    ?.copyWith(fontWeight: FontWeight.w700),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
               ),
               TextButton(
                 onPressed: () => _showEditGoals(context, ref, profile!),
@@ -419,10 +417,10 @@ class _ProfileSection extends ConsumerWidget {
   }
 
   String _goalLabel(String goal) => switch (goal) {
-        'lose' => 'Goal: Lose weight',
-        'gain' => 'Goal: Gain muscle',
-        _ => 'Goal: Maintain weight',
-      };
+    'lose' => 'Goal: Lose weight',
+    'gain' => 'Goal: Gain muscle',
+    _ => 'Goal: Maintain weight',
+  };
 
   void _showEditGoals(BuildContext context, WidgetRef ref, Profile profile) {
     showModalBottomSheet<void>(
@@ -448,18 +446,20 @@ class _GoalRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.6),
-                  )),
-          Text(value,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(fontWeight: FontWeight.w600)),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.6),
+            ),
+          ),
+          Text(
+            value,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+          ),
         ],
       ),
     );
@@ -483,14 +483,16 @@ class _EditGoalsSheetState extends ConsumerState<_EditGoalsSheet> {
   @override
   void initState() {
     super.initState();
-    _calCtrl =
-        TextEditingController(text: widget.profile.dailyCalories.toString());
-    _proteinCtrl =
-        TextEditingController(text: widget.profile.dailyProteinG.toString());
-    _carbsCtrl =
-        TextEditingController(text: widget.profile.dailyCarbsG.toString());
-    _fatCtrl =
-        TextEditingController(text: widget.profile.dailyFatG.toString());
+    _calCtrl = TextEditingController(
+      text: widget.profile.dailyCalories.toString(),
+    );
+    _proteinCtrl = TextEditingController(
+      text: widget.profile.dailyProteinG.toString(),
+    );
+    _carbsCtrl = TextEditingController(
+      text: widget.profile.dailyCarbsG.toString(),
+    );
+    _fatCtrl = TextEditingController(text: widget.profile.dailyFatG.toString());
   }
 
   @override
@@ -515,11 +517,12 @@ class _EditGoalsSheetState extends ConsumerState<_EditGoalsSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('Edit Daily Goals',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(fontWeight: FontWeight.w700)),
+          Text(
+            'Edit Daily Goals',
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+          ),
           const SizedBox(height: 16),
           _NumField(label: 'Calories (kcal)', controller: _calCtrl),
           const SizedBox(height: 12),
@@ -534,7 +537,8 @@ class _EditGoalsSheetState extends ConsumerState<_EditGoalsSheet> {
             style: FilledButton.styleFrom(
               minimumSize: const Size.fromHeight(52),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             child: const Text('Save Goals'),
           ),
@@ -552,14 +556,16 @@ class _EditGoalsSheetState extends ConsumerState<_EditGoalsSheet> {
     if (cal == null || protein == null || carbs == null || fat == null) return;
 
     final db = ref.read(databaseProvider);
-    await (db.update(db.profiles)
-          ..where((t) => t.id.equals(widget.profile.id)))
-        .write(ProfilesCompanion(
-      dailyCalories: Value(cal),
-      dailyProteinG: Value(protein),
-      dailyCarbsG: Value(carbs),
-      dailyFatG: Value(fat),
-    ));
+    await (db.update(
+      db.profiles,
+    )..where((t) => t.id.equals(widget.profile.id))).write(
+      ProfilesCompanion(
+        dailyCalories: Value(cal),
+        dailyProteinG: Value(protein),
+        dailyCarbsG: Value(carbs),
+        dailyFatG: Value(fat),
+      ),
+    );
     ref.invalidate(profileProvider);
 
     if (mounted) Navigator.of(context).pop();
@@ -580,6 +586,113 @@ class _NumField extends StatelessWidget {
         labelText: label,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
+    );
+  }
+}
+
+class _RemindersTile extends ConsumerStatefulWidget {
+  const _RemindersTile();
+
+  @override
+  ConsumerState<_RemindersTile> createState() => _RemindersTileState();
+}
+
+class _RemindersTileState extends ConsumerState<_RemindersTile> {
+  bool _breakfastLoading = false;
+  bool _lunchLoading = false;
+  bool _dinnerLoading = false;
+
+  Future<void> _toggle(String meal, bool value) async {
+    setState(() {
+      if (meal == 'breakfast') _breakfastLoading = true;
+      if (meal == 'lunch') _lunchLoading = true;
+      if (meal == 'dinner') _dinnerLoading = true;
+    });
+    // Request permission on first enable
+    if (value) await initNotifications();
+    await ref.read(settingsProvider.notifier).setReminder(meal, value);
+    if (mounted) {
+      setState(() {
+        if (meal == 'breakfast') _breakfastLoading = false;
+        if (meal == 'lunch') _lunchLoading = false;
+        if (meal == 'dinner') _dinnerLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final settings = ref.watch(settingsProvider);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          _ReminderRow(
+            emoji: '🌅',
+            label: 'Breakfast',
+            time: '8:00 AM',
+            value: settings.reminderBreakfast,
+            loading: _breakfastLoading,
+            onChanged: (v) => _toggle('breakfast', v),
+          ),
+          const Divider(height: 1, indent: 16, endIndent: 16),
+          _ReminderRow(
+            emoji: '☀️',
+            label: 'Lunch',
+            time: '12:00 PM',
+            value: settings.reminderLunch,
+            loading: _lunchLoading,
+            onChanged: (v) => _toggle('lunch', v),
+          ),
+          const Divider(height: 1, indent: 16, endIndent: 16),
+          _ReminderRow(
+            emoji: '🌙',
+            label: 'Dinner',
+            time: '7:00 PM',
+            value: settings.reminderDinner,
+            loading: _dinnerLoading,
+            onChanged: (v) => _toggle('dinner', v),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ReminderRow extends StatelessWidget {
+  const _ReminderRow({
+    required this.emoji,
+    required this.label,
+    required this.time,
+    required this.value,
+    required this.loading,
+    required this.onChanged,
+  });
+
+  final String emoji;
+  final String label;
+  final String time;
+  final bool value;
+  final bool loading;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile(
+      secondary: Text(emoji, style: const TextStyle(fontSize: 22)),
+      title: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
+      subtitle: Text(
+        time,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+        ),
+      ),
+      value: value,
+      onChanged: loading ? null : onChanged,
     );
   }
 }

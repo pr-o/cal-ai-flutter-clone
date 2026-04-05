@@ -23,8 +23,7 @@ import 'widgets/scaffold_with_nav_bar.dart';
 
 Future<GoRouter> buildRouter() async {
   final prefs = await SharedPreferences.getInstance();
-  final onboardingComplete =
-      prefs.getBool('onboarding_complete') ?? false;
+  final onboardingComplete = prefs.getBool('onboarding_complete') ?? false;
 
   return GoRouter(
     initialLocation: onboardingComplete ? '/home' : '/onboarding/goal',
@@ -77,9 +76,8 @@ Future<GoRouter> buildRouter() async {
       ),
       GoRoute(
         path: '/log/scan-result',
-        builder: (context, state) => ScanResultScreen(
-          photoPath: state.extra as String,
-        ),
+        builder: (context, state) =>
+            ScanResultScreen(photoPath: state.extra as String),
       ),
       GoRoute(
         path: '/log/search',
@@ -95,8 +93,7 @@ Future<GoRouter> buildRouter() async {
       ),
       // ── App shell (tabs) ──────────────────────────────────────────────────
       ShellRoute(
-        builder: (context, state, child) =>
-            ScaffoldWithNavBar(child: child),
+        builder: (context, state, child) => ScaffoldWithNavBar(child: child),
         routes: [
           GoRoute(
             path: '/home',

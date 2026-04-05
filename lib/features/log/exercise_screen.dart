@@ -53,9 +53,9 @@ class _ExerciseScreenState extends ConsumerState<ExerciseScreen> {
     final calories = double.tryParse(_caloriesCtrl.text);
 
     if (minutes == null || minutes <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter a valid duration.')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Enter a valid duration.')));
       return;
     }
 
@@ -84,25 +84,24 @@ class _ExerciseScreenState extends ConsumerState<ExerciseScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Exercise',
-                style: Theme.of(context)
-                    .textTheme
-                    .labelLarge
-                    ?.copyWith(fontWeight: FontWeight.w600)),
+            Text(
+              'Exercise',
+              style: Theme.of(
+                context,
+              ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
+            ),
             const SizedBox(height: 8),
             // Exercise autocomplete
             Autocomplete<String>(
-              initialValue:
-                  TextEditingValue(text: _selectedExercise),
+              initialValue: TextEditingValue(text: _selectedExercise),
               optionsBuilder: (value) {
                 if (value.text.isEmpty) return kExerciseSuggestions;
-                return kExerciseSuggestions.where((e) => e
-                    .toLowerCase()
-                    .contains(value.text.toLowerCase()));
+                return kExerciseSuggestions.where(
+                  (e) => e.toLowerCase().contains(value.text.toLowerCase()),
+                );
               },
               onSelected: _onExerciseSelected,
-              fieldViewBuilder:
-                  (context, ctrl, focusNode, onSubmitted) {
+              fieldViewBuilder: (context, ctrl, focusNode, onSubmitted) {
                 return TextField(
                   controller: ctrl,
                   focusNode: focusNode,
@@ -112,7 +111,9 @@ class _ExerciseScreenState extends ConsumerState<ExerciseScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 14),
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
                   ),
                   onChanged: (v) {
                     setState(() => _selectedExercise = v);
@@ -122,11 +123,12 @@ class _ExerciseScreenState extends ConsumerState<ExerciseScreen> {
               },
             ),
             const SizedBox(height: 20),
-            Text('Duration (minutes)',
-                style: Theme.of(context)
-                    .textTheme
-                    .labelLarge
-                    ?.copyWith(fontWeight: FontWeight.w600)),
+            Text(
+              'Duration (minutes)',
+              style: Theme.of(
+                context,
+              ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
+            ),
             const SizedBox(height: 8),
             TextField(
               controller: _durationCtrl,
@@ -139,25 +141,27 @@ class _ExerciseScreenState extends ConsumerState<ExerciseScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 14),
+                  horizontal: 16,
+                  vertical: 14,
+                ),
               ),
               onChanged: (_) => _recalcCalories(),
             ),
             const SizedBox(height: 20),
-            Text('Calories burned',
-                style: Theme.of(context)
-                    .textTheme
-                    .labelLarge
-                    ?.copyWith(fontWeight: FontWeight.w600)),
+            Text(
+              'Calories burned',
+              style: Theme.of(
+                context,
+              ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
+            ),
             const SizedBox(height: 4),
             Text(
               'Auto-estimated — tap to override',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.4),
-                  ),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.4),
+              ),
             ),
             const SizedBox(height: 8),
             TextField(
@@ -171,7 +175,9 @@ class _ExerciseScreenState extends ConsumerState<ExerciseScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 14),
+                  horizontal: 16,
+                  vertical: 14,
+                ),
               ),
             ),
             const SizedBox(height: 32),
@@ -189,8 +195,10 @@ class _ExerciseScreenState extends ConsumerState<ExerciseScreen> {
                       height: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text('Log Exercise',
-                      style: TextStyle(fontWeight: FontWeight.w600)),
+                  : const Text(
+                      'Log Exercise',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
             ),
           ],
         ),

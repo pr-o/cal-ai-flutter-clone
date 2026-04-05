@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../utils/notifications.dart';
+
 // ─── State ────────────────────────────────────────────────────────────────────
 
 class SettingsState {
@@ -11,23 +13,34 @@ class SettingsState {
   /// 'kg' | 'lbs'
   final String weightUnit;
   final bool onboardingComplete;
+  final bool reminderBreakfast;
+  final bool reminderLunch;
+  final bool reminderDinner;
 
   const SettingsState({
     this.themeMode = ThemeMode.system,
     this.weightUnit = 'kg',
     this.onboardingComplete = false,
+    this.reminderBreakfast = false,
+    this.reminderLunch = false,
+    this.reminderDinner = false,
   });
 
   SettingsState copyWith({
     ThemeMode? themeMode,
     String? weightUnit,
     bool? onboardingComplete,
-  }) =>
-      SettingsState(
-        themeMode: themeMode ?? this.themeMode,
-        weightUnit: weightUnit ?? this.weightUnit,
-        onboardingComplete: onboardingComplete ?? this.onboardingComplete,
-      );
+    bool? reminderBreakfast,
+    bool? reminderLunch,
+    bool? reminderDinner,
+  }) => SettingsState(
+    themeMode: themeMode ?? this.themeMode,
+    weightUnit: weightUnit ?? this.weightUnit,
+    onboardingComplete: onboardingComplete ?? this.onboardingComplete,
+    reminderBreakfast: reminderBreakfast ?? this.reminderBreakfast,
+    reminderLunch: reminderLunch ?? this.reminderLunch,
+    reminderDinner: reminderDinner ?? this.reminderDinner,
+  );
 }
 
 // ─── Notifier ─────────────────────────────────────────────────────────────────
@@ -47,6 +60,9 @@ class SettingsNotifier extends Notifier<SettingsState> {
       themeMode: _modeFrom(prefs.getString('theme') ?? 'system'),
       weightUnit: prefs.getString('weight_unit') ?? 'kg',
       onboardingComplete: prefs.getBool('onboarding_complete') ?? false,
+      reminderBreakfast: prefs.getBool('reminder_breakfast') ?? false,
+      reminderLunch: prefs.getBool('reminder_lunch') ?? false,
+      reminderDinner: prefs.getBool('reminder_dinner') ?? false,
     );
   }
 
@@ -76,6 +92,32 @@ class SettingsNotifier extends Notifier<SettingsState> {
     state = state.copyWith(onboardingComplete: false);
   }
 
+  Future<void> setReminder(String meal, bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('reminder_$meal', enabled);
+
+    final ids = <String, int>{'breakfast': 0, 'lunch': 1, 'dinner': 2};
+    final times = <String, (int, int, String)>{
+      'breakfast': (8, 0, 'Time for breakfast! Log your meal.'),
+      'lunch': (12, 0, 'Lunchtime! Don\'t forget to log your meal.'),
+      'dinner': (19, 0, 'Dinner time! Log your evening meal.'),
+    };
+
+    if (enabled) {
+      final (hour, minute, label) = times[meal]!;
+      await scheduleMealReminder(ids[meal]!, hour, minute, label);
+    } else {
+      await cancelReminder(ids[meal]!);
+    }
+
+    state = switch (meal) {
+      'breakfast' => state.copyWith(reminderBreakfast: enabled),
+      'lunch' => state.copyWith(reminderLunch: enabled),
+      'dinner' => state.copyWith(reminderDinner: enabled),
+      _ => state,
+    };
+  }
+
   // ── API keys (flutter_secure_storage) ───────────────────────────────────────
 
   Future<String?> getGeminiApiKey() => _secure.read(key: 'gemini_api_key');
@@ -89,19 +131,20 @@ class SettingsNotifier extends Notifier<SettingsState> {
   // ── Helpers ──────────────────────────────────────────────────────────────────
 
   ThemeMode _modeFrom(String s) => switch (s) {
-        'light' => ThemeMode.light,
-        'dark' => ThemeMode.dark,
-        _ => ThemeMode.system,
-      };
+    'light' => ThemeMode.light,
+    'dark' => ThemeMode.dark,
+    _ => ThemeMode.system,
+  };
 
   String _modeToString(ThemeMode m) => switch (m) {
-        ThemeMode.light => 'light',
-        ThemeMode.dark => 'dark',
-        _ => 'system',
-      };
+    ThemeMode.light => 'light',
+    ThemeMode.dark => 'dark',
+    _ => 'system',
+  };
 }
 
 // ─── Provider ─────────────────────────────────────────────────────────────────
 
-final settingsProvider =
-    NotifierProvider<SettingsNotifier, SettingsState>(SettingsNotifier.new);
+final settingsProvider = NotifierProvider<SettingsNotifier, SettingsState>(
+  SettingsNotifier.new,
+);

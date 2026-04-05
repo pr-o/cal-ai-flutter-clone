@@ -9,18 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Widget _dark(Widget child) => MaterialApp(
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.dark,
-      home: Scaffold(body: child),
-    );
+  theme: lightTheme,
+  darkTheme: darkTheme,
+  themeMode: ThemeMode.dark,
+  home: Scaffold(body: child),
+);
 
 Widget _light(Widget child) => MaterialApp(
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.light,
-      home: Scaffold(body: child),
-    );
+  theme: lightTheme,
+  darkTheme: darkTheme,
+  themeMode: ThemeMode.light,
+  home: Scaffold(body: child),
+);
 
 void main() {
   // ── CalorieRing ────────────────────────────────────────────────────────────
@@ -46,33 +46,25 @@ void main() {
   group('MacroPill', () {
     testWidgets('renders protein in light mode', (tester) async {
       await tester.pumpWidget(
-        _light(const MacroPill(
-          type: MacroType.protein,
-          remaining: 80,
-          goal: 150,
-        )),
+        _light(
+          const MacroPill(type: MacroType.protein, remaining: 80, goal: 150),
+        ),
       );
       expect(find.byType(MacroPill), findsOneWidget);
     });
 
     testWidgets('renders carbs in dark mode', (tester) async {
       await tester.pumpWidget(
-        _dark(const MacroPill(
-          type: MacroType.carbs,
-          remaining: 120,
-          goal: 250,
-        )),
+        _dark(
+          const MacroPill(type: MacroType.carbs, remaining: 120, goal: 250),
+        ),
       );
       expect(find.byType(MacroPill), findsOneWidget);
     });
 
     testWidgets('renders fat in dark mode', (tester) async {
       await tester.pumpWidget(
-        _dark(const MacroPill(
-          type: MacroType.fat,
-          remaining: 30,
-          goal: 65,
-        )),
+        _dark(const MacroPill(type: MacroType.fat, remaining: 30, goal: 65)),
       );
       expect(find.byType(MacroPill), findsOneWidget);
     });
@@ -82,15 +74,17 @@ void main() {
   group('FoodEntryCard', () {
     testWidgets('renders in light mode', (tester) async {
       await tester.pumpWidget(
-        _light(FoodEntryCard(
-          id: 1,
-          name: 'Chicken Salad',
-          calories: 350,
-          proteinG: 30.0,
-          carbsG: 15.0,
-          fatG: 10.0,
-          onDismissed: () {},
-        )),
+        _light(
+          FoodEntryCard(
+            id: 1,
+            name: 'Chicken Salad',
+            calories: 350,
+            proteinG: 30.0,
+            carbsG: 15.0,
+            fatG: 10.0,
+            onDismissed: () {},
+          ),
+        ),
       );
       expect(find.byType(FoodEntryCard), findsOneWidget);
       expect(find.text('Chicken Salad'), findsOneWidget);
@@ -98,16 +92,18 @@ void main() {
 
     testWidgets('renders in dark mode', (tester) async {
       await tester.pumpWidget(
-        _dark(FoodEntryCard(
-          id: 2,
-          name: 'Greek Yogurt',
-          calories: 150,
-          proteinG: 18.0,
-          carbsG: 12.0,
-          fatG: 4.0,
-          onDismissed: () {},
-          loggedAt: '12:46 PM',
-        )),
+        _dark(
+          FoodEntryCard(
+            id: 2,
+            name: 'Greek Yogurt',
+            calories: 150,
+            proteinG: 18.0,
+            carbsG: 12.0,
+            fatG: 4.0,
+            onDismissed: () {},
+            loggedAt: '12:46 PM',
+          ),
+        ),
       );
       expect(find.byType(FoodEntryCard), findsOneWidget);
       expect(find.text('Greek Yogurt'), findsOneWidget);
@@ -123,21 +119,20 @@ void main() {
 
     testWidgets('renders in light mode', (tester) async {
       await tester.pumpWidget(
-        _light(WeekStrip(
-          selectedDate: today,
-          onDaySelected: (_) {},
-        )),
+        _light(WeekStrip(selectedDate: today, onDaySelected: (_) {})),
       );
       expect(find.byType(WeekStrip), findsOneWidget);
     });
 
     testWidgets('renders in dark mode', (tester) async {
       await tester.pumpWidget(
-        _dark(WeekStrip(
-          selectedDate: today,
-          onDaySelected: (_) {},
-          loggedDates: {today},
-        )),
+        _dark(
+          WeekStrip(
+            selectedDate: today,
+            onDaySelected: (_) {},
+            loggedDates: {today},
+          ),
+        ),
       );
       expect(find.byType(WeekStrip), findsOneWidget);
     });
@@ -147,14 +142,16 @@ void main() {
   group('RulerPicker', () {
     testWidgets('renders in light mode', (tester) async {
       await tester.pumpWidget(
-        _light(RulerPicker(
-          value: 70.0,
-          min: 40.0,
-          max: 200.0,
-          step: 0.5,
-          unit: 'kg',
-          onChanged: (_) {},
-        )),
+        _light(
+          RulerPicker(
+            value: 70.0,
+            min: 40.0,
+            max: 200.0,
+            step: 0.5,
+            unit: 'kg',
+            onChanged: (_) {},
+          ),
+        ),
       );
       await tester.pump();
       expect(find.byType(RulerPicker), findsOneWidget);
@@ -162,15 +159,17 @@ void main() {
 
     testWidgets('renders in dark mode', (tester) async {
       await tester.pumpWidget(
-        _dark(RulerPicker(
-          value: 70.0,
-          min: 40.0,
-          max: 200.0,
-          step: 0.5,
-          unit: 'kg',
-          onChanged: (_) {},
-          label: 'Lose weight',
-        )),
+        _dark(
+          RulerPicker(
+            value: 70.0,
+            min: 40.0,
+            max: 200.0,
+            step: 0.5,
+            unit: 'kg',
+            onChanged: (_) {},
+            label: 'Lose weight',
+          ),
+        ),
       );
       await tester.pump();
       expect(find.byType(RulerPicker), findsOneWidget);

@@ -11,9 +11,9 @@ class ExerciseDao extends DatabaseAccessor<AppDatabase>
 
   /// All exercise entries for a given date string (YYYY-MM-DD).
   Future<List<ExerciseEntry>> entriesForDate(String date) async {
-    final log = await (select(dailyLogs)
-          ..where((t) => t.date.equals(date)))
-        .getSingleOrNull();
+    final log = await (select(
+      dailyLogs,
+    )..where((t) => t.date.equals(date))).getSingleOrNull();
     if (log == null) return [];
     return (select(exerciseEntries)
           ..where((t) => t.dailyLogId.equals(log.id))

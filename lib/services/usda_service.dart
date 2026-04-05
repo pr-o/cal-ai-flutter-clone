@@ -34,14 +34,18 @@ class UsdaService {
   final String apiKey;
   const UsdaService({required this.apiKey});
 
-  Future<List<FoodSearchResult>> searchFoods(String query,
-      {int pageSize = 25}) async {
-    final uri = Uri.parse('$_base/foods/search').replace(queryParameters: {
-      'query': query,
-      'api_key': apiKey,
-      'pageSize': '$pageSize',
-      'dataType': 'Branded,Survey (FNDDS),SR Legacy',
-    });
+  Future<List<FoodSearchResult>> searchFoods(
+    String query, {
+    int pageSize = 25,
+  }) async {
+    final uri = Uri.parse('$_base/foods/search').replace(
+      queryParameters: {
+        'query': query,
+        'api_key': apiKey,
+        'pageSize': '$pageSize',
+        'dataType': 'Branded,Survey (FNDDS),SR Legacy',
+      },
+    );
 
     final response = await http.get(uri);
     if (response.statusCode != 200) {
@@ -64,10 +68,9 @@ class UsdaService {
 
       double nutrientValue(String name) {
         final match = nutrients.firstWhere(
-          (n) =>
-              (n['nutrientName'] as String? ?? '')
-                  .toLowerCase()
-                  .contains(name.toLowerCase()),
+          (n) => (n['nutrientName'] as String? ?? '').toLowerCase().contains(
+            name.toLowerCase(),
+          ),
           orElse: () => {},
         );
         return (match['value'] as num?)?.toDouble() ?? 0.0;
