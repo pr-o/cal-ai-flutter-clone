@@ -1,7 +1,7 @@
-/// TDEE calculation using the Mifflin-St Jeor formula.
-///
-/// All inputs are in metric (kg, cm). The [goal] field adjusts the final
-/// calorie target: 'lose' subtracts 500 kcal, 'gain' adds 300 kcal.
+// TDEE calculation using the Mifflin-St Jeor formula.
+//
+// All inputs are in metric (kg, cm). The [goal] field adjusts the final
+// calorie target: 'lose' subtracts 500 kcal, 'gain' adds 300 kcal.
 
 class TdeeInput {
   final double currentWeightKg;

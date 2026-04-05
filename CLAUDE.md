@@ -447,10 +447,10 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ### Phase 14 — Final Testing & Cleanup
 
-- [ ] Run `flutter analyze` — zero warnings or errors
-- [ ] Run `dart format lib/ test/ --set-exit-if-changed` — zero formatting issues
-- [ ] Run `flutter test` — all unit tests pass
+- [x] Run `flutter analyze` — zero warnings or errors
+- [x] Run `dart format lib/ test/ --set-exit-if-changed` — zero formatting issues
+- [x] Run `flutter test` — all unit tests pass (50/50)
+- [x] Remove all `debugPrint` / `print` statements from production code paths
+- [x] Confirm no API keys are hardcoded anywhere in `lib/` — all reads go through `SharedPreferences` via `SettingsNotifier`
 - [ ] Walk through the full happy path end-to-end: fresh install → onboarding → home → scan food → confirm → home updates → search food → add → home updates → log exercise → log water → analytics shows data → settings theme toggle → dark mode correct
 - [ ] Test edge cases: no API key set (graceful error `SnackBar`), Gemini returns unparseable JSON ("Fix Results" shown), empty food log (empty state shown), first day (streak = 0)
-- [ ] Remove all `debugPrint` / `print` statements from production code paths
-- [ ] Confirm no API keys are hardcoded anywhere in `lib/` — all reads go through `SharedPreferences` via `SettingsNotifier`

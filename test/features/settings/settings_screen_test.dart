@@ -13,10 +13,10 @@ Widget _wrap(Widget child) {
   final router = GoRouter(
     initialLocation: '/settings',
     routes: [
-      GoRoute(path: '/settings', builder: (_, __) => child),
+      GoRoute(path: '/settings', builder: (_, _) => child),
       GoRoute(
         path: '/onboarding/goal',
-        builder: (_, __) => const Scaffold(body: Text('onboarding')),
+        builder: (_, _) => const Scaffold(body: Text('onboarding')),
       ),
     ],
   );

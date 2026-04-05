@@ -61,6 +61,7 @@ dev_dependencies:
 
   # Testing
   mocktail: ^1.0.0
+  flutter_secure_storage_platform_interface: ^1.1.2
 
 flutter:
   uses-material-design: true

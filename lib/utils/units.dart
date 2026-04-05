@@ -1,7 +1,7 @@
-/// Unit conversion utilities.
-///
-/// Internal storage is always metric (kg, cm, ml).
-/// These helpers are used for display only.
+// Unit conversion utilities.
+//
+// Internal storage is always metric (kg, cm, ml).
+// These helpers are used for display only.
 
 // ─── Weight ───────────────────────────────────────────────────────────────────
 
