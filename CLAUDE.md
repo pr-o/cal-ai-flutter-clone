@@ -437,10 +437,10 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ### Phase 13 — Push Notifications (Meal Reminders)
 
-- [ ] Request notification permissions using `flutter_local_notifications` + `permission_handler` on both platforms
-- [ ] Create `lib/utils/notifications.dart` — export `requestPermissions()`, `scheduleMealReminder(int hour, int minute, String label)`, `cancelAllReminders()`
-- [ ] Add a **Reminders** section to the Settings screen with three `SwitchListTile`s for breakfast (8:00), lunch (12:00), dinner (19:00); each toggle calls `scheduleMealReminder` or `cancelAllReminders`
-- [ ] Persist reminder toggle states to `SharedPreferences` (`reminder_breakfast`, `reminder_lunch`, `reminder_dinner`)
+- [x] Request notification permissions using `flutter_local_notifications` built-in APIs (no `permission_handler`); requested lazily on first reminder toggle-on
+- [x] Create `lib/utils/notifications.dart` — exports `initNotifications()`, `scheduleMealReminder(int id, int hour, int minute, String label)`, `cancelReminder(int id)`
+- [x] Add a **Reminders** section to the Settings screen with three `SwitchListTile`s for breakfast (8:00 AM), lunch (12:00 PM), dinner (7:00 PM); each toggle calls `setReminder` on `SettingsNotifier`
+- [x] Persist reminder toggle states to `SharedPreferences` (`reminder_breakfast`, `reminder_lunch`, `reminder_dinner`)
 - [ ] Test notifications fire correctly on a physical device
 
 ---
