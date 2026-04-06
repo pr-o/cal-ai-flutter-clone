@@ -236,7 +236,7 @@ test/
 ## Key Conventions
 
 - **Drift schema changes** always require running `dart run build_runner build --delete-conflicting-outputs`. Never edit `.g.dart` files manually.
-- **API keys** are never hardcoded. `gemini_api_key` and `usda_api_key` are stored in `flutter_secure_storage` (Keychain on iOS, EncryptedSharedPreferences on Android). Non-sensitive settings (`theme`, `weight_unit`, `onboarding_complete`) use `shared_preferences`.
+- **API keys** are never hardcoded. `gemini_api_key` and `usda_api_key` are stored in `flutter_secure_storage` (Keychain on iOS, EncryptedSharedPreferences on Android). Non-sensitive settings (`theme`, `weight_unit`, `onboarding_complete`) use `shared_preferences`. For local development, keys can be placed in a `.env` file (gitignored) — `flutter_dotenv` loads it at startup and `SettingsNotifier._seedApiKeysFromEnv()` writes them into secure storage on first launch.
 - **Units:** Internal storage is always metric (kg, cm, ml). `lib/utils/units.dart` handles display conversion when `weight_unit == 'lbs'`.
 - **Dates:** All dates stored as `'YYYY-MM-DD'` strings in SQLite. All timestamps as ISO 8601 strings. No `DateTime` objects in the DB layer.
 - **Camera** requires a physical device or properly configured emulator and does not work in hot-reload-only flows. Use `flutter run` on a real device for camera testing.
@@ -437,20 +437,20 @@ Phases are sequential. Complete every checkbox in a phase before starting the ne
 
 ### Phase 13 — Push Notifications (Meal Reminders)
 
-- [ ] Request notification permissions using `flutter_local_notifications` + `permission_handler` on both platforms
-- [ ] Create `lib/utils/notifications.dart` — export `requestPermissions()`, `scheduleMealReminder(int hour, int minute, String label)`, `cancelAllReminders()`
-- [ ] Add a **Reminders** section to the Settings screen with three `SwitchListTile`s for breakfast (8:00), lunch (12:00), dinner (19:00); each toggle calls `scheduleMealReminder` or `cancelAllReminders`
-- [ ] Persist reminder toggle states to `SharedPreferences` (`reminder_breakfast`, `reminder_lunch`, `reminder_dinner`)
+- [x] Request notification permissions using `flutter_local_notifications` built-in APIs (no `permission_handler`); requested lazily on first reminder toggle-on
+- [x] Create `lib/utils/notifications.dart` — exports `initNotifications()`, `scheduleMealReminder(int id, int hour, int minute, String label)`, `cancelReminder(int id)`
+- [x] Add a **Reminders** section to the Settings screen with three `SwitchListTile`s for breakfast (8:00 AM), lunch (12:00 PM), dinner (7:00 PM); each toggle calls `setReminder` on `SettingsNotifier`
+- [x] Persist reminder toggle states to `SharedPreferences` (`reminder_breakfast`, `reminder_lunch`, `reminder_dinner`)
 - [ ] Test notifications fire correctly on a physical device
 
 ---
 
 ### Phase 14 — Final Testing & Cleanup
 
-- [ ] Run `flutter analyze` — zero warnings or errors
-- [ ] Run `dart format lib/ test/ --set-exit-if-changed` — zero formatting issues
-- [ ] Run `flutter test` — all unit tests pass
+- [x] Run `flutter analyze` — zero warnings or errors
+- [x] Run `dart format lib/ test/ --set-exit-if-changed` — zero formatting issues
+- [x] Run `flutter test` — all unit tests pass (50/50)
+- [x] Remove all `debugPrint` / `print` statements from production code paths
+- [x] Confirm no API keys are hardcoded anywhere in `lib/` — all reads go through `SharedPreferences` via `SettingsNotifier`
 - [ ] Walk through the full happy path end-to-end: fresh install → onboarding → home → scan food → confirm → home updates → search food → add → home updates → log exercise → log water → analytics shows data → settings theme toggle → dark mode correct
 - [ ] Test edge cases: no API key set (graceful error `SnackBar`), Gemini returns unparseable JSON ("Fix Results" shown), empty food log (empty state shown), first day (streak = 0)
-- [ ] Remove all `debugPrint` / `print` statements from production code paths
-- [ ] Confirm no API keys are hardcoded anywhere in `lib/` — all reads go through `SharedPreferences` via `SettingsNotifier`
