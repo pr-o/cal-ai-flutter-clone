@@ -26,6 +26,7 @@ dependencies:
   # Storage
   shared_preferences: ^2.3.0
   flutter_secure_storage: ^9.2.0
+  flutter_dotenv: ^5.2.1
 
   # Camera
   camera: ^0.11.0
@@ -65,3 +66,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - .env

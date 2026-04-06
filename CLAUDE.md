@@ -236,7 +236,7 @@ test/
 ## Key Conventions
 
 - **Drift schema changes** always require running `dart run build_runner build --delete-conflicting-outputs`. Never edit `.g.dart` files manually.
-- **API keys** are never hardcoded. `gemini_api_key` and `usda_api_key` are stored in `flutter_secure_storage` (Keychain on iOS, EncryptedSharedPreferences on Android). Non-sensitive settings (`theme`, `weight_unit`, `onboarding_complete`) use `shared_preferences`.
+- **API keys** are never hardcoded. `gemini_api_key` and `usda_api_key` are stored in `flutter_secure_storage` (Keychain on iOS, EncryptedSharedPreferences on Android). Non-sensitive settings (`theme`, `weight_unit`, `onboarding_complete`) use `shared_preferences`. For local development, keys can be placed in a `.env` file (gitignored) — `flutter_dotenv` loads it at startup and `SettingsNotifier._seedApiKeysFromEnv()` writes them into secure storage on first launch.
 - **Units:** Internal storage is always metric (kg, cm, ml). `lib/utils/units.dart` handles display conversion when `weight_unit == 'lbs'`.
 - **Dates:** All dates stored as `'YYYY-MM-DD'` strings in SQLite. All timestamps as ISO 8601 strings. No `DateTime` objects in the DB layer.
 - **Camera** requires a physical device or properly configured emulator and does not work in hot-reload-only flows. Use `flutter run` on a real device for camera testing.
