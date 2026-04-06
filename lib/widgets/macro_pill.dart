@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../theme/app_theme.dart';
+
 enum MacroType { protein, carbs, fat }
 
 /// Compact pill showing remaining grams for a single macro.
@@ -24,9 +26,9 @@ class MacroPill extends StatelessWidget {
   final double goal;
 
   static const _colors = {
-    MacroType.protein: Color(0xFFFF6B35),
-    MacroType.carbs: Color(0xFFFFB800),
-    MacroType.fat: Color(0xFF4A9EFF),
+    MacroType.protein: AppColors.macroProtein,
+    MacroType.carbs: AppColors.macroCarbs,
+    MacroType.fat: AppColors.macroFat,
   };
 
   static const _labels = {

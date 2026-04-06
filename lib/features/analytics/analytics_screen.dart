@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../features/home/notifier.dart';
+import '../../theme/app_theme.dart';
+import '../../widgets/section_header.dart';
 import 'notifier.dart';
 
 class AnalyticsScreen extends ConsumerWidget {
@@ -50,7 +52,7 @@ class AnalyticsScreen extends ConsumerWidget {
                         icon: '🔥',
                         label: 'Current Streak',
                         value: '${analytics.streakDays} days',
-                        color: const Color(0xFFFF5500),
+                        color: AppColors.accentOrange,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -64,7 +66,7 @@ class AnalyticsScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 // Weight trend chart
-                _SectionHeader('Weight Trend (90 days)'),
+                SectionHeader('Weight Trend (90 days)'),
                 const SizedBox(height: 8),
                 _WeightChart(
                   logs: analytics.weightHistory,
@@ -72,7 +74,7 @@ class AnalyticsScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 // Weekly macros chart
-                _SectionHeader('Weekly Nutrition'),
+                SectionHeader('Weekly Nutrition'),
                 const SizedBox(height: 8),
                 _MacroBarChart(days: analytics.weeklyMacros),
               ],
@@ -235,7 +237,7 @@ class _WeightChart extends StatelessWidget {
                   FlSpot((spots.length - 1).toDouble(), targetWeightKg!),
                 ],
                 isCurved: false,
-                color: const Color(0xFFFF5500).withValues(alpha: 0.6),
+                color: AppColors.accentOrange.withValues(alpha: 0.6),
                 barWidth: 1.5,
                 dashArray: [6, 4],
                 dotData: const FlDotData(show: false),
@@ -317,17 +319,17 @@ class _MacroBarChart extends StatelessWidget {
                           BarChartRodStackItem(
                             0,
                             d.proteinG,
-                            const Color(0xFFFF6B35),
+                            AppColors.macroProtein,
                           ),
                           BarChartRodStackItem(
                             d.proteinG,
                             d.proteinG + d.carbsG,
-                            const Color(0xFFFFB800),
+                            AppColors.macroCarbs,
                           ),
                           BarChartRodStackItem(
                             d.proteinG + d.carbsG,
                             d.proteinG + d.carbsG + d.fatG,
-                            const Color(0xFF4A9EFF),
+                            AppColors.macroFat,
                           ),
                         ],
                       ),
@@ -339,14 +341,14 @@ class _MacroBarChart extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           // Legend
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              _LegendDot(color: Color(0xFFFF6B35), label: 'Protein'),
+            children: [
+              _LegendDot(color: AppColors.macroProtein, label: 'Protein'),
               SizedBox(width: 12),
-              _LegendDot(color: Color(0xFFFFB800), label: 'Carbs'),
+              _LegendDot(color: AppColors.macroCarbs, label: 'Carbs'),
               SizedBox(width: 12),
-              _LegendDot(color: Color(0xFF4A9EFF), label: 'Fat'),
+              _LegendDot(color: AppColors.macroFat, label: 'Fat'),
             ],
           ),
         ],
@@ -356,19 +358,6 @@ class _MacroBarChart extends StatelessWidget {
 }
 
 // ─── Supporting widgets ───────────────────────────────────────────────────────
-
-class _SectionHeader extends StatelessWidget {
-  const _SectionHeader(this.title);
-  final String title;
-
-  @override
-  Widget build(BuildContext context) => Text(
-    title,
-    style: Theme.of(
-      context,
-    ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-  );
-}
 
 class _StatCard extends StatelessWidget {
   const _StatCard({

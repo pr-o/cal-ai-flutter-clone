@@ -2,13 +2,11 @@ import 'package:drift/drift.dart' show Value;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../db/database.dart';
+import '../../utils/units.dart';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-String todayString() {
-  final now = DateTime.now();
-  return '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
-}
+String todayString() => dateString(DateTime.now());
 
 // ─── Selected date ────────────────────────────────────────────────────────────
 

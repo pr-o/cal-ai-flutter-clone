@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../theme/app_theme.dart';
 import '../../utils/streaks.dart';
 import '../../widgets/calorie_ring.dart';
 import '../../widgets/food_entry_card.dart';
@@ -304,7 +305,7 @@ class _CalorieCard extends StatelessWidget {
                       _StatChip(
                         icon: Icons.directions_run_rounded,
                         label: '$burned burned',
-                        color: const Color(0xFFFF5500),
+                        color: AppColors.accentOrange,
                       ),
                   ],
                 ),
@@ -354,7 +355,7 @@ class _StreakBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xFFFF5500),
+        color: AppColors.accentOrange,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
