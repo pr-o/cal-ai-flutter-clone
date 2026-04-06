@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -64,6 +65,24 @@ class SettingsNotifier extends Notifier<SettingsState> {
       reminderLunch: prefs.getBool('reminder_lunch') ?? false,
       reminderDinner: prefs.getBool('reminder_dinner') ?? false,
     );
+    await _seedApiKeysFromEnv();
+  }
+
+  Future<void> _seedApiKeysFromEnv() async {
+    final gemini = await _secure.read(key: 'gemini_api_key');
+    if (gemini == null || gemini.isEmpty) {
+      final envVal = dotenv.maybeGet('GEMINI_API_KEY') ?? '';
+      if (envVal.isNotEmpty) {
+        await _secure.write(key: 'gemini_api_key', value: envVal);
+      }
+    }
+    final usda = await _secure.read(key: 'usda_api_key');
+    if (usda == null || usda.isEmpty) {
+      final envVal = dotenv.maybeGet('USDA_API_KEY') ?? '';
+      if (envVal.isNotEmpty) {
+        await _secure.write(key: 'usda_api_key', value: envVal);
+      }
+    }
   }
 
   // ── Non-sensitive settings (SharedPreferences) ──────────────────────────────
