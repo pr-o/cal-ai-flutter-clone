@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../db/database.dart';
 import '../../utils/streaks.dart';
+import '../../utils/units.dart';
 
 // ─── State ────────────────────────────────────────────────────────────────────
 
@@ -53,8 +54,7 @@ class AnalyticsNotifier extends AsyncNotifier<AnalyticsState> {
 
     // Food entries last 7 days for macro chart
     final sevenDaysAgo = DateTime.now().subtract(const Duration(days: 6));
-    final cutoffDate =
-        '${sevenDaysAgo.year}-${sevenDaysAgo.month.toString().padLeft(2, '0')}-${sevenDaysAgo.day.toString().padLeft(2, '0')}';
+    final cutoffDate = dateString(sevenDaysAgo);
 
     final recentFood = await (db.select(db.foodEntries).join([
       innerJoin(
@@ -83,8 +83,7 @@ class AnalyticsNotifier extends AsyncNotifier<AnalyticsState> {
     // Fill all 7 days (even ones with no data)
     final weeklyMacros = List.generate(7, (i) {
       final d = DateTime.now().subtract(Duration(days: 6 - i));
-      final key =
-          '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+      final key = dateString(d);
       return byDate[key] ??
           WeeklyMacroDay(
             date: key,
@@ -119,8 +118,7 @@ class AnalyticsNotifier extends AsyncNotifier<AnalyticsState> {
 
   Future<void> logWeight(double kg) async {
     final db = ref.read(databaseProvider);
-    final today =
-        '${DateTime.now().year}-${DateTime.now().month.toString().padLeft(2, '0')}-${DateTime.now().day.toString().padLeft(2, '0')}';
+    final today = dateString(DateTime.now());
     await db.weightDao.insertEntry(
       WeightLogsCompanion(
         weightKg: Value(kg),

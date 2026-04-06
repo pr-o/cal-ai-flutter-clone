@@ -10,6 +10,8 @@ import '../../db/database.dart';
 import '../../features/home/notifier.dart';
 import '../../features/settings/notifier.dart';
 import '../../services/gemini_service.dart';
+import '../../theme/app_theme.dart';
+import '../../utils/units.dart';
 
 class ScanResultScreen extends ConsumerStatefulWidget {
   const ScanResultScreen({super.key, required this.photoPath});
@@ -284,7 +286,7 @@ class _ResultContent extends StatelessWidget {
                       constraints: const BoxConstraints(),
                     ),
                     Text(
-                      _fmtServings(servings),
+                      fmtServings(servings),
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -315,7 +317,7 @@ class _ResultContent extends StatelessWidget {
             children: [
               const Icon(
                 Icons.local_fire_department_rounded,
-                color: Color(0xFFFF5500),
+                color: AppColors.accentOrange,
                 size: 20,
               ),
               const SizedBox(width: 6),
@@ -336,17 +338,17 @@ class _ResultContent extends StatelessWidget {
               _MacroItem(
                 label: 'Protein',
                 value: protein,
-                color: const Color(0xFFFF6B35),
+                color: AppColors.macroProtein,
               ),
               _MacroItem(
                 label: 'Carbs',
                 value: carbs,
-                color: const Color(0xFFFFB800),
+                color: AppColors.macroCarbs,
               ),
               _MacroItem(
                 label: 'Fat',
                 value: fat,
-                color: const Color(0xFF4A9EFF),
+                color: AppColors.macroFat,
               ),
             ],
           ),
@@ -439,8 +441,6 @@ class _ResultContent extends StatelessWidget {
       ),
     );
   }
-
-  String _fmtServings(double v) => v == v.truncate() ? '${v.toInt()}' : '$v';
 }
 
 class _MacroItem extends StatelessWidget {

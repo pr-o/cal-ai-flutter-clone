@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../db/database.dart';
 import '../../../features/settings/notifier.dart';
+import '../../../theme/app_theme.dart';
 import '../../../utils/tdee.dart';
 import '../../../widgets/onboarding_layout.dart';
 import '../notifier.dart';
@@ -130,7 +131,7 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
             const Icon(
               Icons.check_circle_outline_rounded,
               size: 48,
-              color: Color(0xFFFF5500),
+              color: AppColors.accentOrange,
             ),
             const SizedBox(height: 16),
             Text(
@@ -179,7 +180,7 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
                   label: 'Calories',
                   value: ob.dailyCalories,
                   unit: 'kcal',
-                  color: const Color(0xFFFF5500),
+                  color: AppColors.accentOrange,
                   onEdit: (v) => ref
                       .read(onboardingProvider.notifier)
                       .setPlanTargets(
@@ -193,7 +194,7 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
                   label: 'Protein',
                   value: ob.dailyProteinG,
                   unit: 'g',
-                  color: const Color(0xFFFF6B35),
+                  color: AppColors.macroProtein,
                   onEdit: (v) => ref
                       .read(onboardingProvider.notifier)
                       .setPlanTargets(
@@ -207,7 +208,7 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
                   label: 'Carbs',
                   value: ob.dailyCarbsG,
                   unit: 'g',
-                  color: const Color(0xFFFFB800),
+                  color: AppColors.macroCarbs,
                   onEdit: (v) => ref
                       .read(onboardingProvider.notifier)
                       .setPlanTargets(
@@ -221,7 +222,7 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
                   label: 'Fat',
                   value: ob.dailyFatG,
                   unit: 'g',
-                  color: const Color(0xFF4A9EFF),
+                  color: AppColors.macroFat,
                   onEdit: (v) => ref
                       .read(onboardingProvider.notifier)
                       .setPlanTargets(

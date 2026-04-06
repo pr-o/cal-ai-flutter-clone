@@ -9,6 +9,8 @@ import '../../db/database.dart';
 import '../../features/home/notifier.dart';
 import '../../features/settings/notifier.dart';
 import '../../services/usda_service.dart';
+import '../../theme/app_theme.dart';
+import '../../utils/units.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -306,9 +308,7 @@ class _ConfirmSheetState extends State<_ConfirmSheet> {
                       : null,
                 ),
                 Text(
-                  _servings == _servings.truncate()
-                      ? '${_servings.toInt()}'
-                      : '$_servings',
+                  fmtServings(_servings),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -331,7 +331,7 @@ class _ConfirmSheetState extends State<_ConfirmSheet> {
             // Macro breakdown
             _MacroRow(
               icon: Icons.local_fire_department_rounded,
-              color: const Color(0xFFFF5500),
+              color: AppColors.accentOrange,
               label: 'Calories',
               value: '$calories kcal',
             ),
@@ -341,19 +341,19 @@ class _ConfirmSheetState extends State<_ConfirmSheet> {
                 _MacroBadge(
                   label: 'Protein',
                   value: '${protein.toStringAsFixed(1)}g',
-                  color: const Color(0xFFFF6B35),
+                  color: AppColors.macroProtein,
                 ),
                 const SizedBox(width: 8),
                 _MacroBadge(
                   label: 'Carbs',
                   value: '${carbs.toStringAsFixed(1)}g',
-                  color: const Color(0xFFFFB800),
+                  color: AppColors.macroCarbs,
                 ),
                 const SizedBox(width: 8),
                 _MacroBadge(
                   label: 'Fat',
                   value: '${fat.toStringAsFixed(1)}g',
-                  color: const Color(0xFF4A9EFF),
+                  color: AppColors.macroFat,
                 ),
               ],
             ),

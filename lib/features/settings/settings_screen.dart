@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import '../../db/database.dart';
 import '../../features/home/notifier.dart';
 import '../../utils/notifications.dart';
+import '../../widgets/section_header.dart';
 import 'notifier.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -64,17 +65,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         children: [
-          _SectionHeader('Theme'),
+          SectionHeader('Theme'),
           const SizedBox(height: 8),
           _ThemeSegment(current: settings.themeMode),
           const SizedBox(height: 20),
           _WeightUnitTile(unit: settings.weightUnit),
           const SizedBox(height: 20),
-          _SectionHeader('Reminders'),
+          SectionHeader('Reminders'),
           const SizedBox(height: 8),
           const _RemindersTile(),
           const SizedBox(height: 20),
-          _SectionHeader('API Keys'),
+          SectionHeader('API Keys'),
           const SizedBox(height: 8),
           if (_keysLoaded) ...[
             _ApiKeyField(
@@ -111,7 +112,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ] else
             const Center(child: CircularProgressIndicator()),
           const SizedBox(height: 20),
-          _SectionHeader('Profile & Goals'),
+          SectionHeader('Profile & Goals'),
           const SizedBox(height: 8),
           profileAsync.when(
             loading: () => const SizedBox(
@@ -241,19 +242,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 }
 
 // ─── Sub-widgets ──────────────────────────────────────────────────────────────
-
-class _SectionHeader extends StatelessWidget {
-  const _SectionHeader(this.title);
-  final String title;
-
-  @override
-  Widget build(BuildContext context) => Text(
-    title,
-    style: Theme.of(
-      context,
-    ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-  );
-}
 
 class _ThemeSegment extends ConsumerWidget {
   const _ThemeSegment({required this.current});
@@ -598,25 +586,15 @@ class _RemindersTile extends ConsumerStatefulWidget {
 }
 
 class _RemindersTileState extends ConsumerState<_RemindersTile> {
-  bool _breakfastLoading = false;
-  bool _lunchLoading = false;
-  bool _dinnerLoading = false;
+  final Map<String, bool> _loading = {};
 
   Future<void> _toggle(String meal, bool value) async {
-    setState(() {
-      if (meal == 'breakfast') _breakfastLoading = true;
-      if (meal == 'lunch') _lunchLoading = true;
-      if (meal == 'dinner') _dinnerLoading = true;
-    });
+    setState(() => _loading[meal] = true);
     // Request permission on first enable
     if (value) await initNotifications();
     await ref.read(settingsProvider.notifier).setReminder(meal, value);
     if (mounted) {
-      setState(() {
-        if (meal == 'breakfast') _breakfastLoading = false;
-        if (meal == 'lunch') _lunchLoading = false;
-        if (meal == 'dinner') _dinnerLoading = false;
-      });
+      setState(() => _loading[meal] = false);
     }
   }
 
@@ -636,7 +614,7 @@ class _RemindersTileState extends ConsumerState<_RemindersTile> {
             label: 'Breakfast',
             time: '8:00 AM',
             value: settings.reminderBreakfast,
-            loading: _breakfastLoading,
+            loading: _loading['breakfast'] ?? false,
             onChanged: (v) => _toggle('breakfast', v),
           ),
           const Divider(height: 1, indent: 16, endIndent: 16),
@@ -645,7 +623,7 @@ class _RemindersTileState extends ConsumerState<_RemindersTile> {
             label: 'Lunch',
             time: '12:00 PM',
             value: settings.reminderLunch,
-            loading: _lunchLoading,
+            loading: _loading['lunch'] ?? false,
             onChanged: (v) => _toggle('lunch', v),
           ),
           const Divider(height: 1, indent: 16, endIndent: 16),
@@ -654,7 +632,7 @@ class _RemindersTileState extends ConsumerState<_RemindersTile> {
             label: 'Dinner',
             time: '7:00 PM',
             value: settings.reminderDinner,
-            loading: _dinnerLoading,
+            loading: _loading['dinner'] ?? false,
             onChanged: (v) => _toggle('dinner', v),
           ),
         ],
