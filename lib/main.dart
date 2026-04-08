@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 import 'features/home/notifier.dart';
@@ -10,28 +9,9 @@ import 'features/settings/notifier.dart';
 import 'router.dart';
 import 'theme/app_theme.dart';
 
-Future<void> _seedApiKeysFromEnv() async {
-  const secure = FlutterSecureStorage();
-  final gemini = await secure.read(key: 'gemini_api_key');
-  if (gemini == null || gemini.isEmpty) {
-    final envVal = dotenv.maybeGet('GEMINI_API_KEY') ?? '';
-    if (envVal.isNotEmpty) {
-      await secure.write(key: 'gemini_api_key', value: envVal);
-    }
-  }
-  final usda = await secure.read(key: 'usda_api_key');
-  if (usda == null || usda.isEmpty) {
-    final envVal = dotenv.maybeGet('USDA_API_KEY') ?? '';
-    if (envVal.isNotEmpty) {
-      await secure.write(key: 'usda_api_key', value: envVal);
-    }
-  }
-}
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
-  await _seedApiKeysFromEnv();
   final router = await buildRouter();
   runApp(ProviderScope(child: CalAiApp(router: router)));
 }
