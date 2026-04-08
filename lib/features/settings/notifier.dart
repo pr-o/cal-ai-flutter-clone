@@ -1,4 +1,7 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -64,6 +67,44 @@ class SettingsNotifier extends Notifier<SettingsState> {
       reminderLunch: prefs.getBool('reminder_lunch') ?? false,
       reminderDinner: prefs.getBool('reminder_dinner') ?? false,
     );
+    await _seedApiKeysFromEnv(prefs);
+  }
+
+  /// Seeds API keys from the .env file (loaded by flutter_dotenv at startup).
+  /// On Linux, SharedPreferences is used instead of the keyring because
+  /// flutter_secure_storage throws an uncatchable PlatformException on
+  /// WSL2 / headless Linux where no keyring daemon is running.
+  Future<void> _seedApiKeysFromEnv(SharedPreferences prefs) async {
+    if (Platform.isLinux) {
+      if ((prefs.getString('gemini_api_key') ?? '').isEmpty) {
+        final v = _dotenvGet('GEMINI_API_KEY');
+        if (v.isNotEmpty) await prefs.setString('gemini_api_key', v);
+      }
+      if ((prefs.getString('usda_api_key') ?? '').isEmpty) {
+        final v = _dotenvGet('USDA_API_KEY');
+        if (v.isNotEmpty) await prefs.setString('usda_api_key', v);
+      }
+      return;
+    }
+    // Non-Linux: use secure storage (Keychain / EncryptedSharedPrefs).
+    final gemini = await _secure.read(key: 'gemini_api_key');
+    if (gemini == null || gemini.isEmpty) {
+      final v = _dotenvGet('GEMINI_API_KEY');
+      if (v.isNotEmpty) await _secure.write(key: 'gemini_api_key', value: v);
+    }
+    final usda = await _secure.read(key: 'usda_api_key');
+    if (usda == null || usda.isEmpty) {
+      final v = _dotenvGet('USDA_API_KEY');
+      if (v.isNotEmpty) await _secure.write(key: 'usda_api_key', value: v);
+    }
+  }
+
+  String _dotenvGet(String key) {
+    try {
+      return dotenv.maybeGet(key) ?? '';
+    } catch (_) {
+      return '';
+    }
   }
 
   // ── Non-sensitive settings (SharedPreferences) ──────────────────────────────
@@ -120,13 +161,39 @@ class SettingsNotifier extends Notifier<SettingsState> {
 
   // ── API keys (flutter_secure_storage) ───────────────────────────────────────
 
-  Future<String?> getGeminiApiKey() => _secure.read(key: 'gemini_api_key');
-  Future<void> setGeminiApiKey(String key) =>
-      _secure.write(key: 'gemini_api_key', value: key);
+  Future<String?> getGeminiApiKey() async {
+    if (Platform.isLinux) {
+      final p = await SharedPreferences.getInstance();
+      return p.getString('gemini_api_key');
+    }
+    return _secure.read(key: 'gemini_api_key');
+  }
 
-  Future<String?> getUsdaApiKey() => _secure.read(key: 'usda_api_key');
-  Future<void> setUsdaApiKey(String key) =>
-      _secure.write(key: 'usda_api_key', value: key);
+  Future<void> setGeminiApiKey(String key) async {
+    if (Platform.isLinux) {
+      final p = await SharedPreferences.getInstance();
+      await p.setString('gemini_api_key', key);
+      return;
+    }
+    await _secure.write(key: 'gemini_api_key', value: key);
+  }
+
+  Future<String?> getUsdaApiKey() async {
+    if (Platform.isLinux) {
+      final p = await SharedPreferences.getInstance();
+      return p.getString('usda_api_key');
+    }
+    return _secure.read(key: 'usda_api_key');
+  }
+
+  Future<void> setUsdaApiKey(String key) async {
+    if (Platform.isLinux) {
+      final p = await SharedPreferences.getInstance();
+      await p.setString('usda_api_key', key);
+      return;
+    }
+    await _secure.write(key: 'usda_api_key', value: key);
+  }
 
   // ── Helpers ──────────────────────────────────────────────────────────────────
 
