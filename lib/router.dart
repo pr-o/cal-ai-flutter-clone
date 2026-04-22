@@ -124,7 +124,7 @@ CustomTransitionPage<void> _slidePage(Widget child) =>
               begin: const Offset(1, 0),
               end: Offset.zero,
             ).animate(
-              CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+              CurvedAnimation(parent: animation, curve: Curves.easeOut),
             ),
             child: child,
           ),
@@ -160,7 +160,7 @@ CustomTransitionPage<void> _fadePage(Widget child) =>
           FadeTransition(
             opacity: CurvedAnimation(
               parent: animation,
-              curve: Curves.easeIn,
+              curve: Curves.easeOut,
             ),
             child: child,
           ),
