@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -112,3 +113,55 @@ Future<GoRouter> buildRouter() async {
     ],
   );
 }
+
+CustomTransitionPage<void> _slidePage(Widget child) =>
+    CustomTransitionPage<void>(
+      child: child,
+      transitionDuration: const Duration(milliseconds: 280),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+          SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(
+              CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+            ),
+            child: child,
+          ),
+    );
+
+CustomTransitionPage<void> _slideUpPage(Widget child) =>
+    CustomTransitionPage<void>(
+      child: child,
+      transitionDuration: const Duration(milliseconds: 300),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+          FadeTransition(
+            opacity: animation,
+            child: SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0, 0.08),
+                end: Offset.zero,
+              ).animate(
+                CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.fastOutSlowIn,
+                ),
+              ),
+              child: child,
+            ),
+          ),
+    );
+
+CustomTransitionPage<void> _fadePage(Widget child) =>
+    CustomTransitionPage<void>(
+      child: child,
+      transitionDuration: const Duration(milliseconds: 200),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+          FadeTransition(
+            opacity: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeIn,
+            ),
+            child: child,
+          ),
+    );
