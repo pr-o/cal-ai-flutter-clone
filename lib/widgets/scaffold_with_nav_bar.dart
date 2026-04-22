@@ -43,6 +43,16 @@ class ScaffoldWithNavBar extends StatelessWidget {
     return Scaffold(
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 200),
+        layoutBuilder: (currentChild, previousChildren) {
+          final children = <Widget>[...previousChildren];
+          if (currentChild != null) {
+            children.add(currentChild);
+          }
+          return Stack(
+            alignment: Alignment.topLeft,
+            children: children,
+          );
+        },
         transitionBuilder: (child, animation) => FadeTransition(
           opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
           child: child,
