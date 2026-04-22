@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/test/test_flutter_secure_storage_platform
 import 'package:flutter_secure_storage_platform_interface/flutter_secure_storage_platform_interface.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:cal_ai_flutter_clone/features/home/notifier.dart';
 import 'package:cal_ai_flutter_clone/features/settings/settings_screen.dart';
@@ -28,6 +29,7 @@ Widget _wrap(Widget child) {
 
 void main() {
   setUp(() {
+    SharedPreferences.setMockInitialValues({});
     FlutterSecureStoragePlatform.instance = TestFlutterSecureStoragePlatform(
       {},
     );
@@ -56,7 +58,7 @@ void main() {
   testWidgets('shows API keys section', (tester) async {
     await tester.pumpWidget(_wrap(const SettingsScreen()));
     await tester.pump();
-    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
 
     expect(find.text('API Keys', skipOffstage: false), findsOneWidget);
     expect(find.text('Gemini API Key', skipOffstage: false), findsOneWidget);
