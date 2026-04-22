@@ -41,7 +41,24 @@ class ScaffoldWithNavBar extends StatelessWidget {
     final currentIndex = _currentIndex(context);
 
     return Scaffold(
-      body: child,
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 200),
+        layoutBuilder: (currentChild, previousChildren) {
+          final children = <Widget>[...previousChildren];
+          if (currentChild != null) {
+            children.add(currentChild);
+          }
+          return Stack(alignment: Alignment.topLeft, children: children);
+        },
+        transitionBuilder: (child, animation) => FadeTransition(
+          opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
+          child: child,
+        ),
+        child: KeyedSubtree(
+          key: ValueKey(GoRouterState.of(context).uri.path),
+          child: child,
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (i) => context.go(_tabs[i].path),
