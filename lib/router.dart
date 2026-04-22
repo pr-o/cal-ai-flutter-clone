@@ -32,65 +32,65 @@ Future<GoRouter> buildRouter() async {
       // ── Onboarding stack ──────────────────────────────────────────────────
       GoRoute(
         path: '/onboarding/goal',
-        pageBuilder: (context, state) => _slidePage(const GoalScreen()),
+        pageBuilder: (context, state) => _slidePage(state.pageKey, const GoalScreen()),
       ),
       GoRoute(
         path: '/onboarding/gender',
-        pageBuilder: (context, state) => _slidePage(const GenderScreen()),
+        pageBuilder: (context, state) => _slidePage(state.pageKey, const GenderScreen()),
       ),
       GoRoute(
         path: '/onboarding/birthday',
-        pageBuilder: (context, state) => _slidePage(const BirthdayScreen()),
+        pageBuilder: (context, state) => _slidePage(state.pageKey, const BirthdayScreen()),
       ),
       GoRoute(
         path: '/onboarding/current-weight',
-        pageBuilder: (context, state) => _slidePage(const CurrentWeightScreen()),
+        pageBuilder: (context, state) => _slidePage(state.pageKey, const CurrentWeightScreen()),
       ),
       GoRoute(
         path: '/onboarding/height',
-        pageBuilder: (context, state) => _slidePage(const HeightScreen()),
+        pageBuilder: (context, state) => _slidePage(state.pageKey, const HeightScreen()),
       ),
       GoRoute(
         path: '/onboarding/target-weight',
-        pageBuilder: (context, state) => _slidePage(const TargetWeightScreen()),
+        pageBuilder: (context, state) => _slidePage(state.pageKey, const TargetWeightScreen()),
       ),
       GoRoute(
         path: '/onboarding/activity',
-        pageBuilder: (context, state) => _slidePage(const ActivityScreen()),
+        pageBuilder: (context, state) => _slidePage(state.pageKey, const ActivityScreen()),
       ),
       GoRoute(
         path: '/onboarding/diet',
-        pageBuilder: (context, state) => _slidePage(const DietScreen()),
+        pageBuilder: (context, state) => _slidePage(state.pageKey, const DietScreen()),
       ),
       GoRoute(
         path: '/onboarding/results',
-        pageBuilder: (context, state) => _slidePage(const ResultsScreen()),
+        pageBuilder: (context, state) => _slidePage(state.pageKey, const ResultsScreen()),
       ),
       GoRoute(
         path: '/onboarding/plan',
-        pageBuilder: (context, state) => _slidePage(const PlanScreen()),
+        pageBuilder: (context, state) => _slidePage(state.pageKey, const PlanScreen()),
       ),
       // ── Log routes (pushed over shell) ───────────────────────────────────
       GoRoute(
         path: '/log/camera',
-        pageBuilder: (context, state) => _slideUpPage(const CameraScreen()),
+        pageBuilder: (context, state) => _slideUpPage(state.pageKey, const CameraScreen()),
       ),
       GoRoute(
         path: '/log/scan-result',
         pageBuilder: (context, state) =>
-            _slideUpPage(ScanResultScreen(photoPath: state.extra as String)),
+            _slideUpPage(state.pageKey, ScanResultScreen(photoPath: state.extra as String)),
       ),
       GoRoute(
         path: '/log/search',
-        pageBuilder: (context, state) => _slideUpPage(const SearchScreen()),
+        pageBuilder: (context, state) => _slideUpPage(state.pageKey, const SearchScreen()),
       ),
       GoRoute(
         path: '/log/exercise',
-        pageBuilder: (context, state) => _slideUpPage(const ExerciseScreen()),
+        pageBuilder: (context, state) => _slideUpPage(state.pageKey, const ExerciseScreen()),
       ),
       GoRoute(
         path: '/log/water',
-        pageBuilder: (context, state) => _slideUpPage(const WaterScreen()),
+        pageBuilder: (context, state) => _slideUpPage(state.pageKey, const WaterScreen()),
       ),
       // ── App shell (tabs) ──────────────────────────────────────────────────
       ShellRoute(
@@ -98,15 +98,15 @@ Future<GoRouter> buildRouter() async {
         routes: [
           GoRoute(
             path: '/home',
-            pageBuilder: (context, state) => _fadePage(const HomeScreen()),
+            pageBuilder: (context, state) => _fadePage(state.pageKey, const HomeScreen()),
           ),
           GoRoute(
             path: '/analytics',
-            pageBuilder: (context, state) => _fadePage(const AnalyticsScreen()),
+            pageBuilder: (context, state) => _fadePage(state.pageKey, const AnalyticsScreen()),
           ),
           GoRoute(
             path: '/settings',
-            pageBuilder: (context, state) => _fadePage(const SettingsScreen()),
+            pageBuilder: (context, state) => _fadePage(state.pageKey, const SettingsScreen()),
           ),
         ],
       ),
@@ -114,8 +114,9 @@ Future<GoRouter> buildRouter() async {
   );
 }
 
-CustomTransitionPage<void> _slidePage(Widget child) =>
+CustomTransitionPage<void> _slidePage(LocalKey key, Widget child) =>
     CustomTransitionPage<void>(
+      key: key,
       child: child,
       transitionDuration: const Duration(milliseconds: 280),
       transitionsBuilder: (context, animation, secondaryAnimation, child) =>
@@ -130,8 +131,9 @@ CustomTransitionPage<void> _slidePage(Widget child) =>
           ),
     );
 
-CustomTransitionPage<void> _slideUpPage(Widget child) =>
+CustomTransitionPage<void> _slideUpPage(LocalKey key, Widget child) =>
     CustomTransitionPage<void>(
+      key: key,
       child: child,
       transitionDuration: const Duration(milliseconds: 300),
       transitionsBuilder: (context, animation, secondaryAnimation, child) =>
@@ -152,8 +154,9 @@ CustomTransitionPage<void> _slideUpPage(Widget child) =>
           ),
     );
 
-CustomTransitionPage<void> _fadePage(Widget child) =>
+CustomTransitionPage<void> _fadePage(LocalKey key, Widget child) =>
     CustomTransitionPage<void>(
+      key: key,
       child: child,
       transitionDuration: const Duration(milliseconds: 200),
       transitionsBuilder: (context, animation, secondaryAnimation, child) =>
