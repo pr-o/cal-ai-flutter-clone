@@ -159,7 +159,7 @@ CustomTransitionPage<void> _slideUpPage(LocalKey key, Widget child) =>
       transitionDuration: const Duration(milliseconds: 300),
       transitionsBuilder: (context, animation, secondaryAnimation, child) =>
           FadeTransition(
-            opacity: animation,
+            opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
             child: SlideTransition(
               position:
                   Tween<Offset>(
