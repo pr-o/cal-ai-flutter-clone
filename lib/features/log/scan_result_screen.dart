@@ -345,11 +345,7 @@ class _ResultContent extends StatelessWidget {
                 value: carbs,
                 color: AppColors.macroCarbs,
               ),
-              _MacroItem(
-                label: 'Fat',
-                value: fat,
-                color: AppColors.macroFat,
-              ),
+              _MacroItem(label: 'Fat', value: fat, color: AppColors.macroFat),
             ],
           ),
           const SizedBox(height: 20),

@@ -32,65 +32,81 @@ Future<GoRouter> buildRouter() async {
       // ── Onboarding stack ──────────────────────────────────────────────────
       GoRoute(
         path: '/onboarding/goal',
-        pageBuilder: (context, state) => _slidePage(state.pageKey, const GoalScreen()),
+        pageBuilder: (context, state) =>
+            _slidePage(state.pageKey, const GoalScreen()),
       ),
       GoRoute(
         path: '/onboarding/gender',
-        pageBuilder: (context, state) => _slidePage(state.pageKey, const GenderScreen()),
+        pageBuilder: (context, state) =>
+            _slidePage(state.pageKey, const GenderScreen()),
       ),
       GoRoute(
         path: '/onboarding/birthday',
-        pageBuilder: (context, state) => _slidePage(state.pageKey, const BirthdayScreen()),
+        pageBuilder: (context, state) =>
+            _slidePage(state.pageKey, const BirthdayScreen()),
       ),
       GoRoute(
         path: '/onboarding/current-weight',
-        pageBuilder: (context, state) => _slidePage(state.pageKey, const CurrentWeightScreen()),
+        pageBuilder: (context, state) =>
+            _slidePage(state.pageKey, const CurrentWeightScreen()),
       ),
       GoRoute(
         path: '/onboarding/height',
-        pageBuilder: (context, state) => _slidePage(state.pageKey, const HeightScreen()),
+        pageBuilder: (context, state) =>
+            _slidePage(state.pageKey, const HeightScreen()),
       ),
       GoRoute(
         path: '/onboarding/target-weight',
-        pageBuilder: (context, state) => _slidePage(state.pageKey, const TargetWeightScreen()),
+        pageBuilder: (context, state) =>
+            _slidePage(state.pageKey, const TargetWeightScreen()),
       ),
       GoRoute(
         path: '/onboarding/activity',
-        pageBuilder: (context, state) => _slidePage(state.pageKey, const ActivityScreen()),
+        pageBuilder: (context, state) =>
+            _slidePage(state.pageKey, const ActivityScreen()),
       ),
       GoRoute(
         path: '/onboarding/diet',
-        pageBuilder: (context, state) => _slidePage(state.pageKey, const DietScreen()),
+        pageBuilder: (context, state) =>
+            _slidePage(state.pageKey, const DietScreen()),
       ),
       GoRoute(
         path: '/onboarding/results',
-        pageBuilder: (context, state) => _slidePage(state.pageKey, const ResultsScreen()),
+        pageBuilder: (context, state) =>
+            _slidePage(state.pageKey, const ResultsScreen()),
       ),
       GoRoute(
         path: '/onboarding/plan',
-        pageBuilder: (context, state) => _slidePage(state.pageKey, const PlanScreen()),
+        pageBuilder: (context, state) =>
+            _slidePage(state.pageKey, const PlanScreen()),
       ),
       // ── Log routes (pushed over shell) ───────────────────────────────────
       GoRoute(
         path: '/log/camera',
-        pageBuilder: (context, state) => _slideUpPage(state.pageKey, const CameraScreen()),
+        pageBuilder: (context, state) =>
+            _slideUpPage(state.pageKey, const CameraScreen()),
       ),
       GoRoute(
         path: '/log/scan-result',
-        pageBuilder: (context, state) =>
-            _slideUpPage(state.pageKey, ScanResultScreen(photoPath: state.extra as String)),
+        pageBuilder: (context, state) => _slideUpPage(
+          state.pageKey,
+          ScanResultScreen(photoPath: state.extra as String),
+        ),
       ),
       GoRoute(
         path: '/log/search',
-        pageBuilder: (context, state) => _slideUpPage(state.pageKey, const SearchScreen()),
+        pageBuilder: (context, state) =>
+            _slideUpPage(state.pageKey, const SearchScreen()),
       ),
       GoRoute(
         path: '/log/exercise',
-        pageBuilder: (context, state) => _slideUpPage(state.pageKey, const ExerciseScreen()),
+        pageBuilder: (context, state) =>
+            _slideUpPage(state.pageKey, const ExerciseScreen()),
       ),
       GoRoute(
         path: '/log/water',
-        pageBuilder: (context, state) => _slideUpPage(state.pageKey, const WaterScreen()),
+        pageBuilder: (context, state) =>
+            _slideUpPage(state.pageKey, const WaterScreen()),
       ),
       // ── App shell (tabs) ──────────────────────────────────────────────────
       ShellRoute(
@@ -98,10 +114,8 @@ Future<GoRouter> buildRouter() async {
         routes: [
           GoRoute(
             path: '/home',
-            pageBuilder: (context, state) => NoTransitionPage(
-              key: state.pageKey,
-              child: const HomeScreen(),
-            ),
+            pageBuilder: (context, state) =>
+                NoTransitionPage(key: state.pageKey, child: const HomeScreen()),
           ),
           GoRoute(
             path: '/analytics',
@@ -130,12 +144,10 @@ CustomTransitionPage<void> _slidePage(LocalKey key, Widget child) =>
       transitionDuration: const Duration(milliseconds: 280),
       transitionsBuilder: (context, animation, secondaryAnimation, child) =>
           SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(1, 0),
-              end: Offset.zero,
-            ).animate(
-              CurvedAnimation(parent: animation, curve: Curves.easeOut),
-            ),
+            position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+                .animate(
+                  CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                ),
             child: child,
           ),
     );
@@ -149,17 +161,17 @@ CustomTransitionPage<void> _slideUpPage(LocalKey key, Widget child) =>
           FadeTransition(
             opacity: animation,
             child: SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0, 0.08),
-                end: Offset.zero,
-              ).animate(
-                CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.fastOutSlowIn,
-                ),
-              ),
+              position:
+                  Tween<Offset>(
+                    begin: const Offset(0, 0.08),
+                    end: Offset.zero,
+                  ).animate(
+                    CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.fastOutSlowIn,
+                    ),
+                  ),
               child: child,
             ),
           ),
     );
-
