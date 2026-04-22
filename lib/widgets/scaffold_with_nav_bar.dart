@@ -43,6 +43,10 @@ class ScaffoldWithNavBar extends StatelessWidget {
     return Scaffold(
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 200),
+        transitionBuilder: (child, animation) => FadeTransition(
+          opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
+          child: child,
+        ),
         child: KeyedSubtree(
           key: ValueKey(GoRouterState.of(context).uri.path),
           child: child,

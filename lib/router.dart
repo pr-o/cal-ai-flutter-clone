@@ -98,15 +98,24 @@ Future<GoRouter> buildRouter() async {
         routes: [
           GoRoute(
             path: '/home',
-            pageBuilder: (context, state) => _fadePage(state.pageKey, const HomeScreen()),
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: const HomeScreen(),
+            ),
           ),
           GoRoute(
             path: '/analytics',
-            pageBuilder: (context, state) => _fadePage(state.pageKey, const AnalyticsScreen()),
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: const AnalyticsScreen(),
+            ),
           ),
           GoRoute(
             path: '/settings',
-            pageBuilder: (context, state) => _fadePage(state.pageKey, const SettingsScreen()),
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: const SettingsScreen(),
+            ),
           ),
         ],
       ),
@@ -154,17 +163,3 @@ CustomTransitionPage<void> _slideUpPage(LocalKey key, Widget child) =>
           ),
     );
 
-CustomTransitionPage<void> _fadePage(LocalKey key, Widget child) =>
-    CustomTransitionPage<void>(
-      key: key,
-      child: child,
-      transitionDuration: const Duration(milliseconds: 200),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-          FadeTransition(
-            opacity: CurvedAnimation(
-              parent: animation,
-              curve: Curves.easeOut,
-            ),
-            child: child,
-          ),
-    );
