@@ -32,65 +32,65 @@ Future<GoRouter> buildRouter() async {
       // ── Onboarding stack ──────────────────────────────────────────────────
       GoRoute(
         path: '/onboarding/goal',
-        builder: (context, state) => const GoalScreen(),
+        pageBuilder: (context, state) => _slidePage(const GoalScreen()),
       ),
       GoRoute(
         path: '/onboarding/gender',
-        builder: (context, state) => const GenderScreen(),
+        pageBuilder: (context, state) => _slidePage(const GenderScreen()),
       ),
       GoRoute(
         path: '/onboarding/birthday',
-        builder: (context, state) => const BirthdayScreen(),
+        pageBuilder: (context, state) => _slidePage(const BirthdayScreen()),
       ),
       GoRoute(
         path: '/onboarding/current-weight',
-        builder: (context, state) => const CurrentWeightScreen(),
+        pageBuilder: (context, state) => _slidePage(const CurrentWeightScreen()),
       ),
       GoRoute(
         path: '/onboarding/height',
-        builder: (context, state) => const HeightScreen(),
+        pageBuilder: (context, state) => _slidePage(const HeightScreen()),
       ),
       GoRoute(
         path: '/onboarding/target-weight',
-        builder: (context, state) => const TargetWeightScreen(),
+        pageBuilder: (context, state) => _slidePage(const TargetWeightScreen()),
       ),
       GoRoute(
         path: '/onboarding/activity',
-        builder: (context, state) => const ActivityScreen(),
+        pageBuilder: (context, state) => _slidePage(const ActivityScreen()),
       ),
       GoRoute(
         path: '/onboarding/diet',
-        builder: (context, state) => const DietScreen(),
+        pageBuilder: (context, state) => _slidePage(const DietScreen()),
       ),
       GoRoute(
         path: '/onboarding/results',
-        builder: (context, state) => const ResultsScreen(),
+        pageBuilder: (context, state) => _slidePage(const ResultsScreen()),
       ),
       GoRoute(
         path: '/onboarding/plan',
-        builder: (context, state) => const PlanScreen(),
+        pageBuilder: (context, state) => _slidePage(const PlanScreen()),
       ),
       // ── Log routes (pushed over shell) ───────────────────────────────────
       GoRoute(
         path: '/log/camera',
-        builder: (context, state) => const CameraScreen(),
+        pageBuilder: (context, state) => _slideUpPage(const CameraScreen()),
       ),
       GoRoute(
         path: '/log/scan-result',
-        builder: (context, state) =>
-            ScanResultScreen(photoPath: state.extra as String),
+        pageBuilder: (context, state) =>
+            _slideUpPage(ScanResultScreen(photoPath: state.extra as String)),
       ),
       GoRoute(
         path: '/log/search',
-        builder: (context, state) => const SearchScreen(),
+        pageBuilder: (context, state) => _slideUpPage(const SearchScreen()),
       ),
       GoRoute(
         path: '/log/exercise',
-        builder: (context, state) => const ExerciseScreen(),
+        pageBuilder: (context, state) => _slideUpPage(const ExerciseScreen()),
       ),
       GoRoute(
         path: '/log/water',
-        builder: (context, state) => const WaterScreen(),
+        pageBuilder: (context, state) => _slideUpPage(const WaterScreen()),
       ),
       // ── App shell (tabs) ──────────────────────────────────────────────────
       ShellRoute(
@@ -98,15 +98,15 @@ Future<GoRouter> buildRouter() async {
         routes: [
           GoRoute(
             path: '/home',
-            builder: (context, state) => const HomeScreen(),
+            pageBuilder: (context, state) => _fadePage(const HomeScreen()),
           ),
           GoRoute(
             path: '/analytics',
-            builder: (context, state) => const AnalyticsScreen(),
+            pageBuilder: (context, state) => _fadePage(const AnalyticsScreen()),
           ),
           GoRoute(
             path: '/settings',
-            builder: (context, state) => const SettingsScreen(),
+            pageBuilder: (context, state) => _fadePage(const SettingsScreen()),
           ),
         ],
       ),
