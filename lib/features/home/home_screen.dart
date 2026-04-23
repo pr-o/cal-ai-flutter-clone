@@ -7,6 +7,7 @@ import '../../utils/streaks.dart';
 import '../../widgets/calorie_ring.dart';
 import '../../widgets/food_entry_card.dart';
 import '../../widgets/macro_pill.dart';
+import '../../widgets/log_weight_sheet.dart';
 import '../../widgets/week_strip.dart';
 import 'notifier.dart';
 
@@ -168,7 +169,7 @@ class HomeScreen extends ConsumerWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showLogSheet(context),
+        onPressed: () => _showLogSheet(context, ref),
         backgroundColor: Theme.of(context).colorScheme.onSurface,
         foregroundColor: Theme.of(context).colorScheme.surface,
         child: const Icon(Icons.add_rounded, size: 28),
@@ -176,7 +177,7 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  void _showLogSheet(BuildContext context) {
+  void _showLogSheet(BuildContext context, WidgetRef ref) {
     showModalBottomSheet<void>(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -228,6 +229,14 @@ class HomeScreen extends ConsumerWidget {
               onTap: () {
                 Navigator.of(ctx).pop();
                 context.push('/log/water');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.monitor_weight_outlined),
+              title: const Text('Log weight'),
+              onTap: () {
+                Navigator.of(ctx).pop();
+                showLogWeightSheet(context, ref);
               },
             ),
             const SizedBox(height: 8),
