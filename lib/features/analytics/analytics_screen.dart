@@ -84,7 +84,6 @@ class AnalyticsScreen extends ConsumerWidget {
       ),
     );
   }
-
 }
 
 // ─── Weight chart ─────────────────────────────────────────────────────────────

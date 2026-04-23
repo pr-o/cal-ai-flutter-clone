@@ -36,9 +36,7 @@ void showLogWeightSheet(BuildContext context, WidgetRef ref) {
           TextField(
             controller: ctrl,
             autofocus: true,
-            keyboardType: const TextInputType.numberWithOptions(
-              decimal: true,
-            ),
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
             ],
