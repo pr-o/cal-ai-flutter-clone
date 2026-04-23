@@ -26,7 +26,7 @@ class GoalScreen extends ConsumerWidget {
     return OnboardingLayout(
       step: 1,
       totalSteps: 10,
-      onBack: null,
+      hideBack: true,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(

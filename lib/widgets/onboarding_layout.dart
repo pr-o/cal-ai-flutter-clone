@@ -10,6 +10,7 @@ class OnboardingLayout extends StatelessWidget {
     required this.totalSteps,
     required this.child,
     this.onBack,
+    this.hideBack = false,
   });
 
   /// Current step index (1-based).
@@ -19,6 +20,10 @@ class OnboardingLayout extends StatelessWidget {
 
   /// Override back behaviour; defaults to go_router's [BuildContext.pop] (no-op if nothing to pop).
   final VoidCallback? onBack;
+
+  /// When true, renders a same-size spacer in place of the back button
+  /// (used on the first screen where there is nothing to pop).
+  final bool hideBack;
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +41,16 @@ class OnboardingLayout extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               child: Row(
                 children: [
-                  _BackButton(
-                    onBack:
-                        onBack ??
-                        () {
-                          if (context.canPop()) context.pop();
-                        },
-                  ),
+                  if (hideBack)
+                    const SizedBox(width: 40, height: 40)
+                  else
+                    _BackButton(
+                      onBack:
+                          onBack ??
+                          () {
+                            if (context.canPop()) context.pop();
+                          },
+                    ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: ClipRRect(
