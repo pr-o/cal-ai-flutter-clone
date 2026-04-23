@@ -63,7 +63,7 @@ class GoalScreen extends ConsumerWidget {
             ),
             const Spacer(),
             OnboardingNextButton(
-              onPressed: () => context.push('/onboarding/gender'),
+              onPressed: () => context.go('/onboarding/gender'),
             ),
             const SizedBox(height: 24),
           ],

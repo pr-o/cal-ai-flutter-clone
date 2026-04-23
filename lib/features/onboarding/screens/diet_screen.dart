@@ -25,6 +25,7 @@ class DietScreen extends ConsumerWidget {
     return OnboardingLayout(
       step: 8,
       totalSteps: 10,
+      onBack: () => context.go('/onboarding/activity'),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
@@ -85,7 +86,7 @@ class DietScreen extends ConsumerWidget {
             ),
             const Spacer(),
             OnboardingNextButton(
-              onPressed: () => context.push('/onboarding/results'),
+              onPressed: () => context.go('/onboarding/results'),
             ),
             const SizedBox(height: 24),
           ],

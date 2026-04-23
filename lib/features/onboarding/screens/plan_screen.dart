@@ -122,6 +122,7 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
     return OnboardingLayout(
       step: 10,
       totalSteps: 10,
+      onBack: () => context.go('/onboarding/results'),
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(

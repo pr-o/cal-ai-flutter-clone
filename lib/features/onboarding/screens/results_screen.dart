@@ -13,6 +13,7 @@ class ResultsScreen extends StatelessWidget {
     return OnboardingLayout(
       step: 9,
       totalSteps: 10,
+      onBack: () => context.go('/onboarding/diet'),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
@@ -32,7 +33,7 @@ class ResultsScreen extends StatelessWidget {
             _StatCard(),
             const Spacer(),
             OnboardingNextButton(
-              onPressed: () => context.push('/onboarding/plan'),
+              onPressed: () => context.go('/onboarding/plan'),
             ),
             const SizedBox(height: 24),
           ],

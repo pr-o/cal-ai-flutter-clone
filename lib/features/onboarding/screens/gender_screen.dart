@@ -22,6 +22,7 @@ class GenderScreen extends ConsumerWidget {
     return OnboardingLayout(
       step: 2,
       totalSteps: 10,
+      onBack: () => context.go('/onboarding/goal'),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
@@ -57,7 +58,7 @@ class GenderScreen extends ConsumerWidget {
             ),
             const Spacer(),
             OnboardingNextButton(
-              onPressed: () => context.push('/onboarding/birthday'),
+              onPressed: () => context.go('/onboarding/birthday'),
             ),
             const SizedBox(height: 24),
           ],

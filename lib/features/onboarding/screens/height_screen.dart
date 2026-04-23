@@ -30,6 +30,7 @@ class HeightScreen extends ConsumerWidget {
     return OnboardingLayout(
       step: 5,
       totalSteps: 10,
+      onBack: () => context.go('/onboarding/current-weight'),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
@@ -73,7 +74,7 @@ class HeightScreen extends ConsumerWidget {
             ),
             const Spacer(),
             OnboardingNextButton(
-              onPressed: () => context.push('/onboarding/target-weight'),
+              onPressed: () => context.go('/onboarding/target-weight'),
             ),
             const SizedBox(height: 24),
           ],
