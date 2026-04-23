@@ -64,7 +64,7 @@ class ActivityScreen extends ConsumerWidget {
             ),
             const Spacer(),
             OnboardingNextButton(
-              onPressed: () => context.go('/onboarding/diet'),
+              onPressed: () => context.push('/onboarding/diet'),
             ),
             const SizedBox(height: 24),
           ],

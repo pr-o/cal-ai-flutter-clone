@@ -76,7 +76,7 @@ class BirthdayScreen extends ConsumerWidget {
             ),
             const Spacer(),
             OnboardingNextButton(
-              onPressed: () => context.go('/onboarding/current-weight'),
+              onPressed: () => context.push('/onboarding/current-weight'),
             ),
             const SizedBox(height: 24),
           ],

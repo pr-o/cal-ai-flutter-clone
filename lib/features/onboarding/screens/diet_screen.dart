@@ -85,7 +85,7 @@ class DietScreen extends ConsumerWidget {
             ),
             const Spacer(),
             OnboardingNextButton(
-              onPressed: () => context.go('/onboarding/results'),
+              onPressed: () => context.push('/onboarding/results'),
             ),
             const SizedBox(height: 24),
           ],

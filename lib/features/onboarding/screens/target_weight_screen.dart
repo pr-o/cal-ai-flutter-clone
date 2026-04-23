@@ -68,7 +68,7 @@ class TargetWeightScreen extends ConsumerWidget {
             ),
             const Spacer(),
             OnboardingNextButton(
-              onPressed: () => context.go('/onboarding/activity'),
+              onPressed: () => context.push('/onboarding/activity'),
             ),
             const SizedBox(height: 24),
           ],

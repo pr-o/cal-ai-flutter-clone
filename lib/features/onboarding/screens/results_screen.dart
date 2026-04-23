@@ -32,7 +32,7 @@ class ResultsScreen extends StatelessWidget {
             _StatCard(),
             const Spacer(),
             OnboardingNextButton(
-              onPressed: () => context.go('/onboarding/plan'),
+              onPressed: () => context.push('/onboarding/plan'),
             ),
             const SizedBox(height: 24),
           ],

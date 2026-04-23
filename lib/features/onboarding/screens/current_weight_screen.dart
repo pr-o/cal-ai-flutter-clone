@@ -61,7 +61,7 @@ class CurrentWeightScreen extends ConsumerWidget {
             ),
             const Spacer(),
             OnboardingNextButton(
-              onPressed: () => context.go('/onboarding/height'),
+              onPressed: () => context.push('/onboarding/height'),
             ),
             const SizedBox(height: 24),
           ],

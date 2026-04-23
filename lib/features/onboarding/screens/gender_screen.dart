@@ -57,7 +57,7 @@ class GenderScreen extends ConsumerWidget {
             ),
             const Spacer(),
             OnboardingNextButton(
-              onPressed: () => context.go('/onboarding/birthday'),
+              onPressed: () => context.push('/onboarding/birthday'),
             ),
             const SizedBox(height: 24),
           ],

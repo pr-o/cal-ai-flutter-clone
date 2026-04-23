@@ -73,7 +73,7 @@ class HeightScreen extends ConsumerWidget {
             ),
             const Spacer(),
             OnboardingNextButton(
-              onPressed: () => context.go('/onboarding/target-weight'),
+              onPressed: () => context.push('/onboarding/target-weight'),
             ),
             const SizedBox(height: 24),
           ],
