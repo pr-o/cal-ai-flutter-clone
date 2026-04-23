@@ -90,7 +90,7 @@ Future<GoRouter> buildRouter() async {
         path: '/log/scan-result',
         pageBuilder: (context, state) => _slideUpPage(
           state.pageKey,
-          ScanResultScreen(photoPath: state.extra as String),
+          ScanResultScreen(photoPath: state.extra as String? ?? ''),
         ),
       ),
       GoRoute(
