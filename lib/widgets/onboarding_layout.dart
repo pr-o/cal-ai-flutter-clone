@@ -17,7 +17,7 @@ class OnboardingLayout extends StatelessWidget {
   final int totalSteps;
   final Widget child;
 
-  /// Override back behaviour; defaults to [Navigator.pop].
+  /// Override back behaviour; defaults to go_router's [BuildContext.pop] (no-op if nothing to pop).
   final VoidCallback? onBack;
 
   @override
