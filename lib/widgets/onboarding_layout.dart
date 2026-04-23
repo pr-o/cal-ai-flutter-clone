@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 /// Wraps onboarding screen content with a back arrow, thin progress bar,
 /// and safe-area padding matching the Cal AI onboarding design.
@@ -36,7 +37,7 @@ class OnboardingLayout extends StatelessWidget {
               child: Row(
                 children: [
                   _BackButton(
-                    onBack: onBack ?? () => Navigator.of(context).pop(),
+                    onBack: onBack ?? () { if (context.canPop()) context.pop(); },
                   ),
                   const SizedBox(width: 8),
                   Expanded(
