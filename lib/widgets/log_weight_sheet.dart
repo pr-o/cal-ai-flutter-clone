@@ -74,5 +74,5 @@ void showLogWeightSheet(BuildContext context, WidgetRef ref) {
         ],
       ),
     ),
-  );
+  ).then((_) => ctrl.dispose());
 }
