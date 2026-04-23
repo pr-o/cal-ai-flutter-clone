@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -74,6 +75,7 @@ class _CameraScreenState extends State<CameraScreen>
     final ctrl = _controller;
     if (ctrl == null || !ctrl.value.isInitialized || _isCapturing) return;
 
+    HapticFeedback.mediumImpact();
     setState(() => _isCapturing = true);
     try {
       final file = await ctrl.takePicture();

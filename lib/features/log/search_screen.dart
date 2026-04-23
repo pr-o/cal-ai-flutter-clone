@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -96,6 +97,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       builder: (ctx) => _ConfirmSheet(
         result: result,
         onAdd: () async {
+          HapticFeedback.mediumImpact();
           Navigator.of(ctx).pop();
           final entry = FoodEntriesCompanion(
             dailyLogId: const Value(0),

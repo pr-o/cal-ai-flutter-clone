@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -119,6 +120,7 @@ class _ScanResultScreenState extends ConsumerState<ScanResultScreen> {
     final r = _result;
     if (r == null) return;
 
+    HapticFeedback.mediumImpact();
     final entry = FoodEntriesCompanion(
       dailyLogId: const Value(0), // overwritten by notifier
       name: Value(_nameCtrl.text.isNotEmpty ? _nameCtrl.text : r.name),

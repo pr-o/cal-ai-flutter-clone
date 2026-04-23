@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -203,6 +204,7 @@ class HomeScreen extends ConsumerWidget {
               leading: const Icon(Icons.camera_alt_outlined),
               title: const Text('Scan food'),
               onTap: () {
+                HapticFeedback.selectionClick();
                 Navigator.of(ctx).pop();
                 context.push('/log/camera');
               },
@@ -211,6 +213,7 @@ class HomeScreen extends ConsumerWidget {
               leading: const Icon(Icons.search_rounded),
               title: const Text('Search food'),
               onTap: () {
+                HapticFeedback.selectionClick();
                 Navigator.of(ctx).pop();
                 context.push('/log/search');
               },
@@ -219,6 +222,7 @@ class HomeScreen extends ConsumerWidget {
               leading: const Icon(Icons.fitness_center_rounded),
               title: const Text('Log exercise'),
               onTap: () {
+                HapticFeedback.selectionClick();
                 Navigator.of(ctx).pop();
                 context.push('/log/exercise');
               },
@@ -227,6 +231,7 @@ class HomeScreen extends ConsumerWidget {
               leading: const Icon(Icons.water_drop_outlined),
               title: const Text('Log water'),
               onTap: () {
+                HapticFeedback.selectionClick();
                 Navigator.of(ctx).pop();
                 context.push('/log/water');
               },
@@ -235,6 +240,7 @@ class HomeScreen extends ConsumerWidget {
               leading: const Icon(Icons.monitor_weight_outlined),
               title: const Text('Log weight'),
               onTap: () {
+                HapticFeedback.selectionClick();
                 Navigator.of(ctx).pop();
                 showLogWeightSheet(context, ref);
               },
