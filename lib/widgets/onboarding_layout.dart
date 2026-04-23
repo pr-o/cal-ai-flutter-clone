@@ -37,7 +37,11 @@ class OnboardingLayout extends StatelessWidget {
               child: Row(
                 children: [
                   _BackButton(
-                    onBack: onBack ?? () { if (context.canPop()) context.pop(); },
+                    onBack:
+                        onBack ??
+                        () {
+                          if (context.canPop()) context.pop();
+                        },
                   ),
                   const SizedBox(width: 8),
                   Expanded(
